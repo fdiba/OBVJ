@@ -23,15 +23,22 @@ public class DrawPointsAndLinesScene extends Scene {
 	private int w;
 	private int h;
 	
+	private float xRatio;
+	private float yRatio; 
+	
 	private Ramp ramp;
 	
 	public DrawPointsAndLinesScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
-		super(_pApplet, objects);
-		// TODO Auto-generated constructor stub
+		super(_pApplet, objects, _width, _height);
 		
-		w = _width;
-		h = _height;
+		w = 640;
+		h = 480;
+			
+		xRatio = (float) _width/w;
+		yRatio = (float) _height/h;
+		
+		PApplet.println(xRatio+" "+yRatio);
 		
 		setVectors();
 		
@@ -88,20 +95,9 @@ public class DrawPointsAndLinesScene extends Scene {
 	    
 			FloatList actualBufferValues;
 	    
-		    if(multipleBuffers){
-		    	//display different lines
-		    	
-		    	if(lineNumber<buffers.size()) {
-		    		actualBufferValues = buffers.get(lineNumber);
-		    	} else {
-		    		actualBufferValues = buffers.get(buffers.size()-1); 
-		    	}
-		    	
-		    	
-		    	//actualBufferValues = buffers.get(lineNumber);
-		    	
-		    } else {
-		    	//display the same line
+		    if(multipleBuffers){ //display different lines
+		    	actualBufferValues = buffers.get(lineNumber);
+		    } else { //display the same line
 		    	actualBufferValues = buffers.get(buffers.size()-1); 
 		    }
 		    
@@ -122,6 +118,7 @@ public class DrawPointsAndLinesScene extends Scene {
       
 			//stroke(255);
 		    PVector actualVector = pvectors[j+i*w];
+		    
 		    float actualBufferValue = actualBufferValues.get(j);
 		    float depthValue = depthValues[j+i*w];
 	    
@@ -147,7 +144,9 @@ public class DrawPointsAndLinesScene extends Scene {
 		        float distance = PApplet.abs(ovz-avz); 
 		        
 		        
-		        if(distance < params.get("maxDist")) pApplet.line(oldVector.x, oldVector.y, ovz, actualVector.x, actualVector.y, avz);
+		        if(distance < params.get("maxDist")) { //user lines
+		        	pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+		        }
 		
 		    	} else {
 	                
@@ -172,7 +171,10 @@ public class DrawPointsAndLinesScene extends Scene {
 			        float avz = actualVector.z - depthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
 			        
 			        float distance = PApplet.abs(ovz-avz); 
-			        if(distance < params.get("maxDist") && linesVisibility) pApplet.line(oldVector.x, oldVector.y, ovz, actualVector.x, actualVector.y, avz);
+			        
+			        if(distance < params.get("maxDist") && linesVisibility) { // background lines
+			        	pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+			        }
 			             
 			      }
 		      
@@ -188,6 +190,7 @@ public class DrawPointsAndLinesScene extends Scene {
 	private float setColorWeightDepthValue(float depthValue, int couleur, int lVal, int hVal){
 		  
 		float weight = PApplet.map(depthValue, lVal, hVal, 4, 1);
+		weight *= xRatio;
 		depthValue = PApplet.map(depthValue, lVal, hVal, -1, 1);
       
 		pApplet.stroke(couleur);
@@ -201,7 +204,6 @@ public class DrawPointsAndLinesScene extends Scene {
 		FloatList bufferValues = new FloatList();
 		  
 		for(int i = 0; i < App.player.bufferSize(); i++) {
-			//float test = map(i, 0, App.player.bufferSize(), 0, w); //todo map it
 			bufferValues.append(App.player.left.get(i));
 		}
 	   

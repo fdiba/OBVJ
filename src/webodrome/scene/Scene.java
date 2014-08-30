@@ -16,9 +16,16 @@ public class Scene {
 	public Map<String, Integer> params;
 	public Menu menu;
 	
-	public Scene(PApplet _pApplet, Object[][] objects){
+	private int w;
+	private int h;
+	
+	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){
 		pApplet = _pApplet;
 		params = new HashMap<String, Integer>();
+		
+		w = _w;
+		h = _h;
+		
 		createMenu(objects);
 	}
 	public Scene(PApplet _pApplet){
@@ -26,7 +33,7 @@ public class Scene {
 		menu = null;
 	}
 	protected void createMenu(Object[][] objects){	
-		menu = new Menu(this, new PVector(450, 50), objects);
+		menu = new Menu(this, new PVector(w - 190, 50), objects);
 	}
 	public void update(){
 		if(menu!=null)menu.update(pApplet);	

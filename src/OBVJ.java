@@ -1,4 +1,8 @@
 
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Map;
 
@@ -15,7 +19,10 @@ import webodrome.scene.DrawPointsAndLinesScene;
 @SuppressWarnings("serial")
 public class OBVJ extends PApplet {
 	
+	private static Rectangle monitor;
 	private SimpleOpenNI context;
+	private int w = 1024;
+	private int h = 768;
 		
 	//-------- scenes -----------//
 	
@@ -24,14 +31,41 @@ public class OBVJ extends PApplet {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		PApplet.main(OBVJ.class.getSimpleName());
+		GraphicsEnvironment gEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] graphicsDevices = gEnvironment.getScreenDevices();
+		
+		if(graphicsDevices.length>1){
+			GraphicsDevice graphicsDevice = graphicsDevices[1];
+			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
+			monitor = gConfigurations[0].getBounds();
+			PApplet.main( new String[] { "--display=1", OBVJ.class.getSimpleName() });
+			//PApplet.main( new String[] { "--present", KPrez.class.getSimpleName() });
+		} else {
+			GraphicsDevice graphicsDevice = graphicsDevices[0];
+			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
+			monitor = gConfigurations[0].getBounds();
+			PApplet.main(OBVJ.class.getSimpleName());
+		}
 
+	}
+	public void init() {
+		frame.removeNotify();
+		frame.setUndecorated(true);
+		super.init();
 	}
 	public void setup(){
 		
+		
+		if(App.fscreen){
+			w = monitor.width;
+			h = monitor.height;
+		}		
+		
+		size(w, h, OPENGL);
+		
 		frameRate(12); //---------------------------------- param -------//
 		
-		size(640, 480, OPENGL);
+		size(w, h, OPENGL);
 		
 		context = new SimpleOpenNI(this);
 		
@@ -83,7 +117,6 @@ public class OBVJ extends PApplet {
 	}
 	private void scene0(){
 		
-		
 		//-------------- init ------------------//
 		
 		int sceneId = App.getSceneId();
@@ -101,7 +134,7 @@ public class OBVJ extends PApplet {
 	                {"depth", -200, 200, App.colors[6], 1, 5, 60},
 	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45} };
 			
-			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, 640, 480);
+			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);
 					
 		}
@@ -127,13 +160,13 @@ public class OBVJ extends PApplet {
 		
 		Map<String, Integer> params = App.getActualScene().params;
 		  
-		translate(width/2 + params.get("xTrans"), height/2 + params.get("yTrans"), params.get("zTrans"));
+		translate(w/2 + params.get("xTrans"), h/2 + params.get("yTrans"), params.get("zTrans"));
   
 		rotateX(radians(params.get("rotateX")));
 		rotateY(radians(params.get("rotateY")));
 		rotateZ(radians(params.get("rotateZ")));
   
-		translate(-width/2, -height/2, 0);
+		translate(-w/2, -h/2, 0);
  
 	}
 	//--------------- keys ---------------------//
