@@ -5,7 +5,7 @@ import processing.core.PApplet;
 public class Ramp{
 	  	  
 	private int[] colors;
-	private boolean redToGreen = false;
+	private boolean redToGreen = true;
   	private int step = 1;
  
   

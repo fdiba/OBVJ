@@ -28,6 +28,12 @@ public class DrawPointsAndLinesScene extends Scene {
 	
 	private Ramp ramp;
 	
+	
+	//-----------//
+	private PVector oldVector, actualVector;
+	private float oldBufferValue, actualBufferValue;
+	private float oldDepthValue, actualDepthValue;
+	
 	public DrawPointsAndLinesScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
@@ -82,10 +88,6 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 	}
 	private void drawVectors(int _ySpace){
-		  
-		PVector oldVector;
-		float oldBufferValue;
-		float oldDepthValue;
 	    
 		for (int i=10; i<h; i+= _ySpace){
 	    
@@ -102,102 +104,107 @@ public class DrawPointsAndLinesScene extends Scene {
 		    }
 		    
 		    if(actualBufferValues.size() > 0) { 
-		    	editPointsPosition(oldVector, oldBufferValue, i, actualBufferValues, oldDepthValue);
+		    	editPointsPosition(i, actualBufferValues);
 		    }
 		    
 		    lineNumber++;    
 		  
 		}
 	}
-	private void editPointsPosition(PVector oldVector, float oldBufferValue, int i, FloatList actualBufferValues, float oldDepthValue){
+	private void editPointsPosition(int i, FloatList actualBufferValues){
 		
 		int hVal = App.highestValue;
 		int lVal = App.lowestValue;
 	    
 		for(int j=0; j<w; j+=10){
-      
-			//stroke(255);
-		    PVector actualVector = pvectors[j+i*w];
-		    
-		    float actualBufferValue = actualBufferValues.get(j);
-		    float depthValue = depthValues[j+i*w];
-	    
-		    //point(actualVector.x, actualVector.y, actualVector.z);
-	    
+      		    
+			actualVector = pvectors[j+i*w];
+		    actualBufferValue = actualBufferValues.get(j);
+		    actualDepthValue = depthValues[j+i*w];
+	    	    
 		    if(oldVector != null){
 	            
-		    	if(depthValue >= lVal && depthValue <= hVal){
-	        
-		        int c;
-		        
-		        if(useColors){
-		        	c = ramp.pickColor(depthValue, lVal, hVal);  
-		        } else {
-		        	c = pApplet.color(255);
-		        }
-		        
-		        depthValue = setColorWeightDepthValue(depthValue, c, lVal, hVal);
-		        
-		        float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
-		        float avz = actualVector.z - depthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
-		        
-		        float distance = PApplet.abs(ovz-avz); 
-		        
-		        
-		        if(distance < params.get("maxDist")) { //user lines
-		        	pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
-		        }
-		
+		    	if(actualDepthValue >= lVal && actualDepthValue <= hVal){
+		    		
+		    		drawLine(lVal, hVal, true);
+		    	
 		    	} else {
 	                
-			        if(depthValue < lVal) {
+			        if(actualDepthValue < lVal) {
 			        	//depthValue = lVal;
-			        	depthValue = hVal;
-			        } else if(depthValue > hVal){
-			        	depthValue = hVal;
+			        	actualDepthValue = hVal;
+			        } else if(actualDepthValue > hVal){
+			        	actualDepthValue = hVal;
 			        }
-		
-			        int c;
+	
+			        drawLine(lVal, hVal, false);
 			        
-			        if(useColors){
-			        	c = ramp.pickColor(depthValue, lVal, hVal);  
-			        } else {
-			        	c = pApplet.color(75);
-			        }
-		        
-			        depthValue = setColorWeightDepthValue(depthValue, c, lVal, hVal);
-		        
-			        float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
-			        float avz = actualVector.z - depthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
-			        
-			        float distance = PApplet.abs(ovz-avz); 
-			        
-			        if(distance < params.get("maxDist") && linesVisibility) { // background lines
-			        	pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
-			        }
-			             
-			      }
-		      
 		    	}
+		    	
+		    }
 		    
 		    oldVector = actualVector;
-		    oldDepthValue = depthValue;
-		    oldBufferValue = actualBufferValue;  
+		    oldDepthValue = actualDepthValue;
+		    oldBufferValue = actualBufferValue;
 		
 		}  
 
 	}
-	private float setColorWeightDepthValue(float depthValue, int couleur, int lVal, int hVal){
-		  
-		float weight = PApplet.map(depthValue, lVal, hVal, 4, 1);
-		weight *= xRatio;
-		depthValue = PApplet.map(depthValue, lVal, hVal, -1, 1);
-      
-		pApplet.stroke(couleur);
-		pApplet.strokeWeight(weight);
+	
+	private void drawLine(int lVal, int hVal, boolean isUser){
+		
+		int c;
+		int blackAndWhiteColor;
+		
+		if(isUser){
+			blackAndWhiteColor = 255;
+		} else {
+			blackAndWhiteColor = 75;
+		}
         
-		return depthValue;
-  
+        if(useColors){
+        	c = ramp.pickColor(actualDepthValue, lVal, hVal);  
+        } else {
+        	c = pApplet.color(blackAndWhiteColor);
+        }
+        
+        
+        float weight = (float) PApplet.map(actualDepthValue, lVal, hVal, 4, 1);
+		//weight *= xRatio;
+        actualDepthValue = PApplet.map(actualDepthValue, lVal, hVal, -1, 1);
+      
+        pApplet.stroke(c);
+		pApplet.strokeWeight(weight);
+
+		float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
+        float avz = actualVector.z - actualDepthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
+        
+        float distance = PApplet.abs(ovz-avz);
+        
+        
+        if(	(isUser && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
+
+        	int alpha = 255;
+        		
+        	/*pApplet.stroke(c, (float) (alpha-75*3));
+    		pApplet.strokeWeight((float) (weight + .5*3));
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+        	
+        	pApplet.stroke(c, (float) (alpha-75*2));
+    		pApplet.strokeWeight((float) (weight + .5*2));
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);*/
+        	
+        	pApplet.stroke(c, (float) (alpha-75));
+    		pApplet.strokeWeight((float) (weight + .5));
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+        	
+        	pApplet.stroke(c, alpha);
+    		pApplet.strokeWeight(weight);
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+			
+		
+		}
+
 	}
 	private void addAndEraseBuffers(){
 		

@@ -24,6 +24,9 @@ public class OBVJ extends PApplet {
 	private int w = 1024;
 	private int h = 768;
 		
+	
+	private int timeToTakeASnapShot;
+	
 	//-------- scenes -----------//
 	
 	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0
@@ -62,11 +65,9 @@ public class OBVJ extends PApplet {
 		}		
 		
 		size(w, h, OPENGL);
-		
+		smooth(8);
 		frameRate(12); //---------------------------------- param -------//
-		
-		size(w, h, OPENGL);
-		
+				
 		context = new SimpleOpenNI(this);
 		
 		if (context.isInit() == false) {
@@ -114,6 +115,10 @@ public class OBVJ extends PApplet {
 			break;
 		}
 
+		timeToTakeASnapShot--;
+		if(timeToTakeASnapShot == 0 || timeToTakeASnapShot == 24 || timeToTakeASnapShot == 24) savePicture();
+		
+	
 	}
 	private void scene0(){
 		
@@ -216,9 +221,13 @@ public class OBVJ extends PApplet {
 		App.getActualScene().menu.resetSliders();		
 	}
 	public void mousePressed() {
-	  savePicture();
+	  //savePicture();
+	  savePictureWithDelay();
 	}
-	public void savePicture() {
+	private void savePictureWithDelay(){
+		timeToTakeASnapShot = 24*4;
+	}
+	private void savePicture() {
 	  Date date = new Date();
 	  String name = "data/images/objv-"+date.getTime()+".png";
 	  save(name);

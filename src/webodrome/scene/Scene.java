@@ -17,6 +17,7 @@ public class Scene {
 	public Menu menu;
 	
 	private int w;
+	@SuppressWarnings("unused")
 	private int h;
 	
 	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){

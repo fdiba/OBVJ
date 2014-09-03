@@ -13,7 +13,7 @@ public class Menu {
 	private Scene scene;
 	
 	private int showTime;
-	private final int SHOWTIME_MAX = 24*2;
+	private final int SHOWTIME_MAX = 23;
 	
 	public Menu(Scene _scene, PVector _loc, Object[][] objects){
 		

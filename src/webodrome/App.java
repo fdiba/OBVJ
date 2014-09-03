@@ -34,7 +34,7 @@ public class App {
 	public static MidiBus midiBus;
 	public static BehringerBCF behringer;
 	
-	public static boolean fscreen = false;
+	public static boolean fscreen = true;
 	
 	public static int width = 640;
 	public static int height = 480;
