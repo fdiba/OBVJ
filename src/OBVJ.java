@@ -100,6 +100,7 @@ public class OBVJ extends PApplet {
 	public void draw(){
 	
 		background(0);
+		//background(0, 77, 119);
 		
 		context.update();
 		//image(context.depthImage(), 0, 0); //test
@@ -137,7 +138,8 @@ public class OBVJ extends PApplet {
 	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
 	                {"ySpace", 10, 150, App.colors[5], 1, 4, 10},
 	                {"depth", -200, 200, App.colors[6], 1, 5, 60},
-	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45} };
+	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
+	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);

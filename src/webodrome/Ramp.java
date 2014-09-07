@@ -10,51 +10,78 @@ public class Ramp{
  
   
   	public Ramp(){
-    
-  		// from red (FF0000) to yellow (FFFF00) to green (00FF00)
-  
-	    if(redToGreen){
-	    	colors = new int[255*2];
-	    } else {
-	    	colors = new int[255*4];
-	    }
-    
-	    int i = 0;
-	  
-	    int r = 255;
-	    int g = 0;
-	    int b = 0;
-	      
-	    boolean isDone = false;
+    	
+  		boolean c = true;
+  		
+  		if(c){
+  			// from red (FF0000) to yellow (FFFF00) to green (00FF00)
+  			useColors();
+  		} else {
+  			useBlackAndWhite();
+  		}
 	    
-	    while(!isDone){
-	        
-	      if(g < 255){
-	        
-	    	  g += step;	        
-	    	  g = PApplet.constrain(g, 0, 255);
-	    	  colors[i] =  (255 << 24) | (r << 16) | (g << 8) | b; // 255 0 0 --> 255 255 0
-	        
-	      } else if(g == 255){ // 255 255 0 to 0 255 0
+  }
+  private void useBlackAndWhite(){
 	  
-	    	  r -= step;
-	    	  r = PApplet.constrain(r, 0, 255);
-	        
-	    	  colors[i] =  (255 << 24) | (r << 16) | (g << 8) | b;
-	        
-	    	  if(r==0 && redToGreen){
-	    		  isDone = true;
-	    	  } else if (r==0 && !redToGreen) {
-	    		  isDone = true;
-	    		  addBlueColors(i);
-	    	  }
-	        
-	      	
-	      }
+	  int threshold = 0;
+	  threshold = 127;
+	  int length = 255 - threshold;
+	  
+	  
+	  colors = new int[length];
+	  int id = 0;
+	  
+	  for (int i=colors.length-1; i>=0; i--){	  
+		  colors[id] = (255 << 24) | (i+threshold << 16) | (i+threshold << 8) | i+threshold;
+		  id++;
+	  }
+	  
+	  /*for (int i=0; i<colors.length; i++){	  
+		  colors[i] = (255 << 24) | (i << 16) | (i << 8) | i;
+	  }*/
+  
+  }
+  private void useColors(){
+	  
+	  if(redToGreen){
+		  colors = new int[255*2];
+	  } else {
+		  colors = new int[255*4];
+	  }
+  
+	    
+	  int i = 0;
+	  int r = 255;
+	  int g = 0;
+	  int b = 0;
 	      
-	      i++;
-
-	    }
+	  boolean isDone = false;
+	    
+	  while(!isDone){
+	        
+		  if(g < 255){
+	        
+			  g += step;	        
+			  g = PApplet.constrain(g, 0, 255);
+			  colors[i] =  (255 << 24) | (r << 16) | (g << 8) | b; // 255 0 0 --> 255 255 0
+	    
+		  } else if(g == 255){ // 255 255 0 to 0 255 0
+	  
+			  r -= step;
+			  r = PApplet.constrain(r, 0, 255);
+	        
+			  colors[i] =  (255 << 24) | (r << 16) | (g << 8) | b;
+	        
+			  if(r==0 && redToGreen){
+				  isDone = true;
+			  } else if (r==0 && !redToGreen) {
+				  isDone = true;
+				  addBlueColors(i);
+			  }
+		  }
+	    	
+		  i++;	 	
+	  }	  	  
   }
   private void addBlueColors(int _id){ // 0 255 0 to 0 0 255
     
