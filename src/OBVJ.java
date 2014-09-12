@@ -14,6 +14,7 @@ import processing.core.*;
 import themidibus.MidiBus;
 import webodrome.App;
 import webodrome.ctrl.BehringerBCF;
+import webodrome.ctrl.PFrame;
 import webodrome.scene.DrawPointsAndLinesScene;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,7 @@ public class OBVJ extends PApplet {
 		
 	
 	private int timeToTakeASnapShot;
-	
+		
 	//-------- scenes -----------//
 	
 	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0
@@ -65,8 +66,12 @@ public class OBVJ extends PApplet {
 		}		
 		
 		size(w, h, OPENGL);
+		//size(w, h, P3D);
 		smooth(8);
-		frameRate(12); //---------------------------------- param -------//
+		frameRate(15); //---------------------------------- param -------//
+		
+		PFrame pFrame = new PFrame(200, 260);
+		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
 		
@@ -80,9 +85,10 @@ public class OBVJ extends PApplet {
 			context.enableDepth();
 			
 			App.minim = new Minim(this);
-			App.player = App.minim.loadFile("02-Hourglass.mp3");
+			//App.player = App.minim.loadFile("02-Hourglass.mp3");
+			App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
 			App.player.loop();			
-			App.player.mute();
+			//App.player.mute();
 			
 			//--- behringer -----------//		  
 			if(App.BCF2000){
@@ -150,8 +156,6 @@ public class OBVJ extends PApplet {
 		
 		drawPointsAndLinesScene.update(context);
 		
-		
-		
 		pushMatrix();
 		  
 		translateAndRotate();
@@ -160,7 +164,7 @@ public class OBVJ extends PApplet {
 		  
 		popMatrix();
 		
-		App.getActualScene().displayMenu();
+		//App.getActualScene().displayMenu();
 				
 	}
 	void translateAndRotate(){
@@ -190,7 +194,9 @@ public class OBVJ extends PApplet {
 			DrawPointsAndLinesScene.multipleBuffers = !DrawPointsAndLinesScene.multipleBuffers;
 		} else if (key == 'c') {
 			DrawPointsAndLinesScene.useColors = !DrawPointsAndLinesScene.useColors;
-		}
+		} else if (key == 's'){
+		    savePicture();
+		} 
 	}
 	private void toggleValue() {
 		  App.switchValue = !App.switchValue;
@@ -219,13 +225,14 @@ public class OBVJ extends PApplet {
 	   
 	}
 	//--------------- mouse ---------------------//
-	public void mouseReleased(){
+	/*public void mouseReleased(){
 		App.getActualScene().menu.resetSliders();		
-	}
+	}*/
 	public void mousePressed() {
 	  //savePicture();
-	  savePictureWithDelay();
+	  //savePictureWithDelay();
 	}
+	@SuppressWarnings("unused")
 	private void savePictureWithDelay(){
 		timeToTakeASnapShot = 24*4;
 	}

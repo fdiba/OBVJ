@@ -5,9 +5,12 @@ import ddf.minim.Minim;
 import themidibus.MidiBus;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.Menu;
+import webodrome.ctrl.SecondApplet;
 import webodrome.scene.Scene;
 
 public class App {
+	
+	public static SecondApplet secondApplet;
 	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 1200;

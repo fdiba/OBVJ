@@ -21,5 +21,10 @@ public class SliderController {
 		p.fill(255);
 		p.rect(location.x, location.y, WIDTH, WIDTH);
 	}
-
+	public void display2(PApplet p) {
+		p.rectMode(PApplet.CENTER);
+		p.noStroke();
+		p.fill(255);
+		p.rect(location.x, location.y, WIDTH, WIDTH);
+	}
 }

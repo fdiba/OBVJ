@@ -5,8 +5,8 @@ import java.util.Map;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import webodrome.App;
 import webodrome.ctrl.Menu;
-
 
 public class Scene {
 	
@@ -16,6 +16,7 @@ public class Scene {
 	public Map<String, Integer> params;
 	public Menu menu;
 	
+	@SuppressWarnings("unused")
 	private int w;
 	@SuppressWarnings("unused")
 	private int h;
@@ -34,12 +35,16 @@ public class Scene {
 		menu = null;
 	}
 	protected void createMenu(Object[][] objects){	
-		menu = new Menu(this, new PVector(w - 190, 50), objects);
+		menu = new Menu(this, new PVector(40, 30), objects);
 	}
 	public void update(){
-		if(menu!=null)menu.update(pApplet);	
+		//if(menu!=null)menu.update(pApplet);
+		if(menu!=null)menu.update(App.secondApplet);	
 	}
 	public void displayMenu(){
 		menu.display(pApplet);
+	}
+	public void displayMenu2(){
+		menu.display2(App.secondApplet);
 	}
 }

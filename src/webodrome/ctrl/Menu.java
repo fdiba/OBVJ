@@ -45,6 +45,17 @@ public class Menu {
 	public void reveal(){
 		showTime = SHOWTIME_MAX;    
 	}
+	public void display2(SecondApplet p){
+		
+		float mx, my, mwidth, mheight;
+	    mx = location.x-10;
+	    my = location.y-10;
+	    mwidth = 120;
+	    mheight = 15*sliders.length - 35;
+		
+		drawBorders(p, mx, my, mwidth, mheight);
+		for (Slider s: sliders) s.display(p);
+	}
 	public void display(PApplet p){
 
 	    float mx, my, mwidth, mheight;
@@ -72,16 +83,12 @@ public class Menu {
 		p.rect(mx, my, mwidth,  15*(sliders.length+1));  
 	}
 	public void resetSliders(){
-	
 		for (Slider s: sliders) s.reset();
-	  
 	}
 	public void update(PApplet p) {
 		
 		if(showTime>0)showTime--;
-		
-		
-		
+
 		if(p.mousePressed){
 			PVector mousePosition = new PVector(p.mouseX, p.mouseY);
 			for (Slider s: sliders) s.update(mousePosition);

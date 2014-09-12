@@ -94,13 +94,9 @@ public class Slider {
 	  
 	}
 	private void editValue(){
-	    
 	    float value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
-	    
 	    scene.params.put(param, (int) value);
-	    
-	    PApplet.println(param + ": " + value);
-	      
+	    //PApplet.println(param + ": " + value);
 	}
 	public void display(PApplet p) {
 		p.rectMode(PApplet.CORNER);
@@ -110,5 +106,4 @@ public class Slider {
 	    sliderCtrl.display(p);
 		
 	}
-	
 }
