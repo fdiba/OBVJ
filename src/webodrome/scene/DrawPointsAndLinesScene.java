@@ -17,7 +17,7 @@ public class DrawPointsAndLinesScene extends Scene {
 	private int[] depthValues;
 	
 	public static boolean linesVisibility = true;
-	public static boolean multipleBuffers;
+	public static boolean multipleBuffers = true;
 	public static boolean useColors;
 	
 	private int w;

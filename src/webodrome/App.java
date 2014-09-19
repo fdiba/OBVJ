@@ -13,8 +13,8 @@ public class App {
 	public static SecondApplet secondApplet;
 	
 	//-------- depthMapControl ----------//
-	public static int lowestValue = 1200;
-	public static int highestValue = 2300;
+	public static int lowestValue = 1150;
+	public static int highestValue = 1800;
 	public static boolean switchValue;
 	
 	//colors : red, green, blue green, orange, dark blue

@@ -40,7 +40,7 @@ public class Slider {
 	    color = _color;
 		
 	}
-	protected void initValue(float val){
+	public void initValue(float val){
 	    
 		float value = PApplet.map(val, lowValue, maxValue, location.x, location.x+WIDTH);
 		sliderCtrl.setXLocation(value);
@@ -96,7 +96,7 @@ public class Slider {
 	private void editValue(){
 	    float value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
 	    scene.params.put(param, (int) value);
-	    //PApplet.println(param + ": " + value);
+	    PApplet.println(param + ": " + value);
 	}
 	public void display(PApplet p) {
 		p.rectMode(PApplet.CORNER);
