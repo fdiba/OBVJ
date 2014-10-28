@@ -7,13 +7,12 @@ import webodrome.scene.DrawPointsAndLinesScene;
 @SuppressWarnings("serial")
 public class SecondApplet extends PApplet {
 	
-	//create main ?
-	
 	public SecondApplet() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void setup(){
+		
+		frameRate(12);
 		
 	}
 	public void draw(){
@@ -21,8 +20,16 @@ public class SecondApplet extends PApplet {
 		background(0x000000);
 
 		if(App.getActualScene() != null){
+			
 			App.getActualScene().displayMenu2();
+			if(App.getSceneId() == 2) displayMiniature();
+		
 		}
+		
+	}
+	private void displayMiniature(){
+		
+		image(DrawPointsAndLinesScene.blobImg, 200, 0);
 		
 	}
 	//--------------- keys ---------------------//

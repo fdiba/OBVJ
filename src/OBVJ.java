@@ -12,7 +12,8 @@ import javax.sound.midi.MidiMessage;
 import ddf.minim.Minim;
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.*;
-import themidibus.MidiBus;import webodrome.App;
+import themidibus.MidiBus;
+import webodrome.App;
 
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
@@ -72,7 +73,7 @@ public class OBVJ extends PApplet {
 		
 		noCursor();
 		
-		PFrame pFrame = new PFrame(200, 260);
+		PFrame pFrame = new PFrame(200+640/2, 260);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -207,6 +208,18 @@ public class OBVJ extends PApplet {
 		
 	}
 	private void scene2(){
+		
+		//-------------- draw ------------------//
+
+		drawPointsAndLinesScene.update2(context);
+		
+		pushMatrix();
+		  
+		translateAndRotate();
+		  
+		drawPointsAndLinesScene.display2();
+		  
+		popMatrix();
 		
 	}
 	private void translateAndRotate(){
