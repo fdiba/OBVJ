@@ -17,7 +17,7 @@ public class DrawPointsAndLinesScene extends Scene {
 	private int[] depthValues;
 	
 	public static boolean linesVisibility = true;
-	public static boolean multipleBuffers = true;
+	public static boolean multipleBuffers = false;
 	public static boolean useColors;
 	
 	private int w;
@@ -61,6 +61,14 @@ public class DrawPointsAndLinesScene extends Scene {
 		          		"use colors: press c");
 				
 	}
+	private void setVectors(){
+		pvectors = new PVector[w*h]; 
+		for (int i=0; i<h; i++){			
+			for(int j=0; j<w; j++){
+				pvectors[j+i*w] = new PVector(j, i, 0);
+		    }
+		} 
+	}
 	public void update(SimpleOpenNI context){
 		
 		super.update();
@@ -73,23 +81,12 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 	}
 	public void display(){
-		drawVectors(params.get("ySpace"));
-	}
-	private void setVectors(){
-
-		pvectors = new PVector[w*h]; 
-		  
-		for (int i=0; i<h; i++){			
-			for(int j=0; j<w; j++){
-				pvectors[j+i*w] = new PVector(j, i, 0);
-		    }
-		} 
 		
-	}
-	private void drawVectors(int _ySpace){
-	    
-		for (int i=10; i<h; i+= _ySpace){
-	    
+		int ySpace = params.get("ySpace");
+		
+		
+		for (int i=10; i<h; i+= ySpace){
+		    
 			oldVector = null;
 			oldDepthValue = 0;
 			oldBufferValue = 0;
@@ -111,8 +108,39 @@ public class DrawPointsAndLinesScene extends Scene {
 		    lineNumber++;    
 		  
 		}
+		
 	}
-	private void editPointsPosition(int i, FloatList actualBufferValues, int lineNumber){
+	public void display1(){
+		
+		int ySpace = params.get("ySpace");
+		
+		
+		for (int i=10; i<h; i+= ySpace){
+		    
+			oldVector = null;
+			oldDepthValue = 0;
+			oldBufferValue = 0;
+	    
+			FloatList actualBufferValues;
+	    
+		    if(multipleBuffers){ //display different lines
+		    	actualBufferValues = buffers.get(lineNumber);
+		    } else { //display the same line
+		    	actualBufferValues = buffers.get(buffers.size()-1); 
+		    }
+		    
+		    if(actualBufferValues.size() > 0) {
+		    	
+		    	editPointsPosition1(i, actualBufferValues, lineNumber);
+		    
+		    }
+		    
+		    lineNumber++;    
+		  
+		}
+		
+	}
+	private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNumber){
 		
 		int hVal = App.highestValue;
 		int lVal = App.lowestValue;
@@ -125,11 +153,11 @@ public class DrawPointsAndLinesScene extends Scene {
 	    	    
 		    if(oldVector != null){
 	            
-		    	if(actualDepthValue >= lVal && actualDepthValue <= hVal){
+		    	if(actualDepthValue >= lVal && actualDepthValue <= hVal){ //foreground
 		    		
-		    		drawLine(lVal, hVal, true, lineNumber);
+		    		drawPoint(lVal, hVal, true, lineNumber);
 		    	
-		    	} else {
+		    	} else { //background
 	                
 			        if(actualDepthValue < lVal) {
 			        	//depthValue = lVal;
@@ -138,7 +166,7 @@ public class DrawPointsAndLinesScene extends Scene {
 			        	actualDepthValue = hVal;
 			        }
 	
-			        drawLine(lVal, hVal, false, lineNumber);
+			        drawPoint(lVal, hVal, false, lineNumber);
 			        
 		    	}
 		    	
@@ -151,13 +179,12 @@ public class DrawPointsAndLinesScene extends Scene {
 		}  
 
 	}
-	
-	private void drawLine(int lVal, int hVal, boolean isUser, int lineNumber){
+	private void drawPoint(int lVal, int hVal, boolean isInFront, int lineNumber){
 		
 		int c;
 		int blackAndWhiteColor;
 		
-		if(isUser){
+		if(isInFront){
 			blackAndWhiteColor = 255;
 		} else {
 			blackAndWhiteColor = 75;
@@ -182,12 +209,95 @@ public class DrawPointsAndLinesScene extends Scene {
         
         float distance = PApplet.abs(ovz-avz);
              
-        if(	(isUser && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
+        if(	(isInFront && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
         	
-        	float test = params.get("ySpace") * lineNumber;
+        	float yPos = params.get("ySpace") * lineNumber;
+        	float alpha = PApplet.map(yPos, 0, h, params.get("alpha"), 255);
+        				
+			
+        	pApplet.stroke(c, alpha);
+    		pApplet.strokeWeight(weight);
+        	pApplet.point(actualVector.x*xRatio, actualVector.y*yRatio, avz);
+			
+		
+		}
 
-        	float alpha = PApplet.map(test, 0, h, params.get("alpha"), 255);
+	}
+	private void editPointsPosition(int i, FloatList actualBufferValues, int lineNumber){
+		
+		int hVal = App.highestValue;
+		int lVal = App.lowestValue;
+	    
+		for(int j=0; j<w; j+=10){
+      		    
+			actualVector = pvectors[j+i*w];
+		    actualBufferValue = actualBufferValues.get(j);
+		    actualDepthValue = depthValues[j+i*w];
+	    	    
+		    if(oldVector != null){
+	            
+		    	if(actualDepthValue >= lVal && actualDepthValue <= hVal){ //foreground
+		    		
+		    		drawLine(lVal, hVal, true, lineNumber);
+		    	
+		    	} else { //background
+	                
+			        if(actualDepthValue < lVal) {
+			        	//depthValue = lVal;
+			        	actualDepthValue = hVal;
+			        } else if(actualDepthValue > hVal){
+			        	actualDepthValue = hVal;
+			        }
+	
+			        drawLine(lVal, hVal, false, lineNumber);
+			        
+		    	}
+		    	
+		    }
+		    
+		    oldVector = actualVector;
+		    oldDepthValue = actualDepthValue;
+		    oldBufferValue = actualBufferValue;
+		
+		}  
+
+	}
+	
+	private void drawLine(int lVal, int hVal, boolean isInFront, int lineNumber){
+		
+		int c;
+		int blackAndWhiteColor;
+		
+		if(isInFront){
+			blackAndWhiteColor = 255;
+		} else {
+			blackAndWhiteColor = 75;
+		}
+        
+        if(useColors){
+        	c = ramp.pickColor(actualDepthValue, lVal, hVal);  
+        } else {
+        	c = pApplet.color(blackAndWhiteColor);
+        }
+        
+        
+        float weight = (float) PApplet.map(actualDepthValue, lVal, hVal, 4, 1);
+		//weight *= xRatio;
+        actualDepthValue = PApplet.map(actualDepthValue, lVal, hVal, -1, 1);
+      
+        pApplet.stroke(c);
+		pApplet.strokeWeight(weight);
+
+		float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
+        float avz = actualVector.z - actualDepthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
+        
+        float distance = PApplet.abs(ovz-avz);
+             
+        if(	(isInFront && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
         	
+        	float yPos = params.get("ySpace") * lineNumber;
+
+        	float alpha = PApplet.map(yPos, 0, h, params.get("alpha"), 255);     	
         	
         	//PApplet.println(params.get("ySpace")+ " " + lineNumber + " "+ test+" "+alpha);
         	//int alpha = lineNumber;
@@ -210,8 +320,7 @@ public class DrawPointsAndLinesScene extends Scene {
         	
         	pApplet.stroke(c, alpha);
     		pApplet.strokeWeight(weight);
-			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
-			
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);		
 		
 		}
 

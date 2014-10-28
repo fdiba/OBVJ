@@ -1,4 +1,5 @@
 
+
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -11,8 +12,8 @@ import javax.sound.midi.MidiMessage;
 import ddf.minim.Minim;
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.*;
-import themidibus.MidiBus;
-import webodrome.App;
+import themidibus.MidiBus;import webodrome.App;
+
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
 import webodrome.scene.DrawPointsAndLinesScene;
@@ -54,11 +55,10 @@ public class OBVJ extends PApplet {
 	}
 	public void init() {
 		frame.removeNotify();
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		super.init();
 	}
-	public void setup(){
-		
+	public void setup(){		
 		
 		if(App.fscreen){
 			w = monitor.width;
@@ -91,7 +91,7 @@ public class OBVJ extends PApplet {
 			App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
 			App.player.play();	
 			//App.player.loop();			
-			//App.player.mute();
+			App.player.mute();
 			
 			//--- behringer -----------//		  
 			if(App.BCF2000){
@@ -120,6 +120,12 @@ public class OBVJ extends PApplet {
 		case 0:
 			scene0(); //points and lines
 			break;
+		case 1:
+			scene1();
+			break;
+		case 2:
+			scene2();
+			break;
 		default:
 			scene0();
 			break;
@@ -128,8 +134,7 @@ public class OBVJ extends PApplet {
 		//timeToTakeASnapShot--;
 		//if(timeToTakeASnapShot == 0 || timeToTakeASnapShot == 24 || timeToTakeASnapShot == 24) savePicture();
 		
-		//drawCuePoints();
-		
+		//drawCuePoints();		
 	
 	}
 	@SuppressWarnings("unused")
@@ -147,23 +152,7 @@ public class OBVJ extends PApplet {
 		
 		}
 	}
-	private void editParams(int key, String[] parameters, int[] values){
-		
-		switch (key) {
-		case 0:
-			
-			for (int i=0; i<parameters.length; i++){
-				drawPointsAndLinesScene.params.put(parameters[i], values[i]);
-				App.actualMenu.sliders[i].initValue(values[i]);
-			}
-
-			break;
-
-		default:
-			break;
-		}
-		
-	}
+	//---------- scenes ----------------//
 	private void scene0(){
 		
 		//-------------- init ------------------//
@@ -173,16 +162,16 @@ public class OBVJ extends PApplet {
 			App.oldSceneId = sceneId;
 		
 			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, 0},
+	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
 	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
 	                {"ySpace", 10, 150, App.colors[5], 1, 4, 10},
-	                {"depth", -200, 200, App.colors[6], 1, 5, 60},
-	                {"maxDist", 1, 250, App.colors[7], 1, 6, 1},
-	                {"alpha", -255, 255, App.colors[3], 1, 7, 102} };
+	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
+	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
+	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);
@@ -200,11 +189,27 @@ public class OBVJ extends PApplet {
 		drawPointsAndLinesScene.display();
 		  
 		popMatrix();
-		
-		//App.getActualScene().displayMenu();
-				
+						
 	}
-	void translateAndRotate(){
+	private void scene1(){
+		
+		//-------------- draw ------------------//
+
+		drawPointsAndLinesScene.update(context);
+		
+		pushMatrix();
+		  
+		translateAndRotate();
+		  
+		drawPointsAndLinesScene.display1();
+		  
+		popMatrix();
+		
+	}
+	private void scene2(){
+		
+	}
+	private void translateAndRotate(){
 		
 		Map<String, Integer> params = App.getActualScene().params;
 		  
@@ -220,135 +225,17 @@ public class OBVJ extends PApplet {
 	//--------------- keys ---------------------//
 	public void keyPressed() {
 				
-		if (key == 'l') {
-			toggleValue();
-		} else if (keyCode == UP) {
-			setSelectedValue(+50);
-		} else if (keyCode == DOWN) {
-			setSelectedValue(-50);
-		} else if (key == 'v') {
-			DrawPointsAndLinesScene.linesVisibility = !DrawPointsAndLinesScene.linesVisibility;
-		} else if (key == 'b') {
-			DrawPointsAndLinesScene.multipleBuffers = !DrawPointsAndLinesScene.multipleBuffers;
-		} else if (key == 'c') {
-			DrawPointsAndLinesScene.useColors = !DrawPointsAndLinesScene.useColors;
-		} else if (key == 's'){
+	
+		if (key == 's'){
+			//TO DO move it
 		    savePicture();			
-		} else if (key == '0'){
-		
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-								   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -100, -200, 45, 0, 0, 25, 10, 112, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = false;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-		
-		} else if (key == '1'){
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, 0, 20, 0, 0, 0, 25, 10, 120, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-			
-		} else if (key == '2'){
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, 0, 20, 0, 0, 0, 60, 10, 172, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = true;
-		} else if (key == '3'){
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, 0, 20, 0, 0, 0, 140, 10, 60, 1, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-			
-		} else if (key == '4') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -50, 20, -290, 0, 90, 70, 60, 60, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-			
-		} else if (key == '5') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -50, 20, -290, 0, 90, 70, 10, 60, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-			
-		} else if (key == '6') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -50, 50, -100, 0, 90, 88, 10, -72, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = true;
-			
-		} else if (key == '7') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -50, -50, -300, -180, 0, 60, 26, -140, 45, 127};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = true;
-			
-		} else if (key == '8') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, -200, -50, -300, -180, 0, 60, 10, -200, 45, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = false;
-			
-		} else if (key == '9') {
-			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-			int[] values = {0, 0, 50, -360, -180, -360, 200, 10, -200, 120, 255};
-			editParams(0, parameters, values);
-			
-			DrawPointsAndLinesScene.useColors = true;
-			DrawPointsAndLinesScene.multipleBuffers = true;
-			
-		}
+		} 
 	}
-	private void toggleValue() {
-		  App.switchValue = !App.switchValue;
-	}
-	private void setSelectedValue(int value) {    
-
-		if (App.switchValue) {
-			App.lowestValue += value;
-			App.lowestValue = constrain(App.lowestValue, 0, App.highestValue-100);
-			println(App.lowestValue);
-		} else {
-			App.highestValue += value;
-			App.highestValue = constrain(App.highestValue, App.lowestValue+100, 7000);
-			println(App.highestValue);
-		}
+	
+	public void savePicture() {
+		Date date = new Date();
+		String name = "data/images/objv-"+date.getTime()+".png";
+		save(name);	
 	}
 	//------------- MIDI ------------------//
 	public void midiMessage(MidiMessage message, long timestamp, String bus_name) {
@@ -362,9 +249,6 @@ public class OBVJ extends PApplet {
 	   
 	}
 	//--------------- mouse ---------------------//
-	/*public void mouseReleased(){
-		App.getActualScene().menu.resetSliders();		
-	}*/
 	public void mousePressed() {
 	  //savePicture();
 	  //savePictureWithDelay();
@@ -373,10 +257,6 @@ public class OBVJ extends PApplet {
 	private void savePictureWithDelay(){
 		timeToTakeASnapShot = 24*4;
 	}
-	private void savePicture() {
-	  Date date = new Date();
-	  String name = "data/images/objv-"+date.getTime()+".png";
-	  save(name);
-	}
+	
 
 }

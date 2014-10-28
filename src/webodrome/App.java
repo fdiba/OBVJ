@@ -51,7 +51,7 @@ public class App {
 	public static int getSceneId(){
 		return sceneId;
 	}
-	public static void setSceneId(int _sceneId, String _mode) {
+	public static void setSceneId(int _sceneId) {
 		sceneId = _sceneId;
 	}
 	public static Scene getActualScene() {
