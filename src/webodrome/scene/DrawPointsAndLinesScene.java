@@ -8,6 +8,7 @@ import blobDetection.EdgeVertex;
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PShape;
 import processing.core.PVector;
 import processing.data.FloatList;
 import webodrome.App;
@@ -41,8 +42,11 @@ public class DrawPointsAndLinesScene extends Scene {
 	//-----------//
 	public static PImage blobImg;
 	private BlobDetection blobDetection;
-	private ArrayList<ArrayList<PVector>> contours;
 	private PImage img;
+	
+	//----------//
+	
+	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
 	
 	public DrawPointsAndLinesScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -71,6 +75,8 @@ public class DrawPointsAndLinesScene extends Scene {
 		blobDetection = new BlobDetection(blobImg.width, blobImg.height);
 		blobDetection.setPosDiscrimination(true); //find bright areas
 		blobDetection.setThreshold(0.2f); //between 0.0f and 1.0f
+		
+		megaContours = new ArrayList<ArrayList<ArrayList<PVector>>>();
 		  		  
 		PApplet.println("----------------------------------" + "\n" +
 		                "depth limits: press l + UP OR DOWN" + "\n" +
@@ -130,9 +136,21 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 		blobDetection.computeBlobs(blobImg.pixels);
 		
-		createContours();
+		ArrayList<ArrayList<PVector>> contours = createContours();
+		
+		addContoursToMContours(contours);
 		
 	}
+	private void addContoursToMContours(ArrayList<ArrayList<PVector>> contours){
+	
+		megaContours.add(contours);
+		
+		if(megaContours.size()>10){
+			megaContours.remove(0);
+		}
+		
+	}
+	
 	private void createBlackBorders(){
 		  
 	
@@ -175,12 +193,12 @@ public class DrawPointsAndLinesScene extends Scene {
 		blobImg.updatePixels();
 	  
 	}
-	private void createContours() {
+	private ArrayList<ArrayList<PVector>> createContours() {
 		
 		Blob blob;
 		EdgeVertex eA, eB;
 	  
-		contours = new ArrayList<ArrayList<PVector>>();
+		ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>();
 	  
 	  
 		for(int n=0; n<blobDetection.getBlobNb(); n++){
@@ -219,6 +237,8 @@ public class DrawPointsAndLinesScene extends Scene {
 			}
 	    
 		}
+		
+		return contours;
 		
 	}
 	private void drawDepthImg(SimpleOpenNI context, int[] _depthValues, int mapWidth, int mapHeight, int threshold){
@@ -313,31 +333,47 @@ public class DrawPointsAndLinesScene extends Scene {
 	public void display2(){
 		
 		int c;
-		
+				
 		if(useColors){
         	c = pApplet.color(0, 255, 0);  
         } else {
-        	c = pApplet.color(255);
+        	c = pApplet.color(0);
         }
 		
-		pApplet.strokeWeight(2);
-	    pApplet.stroke(c);
-	    pApplet.noFill();
+		pApplet.strokeWeight(1);
+			    
+	    for(int m=0; m<megaContours.size(); m++){			
+	
+	    	int nc = pApplet.color(pApplet.random(255), pApplet.random(255), pApplet.random(255));
+	    	
+	    	ArrayList<ArrayList<PVector>> actualContours = megaContours.get(m);
+	    
+			for(int i=0; i<actualContours.size(); i++){
+			    
+			    ArrayList<PVector> contour = actualContours.get(i);
+
+			    PShape shape;  // The PShape object
+			    
+			    shape = pApplet.createShape();
+			    shape.beginShape();
+			    
+			    shape.fill(nc);
+			    shape.noStroke();
+			    
+			    //shape.noFill();
+			    shape.stroke(0);
+			    			    
+			    for(int j=0; j<contour.size(); j++){
+			      PVector v = contour.get(j);
+			      shape.vertex(v.x*xRatio, v.y*yRatio, m);
+			      	
+			    }
+			    
+			    shape.endShape(PApplet.CLOSE);
+			    
+			    pApplet.shape(shape);
+			}
 		
-		for(int i=0; i<contours.size(); i++){
-		    
-		    ArrayList<PVector> contour = contours.get(i);
-		    
-		    pApplet.beginShape();
-		        
-		    for(int j=0; j<contour.size(); j++){
-		      
-		      PVector v = contour.get(j);
-		      pApplet.vertex(v.x*xRatio, v.y*yRatio);
-		      	
-		    }
-		    
-		    pApplet.endShape(PApplet.CLOSE);
 		}
 		
 	}

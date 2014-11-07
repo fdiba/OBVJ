@@ -24,8 +24,8 @@ public class OBVJ extends PApplet {
 	
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
-	private int w = 1024;
-	private int h = 768;
+	private int w = 640; //1024
+	private int h = 480; //768
 	
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
@@ -56,7 +56,7 @@ public class OBVJ extends PApplet {
 	}
 	public void init() {
 		frame.removeNotify();
-		//frame.setUndecorated(true);
+		frame.setUndecorated(true);
 		super.init();
 	}
 	public void setup(){		
@@ -71,7 +71,7 @@ public class OBVJ extends PApplet {
 		smooth(8);
 		frameRate(15); //---------------------------------- param -------//
 		
-		noCursor();
+		//noCursor();
 		
 		PFrame pFrame = new PFrame(200+640/2, 260);
 		pFrame.setTitle("ctrl board");
@@ -109,7 +109,7 @@ public class OBVJ extends PApplet {
 	}
 	public void draw(){
 	
-		background(0);
+		
 		//background(0, 77, 119);
 		
 		context.update();
@@ -158,6 +158,8 @@ public class OBVJ extends PApplet {
 		
 		//-------------- init ------------------//
 		
+		background(0);
+		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			App.oldSceneId = sceneId;
@@ -194,6 +196,15 @@ public class OBVJ extends PApplet {
 	}
 	private void scene1(){
 		
+		background(0);
+		
+		int sceneId = App.getSceneId();
+		if (sceneId != App.oldSceneId) {
+			App.oldSceneId = sceneId;
+			background(255);
+		}
+	
+		
 		//-------------- draw ------------------//
 
 		drawPointsAndLinesScene.update(context);
@@ -208,6 +219,14 @@ public class OBVJ extends PApplet {
 		
 	}
 	private void scene2(){
+		
+		background(255);
+				
+		int sceneId = App.getSceneId();
+		if (sceneId != App.oldSceneId) {
+			App.oldSceneId = sceneId;
+			
+		}
 		
 		//-------------- draw ------------------//
 
