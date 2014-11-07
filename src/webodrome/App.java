@@ -14,7 +14,7 @@ public class App {
 	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 1150;
-	public static int highestValue = 2300;
+	public static int highestValue = 7000;
 	public static boolean switchValue;
 	
 	//colors : red, green, blue green, orange, dark blue
@@ -32,6 +32,8 @@ public class App {
 	public static Minim minim;
 	public static AudioPlayer player;
 	
+	public static boolean useColors;
+	
 	//--- behringer ----------//
 	public final static boolean BCF2000 = false;
 	public static MidiBus midiBus;
@@ -39,10 +41,7 @@ public class App {
 	
 	public static boolean fscreen = false;
 	
-	public static int width = 640;
-	public static int height = 480;
-	
-	private static int sceneId = 0;
+	private static int sceneId = 2;
 	public static int oldSceneId = 999;
 	
 	public App() {

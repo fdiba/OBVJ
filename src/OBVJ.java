@@ -14,25 +14,32 @@ import SimpleOpenNI.SimpleOpenNI;
 import processing.core.*;
 import themidibus.MidiBus;
 import webodrome.App;
-
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
 import webodrome.scene.DrawPointsAndLinesScene;
+import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
 public class OBVJ extends PApplet {
 	
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
-	private int w = 640; //1024
-	private int h = 480; //768
+	
+	/*private int w = 1024;
+	private int h = 768;*/
+	
+	private int w = 640;
+	private int h = 480;
 	
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
 		
 	//-------- scenes -----------//
 	
-	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0
+	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0 et 1
+	private ShapeScene shapeScene; //scene 2
+	
+	//---------------------------//
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -156,9 +163,9 @@ public class OBVJ extends PApplet {
 	//---------- scenes ----------------//
 	private void scene0(){
 		
-		//-------------- init ------------------//
-		
 		background(0);
+		
+		//-------------- init ------------------//
 		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
@@ -198,12 +205,28 @@ public class OBVJ extends PApplet {
 		
 		background(0);
 		
+		//-------------- init ------------------//
+		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			App.oldSceneId = sceneId;
-			background(255);
+		
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
+	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
+	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
+	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
+	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
+	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
+	                {"ySpace", 10, 150, App.colors[5], 1, 4, 10},
+	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
+	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
+	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
+			
+			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
+			App.setActualScene(drawPointsAndLinesScene);
+					
 		}
-	
 		
 		//-------------- draw ------------------//
 
@@ -220,23 +243,40 @@ public class OBVJ extends PApplet {
 	}
 	private void scene2(){
 		
-		background(255);
+		background(0);
 				
+		//-------------- init ------------------//
+		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			App.oldSceneId = sceneId;
+		
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
+	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
+	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
+	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
+	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
+	                {"alpha", 0, 255, App.colors[4], 1, 3, 0},
+	                {"blurRadius", 1, 30, App.colors[5], 1, 4, 2},
+	                {"contours", 1, 20, App.colors[6], 1, 5, 10}};
 			
+			shapeScene = new ShapeScene(this, objects, w, h);
+			App.setActualScene(shapeScene);
+					
 		}
 		
 		//-------------- draw ------------------//
 
-		drawPointsAndLinesScene.update2(context);
+		//drawPointsAndLinesScene.update2(context);
+		shapeScene.update(context);
 		
 		pushMatrix();
 		  
 		translateAndRotate();
 		  
-		drawPointsAndLinesScene.display2();
+		//drawPointsAndLinesScene.display2();
+		shapeScene.display();
 		  
 		popMatrix();
 		

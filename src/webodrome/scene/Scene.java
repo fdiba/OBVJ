@@ -3,6 +3,7 @@ package webodrome.scene;
 import java.util.HashMap;
 import java.util.Map;
 
+import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;
@@ -16,10 +17,14 @@ public class Scene {
 	public Map<String, Integer> params;
 	public Menu menu;
 	
-	@SuppressWarnings("unused")
-	private int w;
-	@SuppressWarnings("unused")
-	private int h;
+	protected int w, h;
+	protected int[] depthValues;
+	
+	protected int imgWidth;
+	protected int imgHeight;
+	
+	protected float xRatio;
+	protected float yRatio; 
 	
 	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){
 		pApplet = _pApplet;
@@ -27,6 +32,12 @@ public class Scene {
 		
 		w = _w;
 		h = _h;
+		
+		imgWidth = 640;
+		imgHeight = 480;
+			
+		xRatio = (float) w/imgWidth;
+		yRatio = (float) h/imgHeight;
 		
 		createMenu(objects);
 	}
@@ -39,7 +50,13 @@ public class Scene {
 	}
 	public void update(){
 		//if(menu!=null)menu.update(pApplet);
-		if(menu!=null)menu.update(App.secondApplet);	
+		if(menu!=null)menu.update(App.secondApplet);
+	}
+	public void update(SimpleOpenNI context){
+		//if(menu!=null)menu.update(pApplet);
+		if(menu!=null)menu.update(App.secondApplet);
+		
+		depthValues = context.depthMap();
 	}
 	public void displayMenu(){
 		menu.display(pApplet);
