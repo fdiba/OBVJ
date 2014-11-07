@@ -36,7 +36,7 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 		setVectors();
 		
-		ramp = new Ramp();
+		ramp = new Ramp(true, true);
 		
 		buffers = new ArrayList<FloatList>();
 		//lineNumber = 0;

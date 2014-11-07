@@ -159,6 +159,10 @@ public class SecondApplet extends PApplet {
 			
 		} else if(App.getSceneId() == 2){
 			
+			if (key == 'f'){		
+				ShapeScene.useStroke = !ShapeScene.useStroke;
+			}
+			
 		}
 	}
 	private void nextScene(){	

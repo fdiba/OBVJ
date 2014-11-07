@@ -4,16 +4,16 @@ import processing.core.PApplet;
 
 public class Ramp{
 	  	  
-	private int[] colors;
-	private boolean redToGreen = true;
+	public int[] colors;
+	private boolean redToGreen;
   	private int step = 1;
  
   
-  	public Ramp(){
-    	
-  		boolean c = true;
+  	public Ramp(boolean _useColors, boolean _redToGreen){
   		
-  		if(c){
+  		redToGreen = _redToGreen;
+    	  		
+  		if(_useColors){
   			// from red (FF0000) to yellow (FFFF00) to green (00FF00)
   			useColors();
   		} else {

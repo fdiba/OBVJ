@@ -11,6 +11,7 @@ import processing.core.PImage;
 import processing.core.PShape;
 import processing.core.PVector;
 import webodrome.App;
+import webodrome.Ramp;
 
 public class ShapeScene extends Scene {
 	
@@ -18,9 +19,14 @@ public class ShapeScene extends Scene {
 	private BlobDetection blobDetection;
 	private PImage img;
 	
-	
+	public static boolean useStroke = true;
 	
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
+	private ArrayList<Integer> colors;
+	
+	private Ramp ramp;
+	private int rampId;
+	private int rampValue;
 
 	public ShapeScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -35,11 +41,18 @@ public class ShapeScene extends Scene {
 		blobDetection.setThreshold(0.2f); //between 0.0f and 1.0f
 		
 		megaContours = new ArrayList<ArrayList<ArrayList<PVector>>>();
+		colors = new ArrayList<Integer>();
+		ramp = new Ramp(true, false);
+		rampId = 0;
+		rampValue = 5;
 		
 	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
+		
+		params = App.getActualScene().params;
+		pApplet.frameRate(params.get("frameRate"));
 				
 		depthValues = context.depthMap();
 		
@@ -69,25 +82,23 @@ public class ShapeScene extends Scene {
 		
 	}
 	public void display(){
-		
-		int c;
+			
 		float addValue = 255/params.get("contours");
 		int alpha = 0;
-		
-				
-		if(App.useColors){
-        	c = pApplet.color(pApplet.random(255), pApplet.random(255), pApplet.random(255)); 
-        } else {
-        	c = pApplet.color(255);
-        }
-		
-		pApplet.strokeWeight(1);
 			    
 	    for(int m=0; m<megaContours.size(); m++){			
 	
 	    	alpha += addValue;
 	    	
 	    	ArrayList<ArrayList<PVector>> actualContours = megaContours.get(m);
+	    	
+	    	int c;
+	    	
+	    	if(App.useColors){
+	        	c = colors.get(m); 
+	        } else {
+	        	c = pApplet.color(255);
+	        }
 	    
 			for(int i=0; i<actualContours.size(); i++){
 			    
@@ -98,11 +109,14 @@ public class ShapeScene extends Scene {
 			    shape = pApplet.createShape();
 			    shape.beginShape();
 			    
-			    shape.fill(c, alpha);
-			    shape.noStroke();
-			    
-			    //shape.noFill();
-			    //shape.stroke(0, alpha);
+			    if(useStroke){
+			    	shape.noFill();
+			    	shape.strokeWeight(1);
+			    	shape.stroke(c, alpha);
+			    } else {
+			    	shape.fill(c, alpha);
+				    shape.noStroke();
+			    }
 			    			    
 			    for(int j=0; j<contour.size(); j++){
 			      PVector v = contour.get(j);
@@ -122,9 +136,19 @@ public class ShapeScene extends Scene {
 		
 		megaContours.add(contours);
 		
-		//TODO PARAMS
+		
+		int c = ramp.colors[rampId]; 
+		colors.add(c);
+		rampId+= rampValue;
+		
+		if(rampId>=ramp.colors.length || rampId<=0 ){
+			rampValue *= -1;
+			rampId+= rampValue;
+		}
+		
 		while(megaContours.size() > params.get("contours")){
 			megaContours.remove(0);
+			colors.remove(0);
 		}
 		
 	}
@@ -140,9 +164,7 @@ public class ShapeScene extends Scene {
 		  
 			blob = blobDetection.getBlob(n);
 	    
-			//TODO PARAMS
-			//if(blob != null && blob.getEdgeNb() > params.get("edgeMinNumber")){
-			if(blob != null && blob.getEdgeNb() > 100){
+			if(blob != null && blob.getEdgeNb() > params.get("edgeMinNumber")){
 	      
 				ArrayList<PVector> contour = new ArrayList<PVector>();
 
@@ -159,9 +181,7 @@ public class ShapeScene extends Scene {
 			          
 						PVector v = contour.get(contour.size()-1);
 						float distance = PApplet.dist(eB.x*imgWidth, eB.y*imgHeight, v.x, v.y);
-						//TODO PARAMS
-						if(distance > 10)contour.add(new PVector(eB.x*imgWidth, eB.y*imgHeight));
-						//if(distance> params.get("distMin"))contour.add(new PVector(eB.x*width, eB.y*height));
+						if(distance > params.get("distMin"))contour.add(new PVector(eB.x*imgWidth, eB.y*imgHeight));
 			    
 					}
 			    

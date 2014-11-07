@@ -25,11 +25,8 @@ public class OBVJ extends PApplet {
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
 	
-	/*private int w = 1024;
-	private int h = 768;*/
-	
-	private int w = 640;
-	private int h = 480;
+	private int w = 1024;
+	private int h = 768;
 	
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
@@ -169,8 +166,11 @@ public class OBVJ extends PApplet {
 		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
+			
 			App.oldSceneId = sceneId;
 		
+			frameRate(15);
+			
 			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
@@ -209,7 +209,10 @@ public class OBVJ extends PApplet {
 		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
+			
 			App.oldSceneId = sceneId;
+			
+			frameRate(15);
 		
 			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
@@ -249,33 +252,41 @@ public class OBVJ extends PApplet {
 		
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
+			
 			App.oldSceneId = sceneId;
-		
+			
 			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                
+	                {"frameRate", 15, 30, App.colors[6], 0, 3, 25},
+	                
 	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
-	                {"alpha", 0, 255, App.colors[4], 1, 3, 0},
+	                
+	                {"contours", 1, 20, App.colors[4], 1, 3, 10},
+	                
 	                {"blurRadius", 1, 30, App.colors[5], 1, 4, 2},
-	                {"contours", 1, 20, App.colors[6], 1, 5, 10}};
+	                
+	                {"alpha", 0, 255, App.colors[6], 1, 5, 0},
+	                
+	                {"distMin", 10, 200, App.colors[3], 1, 6, 10},
+	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100} };
 			
 			shapeScene = new ShapeScene(this, objects, w, h);
 			App.setActualScene(shapeScene);
-					
+						
 		}
 		
 		//-------------- draw ------------------//
 
-		//drawPointsAndLinesScene.update2(context);
 		shapeScene.update(context);
 		
 		pushMatrix();
 		  
 		translateAndRotate();
 		  
-		//drawPointsAndLinesScene.display2();
 		shapeScene.display();
 		  
 		popMatrix();
@@ -310,6 +321,7 @@ public class OBVJ extends PApplet {
 		save(name);	
 	}
 	//------------- MIDI ------------------//
+	@SuppressWarnings("unused")
 	public void midiMessage(MidiMessage message, long timestamp, String bus_name) {
 	  
 	   int channel = message.getMessage()[0] & 0xFF;
