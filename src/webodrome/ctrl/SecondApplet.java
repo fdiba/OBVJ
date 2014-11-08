@@ -168,13 +168,13 @@ public class SecondApplet extends PApplet {
 	private void nextScene(){	
 		int id = App.getSceneId();
 		id++;
-		if(id>2)id=0;
+		if(id>3)id=0;
 		App.setSceneId(id);
 	}
 	private void prevScene(){
 		int id = App.getSceneId();
 		id--;
-		if(id<0)id=2;
+		if(id<0)id=3;
 		App.setSceneId(id);
 	}
 	private void editParams(int key, String[] parameters, int[] values){

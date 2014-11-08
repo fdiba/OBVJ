@@ -16,6 +16,7 @@ import themidibus.MidiBus;
 import webodrome.App;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
+import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawPointsAndLinesScene;
 import webodrome.scene.ShapeScene;
 
@@ -35,6 +36,7 @@ public class OBVJ extends PApplet {
 	
 	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0 et 1
 	private ShapeScene shapeScene; //scene 2
+	private ChunkyScene chunkyScene; //scene 3
 	
 	//---------------------------//
 
@@ -88,11 +90,12 @@ public class OBVJ extends PApplet {
 		    return;
 		} else {
 
-			context.setMirror(true);			
+			context.setMirror(true);
+			
 			context.enableDepth();
+			context.enableUser();
 			
 			App.minim = new Minim(this);
-			//App.player = App.minim.loadFile("02-Hourglass.mp3");
 			App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
 			App.player.play();	
 			//App.player.loop();			
@@ -111,13 +114,9 @@ public class OBVJ extends PApplet {
 		
 		
 	}
-	public void draw(){
-	
-		
-		//background(0, 77, 119);
-		
+	public void draw(){	
+				
 		context.update();
-		//image(context.depthImage(), 0, 0); //test
 		
 		int sceneId = App.getSceneId();
 		
@@ -130,6 +129,9 @@ public class OBVJ extends PApplet {
 			break;
 		case 2:
 			scene2();
+			break;
+		case 3:
+			scene3();
 			break;
 		default:
 			scene0();
@@ -259,18 +261,18 @@ public class OBVJ extends PApplet {
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
 	                
-	                {"frameRate", 15, 30, App.colors[6], 0, 3, 25},
+	                {"alpha", 0, 255, App.colors[6], 0, 3, 0},
 	                
 	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                
-	                {"contours", 1, 20, App.colors[4], 1, 3, 10},
+	                {"frameRate", 15, 30, App.colors[6], 1, 3, 25},
 	                
-	                {"blurRadius", 1, 30, App.colors[5], 1, 4, 2},
+	                {"contours", 1, 20, App.colors[4], 1, 4, 10},
 	                
-	                {"alpha", 0, 255, App.colors[6], 1, 5, 0},
-	                
+	                {"blurRadius", 1, 30, App.colors[5], 1, 5, 2},
+	                	                
 	                {"distMin", 10, 200, App.colors[3], 1, 6, 10},
 	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100} };
 			
@@ -291,6 +293,43 @@ public class OBVJ extends PApplet {
 		  
 		popMatrix();
 		
+	}
+	private void scene3(){
+		
+		background(0);
+		
+		//-------------- init ------------------//
+		
+		int sceneId = App.getSceneId();
+		if (sceneId != App.oldSceneId) {
+			
+			App.oldSceneId = sceneId;
+			
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
+	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
+	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                	                
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
+	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
+	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0} };
+			
+			chunkyScene = new ChunkyScene(this, objects, w, h);
+			App.setActualScene(chunkyScene);
+						
+		}
+		
+		//-------------- draw ------------------//
+
+		chunkyScene.update(context);
+		
+		pushMatrix();
+		  
+		translateAndRotate();
+		  
+		chunkyScene.display(context);
+		  
+		popMatrix();
+	
 	}
 	private void translateAndRotate(){
 		

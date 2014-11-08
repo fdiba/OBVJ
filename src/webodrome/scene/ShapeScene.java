@@ -20,6 +20,7 @@ public class ShapeScene extends Scene {
 	private PImage img;
 	
 	public static boolean useStroke = true;
+	public static boolean userIsPresent;
 	
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
 	private ArrayList<Integer> colors;
@@ -27,7 +28,9 @@ public class ShapeScene extends Scene {
 	private Ramp ramp;
 	private int rampId;
 	private int rampValue;
-
+	
+	private ArrayList<PVector> centerOfMasses;
+	
 	public ShapeScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
@@ -56,19 +59,16 @@ public class ShapeScene extends Scene {
 				
 		depthValues = context.depthMap();
 		
-		//addAndEraseBuffers();
-		
-		int mapWidth = context.depthWidth();
-		int mapHeight = context.depthHeight();
+		detectUsers(context);
 		
 		img.loadPixels();
 		
 		int threshold = params.get("alpha");
 		
-		drawDepthImg(context, depthValues, mapWidth, mapHeight, threshold);
+		drawDepthImg(context, depthValues, imgWidth, imgHeight, threshold);
 		img.updatePixels();
 		
-		blobImg.copy(img, 0, 0, mapWidth, mapHeight, 0, 0, blobImg.width, blobImg.height);
+		blobImg.copy(img, 0, 0, imgWidth, imgHeight, 0, 0, blobImg.width, blobImg.height);
 		
 		fastblur(blobImg, params.get("blurRadius"));
 		
@@ -79,6 +79,55 @@ public class ShapeScene extends Scene {
 		ArrayList<ArrayList<PVector>> contours = createContours();
 		
 		addContoursToMContours(contours);
+		
+	}
+	private void detectUsers(SimpleOpenNI context){
+		
+		 centerOfMasses = new ArrayList<PVector>();
+		
+		int[] userList = context.getUsers();
+		
+		if(userList.length>0){
+			
+			useStroke = true;
+			userIsPresent = true;
+			
+			for(int i=0;i<userList.length;i++) {
+				
+				if(context.isTrackingSkeleton(userList[i])) {
+
+					//drawSkeleton(userList[i]);
+					
+			    }
+				
+				PVector com = new PVector();
+				  
+				if(context.getCoM(userList[i],com)) {
+					
+					PVector com2d = new PVector();
+					context.convertRealWorldToProjective(com,com2d);
+					
+					centerOfMasses.add(com2d);
+				}
+			
+			PApplet.println(userList.length);
+			
+			}
+			
+		} else {
+			useStroke = false;
+			userIsPresent = false;
+		}
+		
+	}
+	private void displayCenterOfMasses(){
+		
+		for(PVector com : centerOfMasses){
+			
+			pApplet.fill(pApplet.color(255, 0, 255));
+			pApplet.rect(com.x*xRatio, com.y*yRatio, 10, 10);
+			
+		}
 		
 	}
 	public void display(){
@@ -130,6 +179,8 @@ public class ShapeScene extends Scene {
 			}
 		
 		}
+	    
+	    displayCenterOfMasses();
 		
 	}
 	private void addContoursToMContours(ArrayList<ArrayList<PVector>> contours){
