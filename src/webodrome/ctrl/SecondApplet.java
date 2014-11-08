@@ -1,7 +1,11 @@
 package webodrome.ctrl;
 
+import java.awt.Shape;
+import java.util.Date;
+
 import processing.core.PApplet;
 import webodrome.App;
+import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawPointsAndLinesScene;
 import webodrome.scene.ShapeScene;
 
@@ -23,10 +27,51 @@ public class SecondApplet extends PApplet {
 		if(App.getActualScene() != null){
 			
 			App.getActualScene().displayMenu2();
-			if(App.getSceneId() == 2) displayMiniature();
+			
+			if(App.getSceneId() == 2) {
+				displayMiniature();
+				
+				if(ShapeScene.userIsPresent){
+					
+					displayCube();
+					
+				}
+				if(ShapeScene.isTrackingSkeleton){
+					displayCube2();
+				}
+				
+				
+			} else if (App.getSceneId() == 3){
+				
+				if(ChunkyScene.userIsPresent){
+					
+					displayCube();
+					
+				}
+				if(ChunkyScene.isTrackingSkeleton){
+					displayCube2();
+				}
+				
+				displayUserImage();
+			}
 		
 		}
 		
+	}
+	private void displayCube(){
+		
+		fill(255, 0, 255);
+		rect(180, 10, 10, 10);
+		
+	}
+	private void displayCube2(){
+		
+		fill(0, 255, 0);
+		rect(180, 20, 10, 10);
+		
+	}
+	private void displayUserImage(){
+		image(ChunkyScene.userImg, 200, 0);
 	}
 	private void displayMiniature(){
 		
@@ -36,21 +81,22 @@ public class SecondApplet extends PApplet {
 	//--------------- keys ---------------------//
 	public void keyPressed() {
 		
-		if (key == 'l') {
+		if (key=='l') {
 			toggleValue();
-		} else if (keyCode == UP) {
+		} else if (keyCode==UP) {
 			setSelectedValue(+50);
-		} else if (keyCode == DOWN) {
+		} else if (keyCode==DOWN) {
 			setSelectedValue(-50);
-		} else if(key == 'n'){
+		} else if(key=='n'){
 			nextScene();
-		} else if(key == 'p'){
+		} else if(key =='p'){
 			prevScene();
-		} else if (key == 'c') {
-			
+		} else if (key=='c') {
 			App.useColors = !App.useColors;
-			
+		} else if(key=='s'){
+			savePicture();
 		} else if(App.getSceneId() == 0 || App.getSceneId() == 1){
+		
 			
 			if (key == 'v') {
 				DrawPointsAndLinesScene.linesVisibility = !DrawPointsAndLinesScene.linesVisibility;
@@ -164,6 +210,11 @@ public class SecondApplet extends PApplet {
 			}
 			
 		}
+	}
+	public void savePicture() {
+		Date date = new Date();
+		String name = "data/images/objv-"+date.getTime()+".png";
+		save(name);	
 	}
 	private void nextScene(){	
 		int id = App.getSceneId();

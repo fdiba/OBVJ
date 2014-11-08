@@ -21,6 +21,7 @@ public class ShapeScene extends Scene {
 	
 	public static boolean useStroke = true;
 	public static boolean userIsPresent;
+	public static boolean isTrackingSkeleton;
 	
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
 	private ArrayList<Integer> colors;
@@ -35,7 +36,6 @@ public class ShapeScene extends Scene {
 		
 		super(_pApplet, objects, _width, _height);
 
-		
 		img = pApplet.createImage(imgWidth, imgHeight, PApplet.RGB);
 		
 		blobImg = new PImage(imgWidth/2, imgHeight/2);
@@ -84,12 +84,12 @@ public class ShapeScene extends Scene {
 	private void detectUsers(SimpleOpenNI context){
 		
 		 centerOfMasses = new ArrayList<PVector>();
+		 int skeletonTracked = 0;
 		
 		int[] userList = context.getUsers();
 		
 		if(userList.length>0){
 			
-			useStroke = true;
 			userIsPresent = true;
 			
 			for(int i=0;i<userList.length;i++) {
@@ -97,7 +97,7 @@ public class ShapeScene extends Scene {
 				if(context.isTrackingSkeleton(userList[i])) {
 
 					//drawSkeleton(userList[i]);
-					
+					skeletonTracked++;
 			    }
 				
 				PVector com = new PVector();
@@ -110,22 +110,37 @@ public class ShapeScene extends Scene {
 					centerOfMasses.add(com2d);
 				}
 			
-			PApplet.println(userList.length);
+			
+				//PApplet.println(userList.length);
 			
 			}
 			
 		} else {
-			useStroke = false;
 			userIsPresent = false;
+		}
+		
+		if(skeletonTracked>0){
+			isTrackingSkeleton=true;
+		} else {
+			isTrackingSkeleton=false;
 		}
 		
 	}
 	private void displayCenterOfMasses(){
 		
 		for(PVector com : centerOfMasses){
+
+			int c = 0xFFFFFFFF;
 			
-			pApplet.fill(pApplet.color(255, 0, 255));
-			pApplet.rect(com.x*xRatio, com.y*yRatio, 10, 10);
+			if(isTrackingSkeleton){
+				pApplet.noStroke();
+				pApplet.fill(c);
+			} else {
+				pApplet.noFill();
+				pApplet.stroke(c);
+			}
+			
+			pApplet.rect(com.x*xRatio-5, com.y*yRatio-5, 10, 10);
 			
 		}
 		

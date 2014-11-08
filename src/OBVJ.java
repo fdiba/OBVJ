@@ -326,7 +326,7 @@ public class OBVJ extends PApplet {
 		  
 		translateAndRotate();
 		  
-		chunkyScene.display(context);
+		chunkyScene.display();
 		  
 		popMatrix();
 	
@@ -380,6 +380,24 @@ public class OBVJ extends PApplet {
 	private void savePictureWithDelay(){
 		timeToTakeASnapShot = 24*4;
 	}
-	
+	// -----------------------------------------------------------------
+	// SimpleOpenNI events
 
+	public void onNewUser(SimpleOpenNI curContext, int userId)
+	{
+	  println("onNewUser - userId: " + userId);
+	  println("\tstart tracking skeleton");
+	  
+	  curContext.startTrackingSkeleton(userId);
+	}
+
+	public void onLostUser(SimpleOpenNI curContext, int userId)
+	{
+	  println("onLostUser - userId: " + userId);
+	}
+
+	public void onVisibleUser(SimpleOpenNI curContext, int userId)
+	{
+	  //println("onVisibleUser - userId: " + userId);
+	}
 }
