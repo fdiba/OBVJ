@@ -15,6 +15,9 @@ public class ChunkyScene extends Scene {
 	
 	private ArrayList<PVector> centerOfMasses;
 	private ArrayList<ArrayList<PVector>> skulls;
+	private ArrayList<ArrayList<ArrayList<PVector>>> megaSkulls;
+	
+	int doParams = 20;
 	
 	public ChunkyScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -22,10 +25,17 @@ public class ChunkyScene extends Scene {
 		
 		userImg = new PImage(imgWidth/2, imgHeight/2);
 		
+		megaSkulls = new ArrayList<ArrayList<ArrayList<PVector>>>();
+		
 	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
+		
+		//TODO PARAMS
+		while(megaSkulls.size() > doParams){
+			megaSkulls.remove(0);
+		}
 		
 		detectUsers(context);
 		
@@ -68,6 +78,8 @@ public class ChunkyScene extends Scene {
 			
 			}
 			
+			megaSkulls.add(skulls);
+			
 		} else {
 			userIsPresent = false;
 		}
@@ -107,62 +119,73 @@ public class ChunkyScene extends Scene {
 		PVector convertedJoint = new PVector();
 		context.convertRealWorldToProjective(joint, convertedJoint);
 		
+		convertedJoint.x *= xRatio;
+		convertedJoint.y *= yRatio;
+		
 		return convertedJoint;
 
 	}
 	private void displaySkulls(){
 		
-		for(ArrayList<PVector> skull : skulls){
+		//TODO PARAMS
+		//float addValue = 255/params.get("contours");
+		float addValue = 255/doParams;
+		int alpha = 0;
+		
+		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
 			
-			PVector pv = new PVector();
-			PVector fv = new PVector();
+			alpha += addValue;
 			
-			for(int i=0; i<skull.size(); i++){
+			for(ArrayList<PVector> skull : skulls){
 				
-				PVector v = skull.get(i);
-				v.x *= xRatio;
-				v.y *= yRatio;
+				PVector pv = new PVector();
+				PVector fv = new PVector();
 				
-				pApplet.noStroke();
-				pApplet.fill(255);
-				pApplet.ellipse((float)v.x, (float)v.y, 10, 10);
+				for(int i=0; i<skull.size(); i++){
+					
+					PVector v = skull.get(i);
+					
+					pApplet.noStroke();
+					pApplet.fill(0xFFFFFFFF, alpha);
+					pApplet.ellipse(v.x, v.y, 10, 10);
 
-				if(i==0){
-					fv.set(v);
-					pv.set(v);
-				} else if(i==skull.size()-1){
-					pApplet.pushMatrix();
-					pApplet.translate(0, 0, -1);
-					pApplet.strokeWeight(2);
-					pApplet.stroke(0xFFFFFFFF);
-					pApplet.line(v.x, v.y, pv.x, pv.y);
-					pApplet.popMatrix();
+					if(i==0){
+						fv.set(v);
+						pv.set(v);
+					} else if(i==skull.size()-1){
+						
+						pApplet.pushMatrix();
+						
+						pApplet.translate(0, 0, -1);
+						pApplet.strokeWeight(2);
+						pApplet.stroke(0xFFFFFFFF, alpha);
+						
+						pApplet.line(v.x, v.y, pv.x, pv.y);
+						pApplet.line(v.x, v.y, fv.x, fv.y);
+						
+						pApplet.popMatrix();
+						
+					} else if(i>0){
+						pApplet.pushMatrix();
+						pApplet.translate(0, 0, -1);
+						pApplet.strokeWeight(2);
+						pApplet.stroke(0xFFFFFFFF, alpha);
+						pApplet.line(v.x, v.y, pv.x, pv.y);
+						pApplet.popMatrix();
+						pv.set(v);
+					}
 					
-					pApplet.pushMatrix();
-					pApplet.translate(0, 0, -1);
-					pApplet.strokeWeight(2);
-					pApplet.stroke(0xFFFFFFFF);
-					pApplet.line(v.x, v.y, fv.x, fv.y);
-					pApplet.popMatrix();
 					
-				} else if(i>0){
-					pApplet.pushMatrix();
-					pApplet.translate(0, 0, -1);
-					pApplet.strokeWeight(2);
-					pApplet.stroke(0xFFFFFFFF);
-					pApplet.line(v.x, v.y, pv.x, pv.y);
-					pApplet.popMatrix();
-					pv.set(v);
+					
+					//PApplet.println(skulls.size()+" "+skull.size()+" "+(float)v.x*xRatio, (float)v.y*yRatio);
+					
+					
 				}
-				
-				
-				
-				//PApplet.println(skulls.size()+" "+skull.size()+" "+(float)v.x*xRatio, (float)v.y*yRatio);
-				
 				
 			}
 			
 		}
+		
 		
 	}
 	private void displayCenterOfMasses(){
