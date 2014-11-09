@@ -95,6 +95,8 @@ public class SecondApplet extends PApplet {
 			App.useColors = !App.useColors;
 		} else if(key=='s'){
 			savePicture();
+		} else if(key=='m'){
+			App.useMirror = !App.useMirror;
 		} else if(App.getSceneId() == 0 || App.getSceneId() == 1){
 		
 			

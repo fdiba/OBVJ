@@ -14,6 +14,7 @@ public class ChunkyScene extends Scene {
 	public static boolean isTrackingSkeleton;
 	
 	private ArrayList<PVector> centerOfMasses;
+	private ArrayList<ArrayList<PVector>> skulls;
 	
 	public ChunkyScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -33,8 +34,10 @@ public class ChunkyScene extends Scene {
 	}
 	private void detectUsers(SimpleOpenNI context){
 		
-		 centerOfMasses = new ArrayList<PVector>();
-		 int skeletonTracked = 0;
+		skulls = new ArrayList<ArrayList<PVector>>();
+		
+		centerOfMasses = new ArrayList<PVector>();
+		int skeletonTracked = 0;
 		
 		int[] userList = context.getUsers();
 		
@@ -46,7 +49,7 @@ public class ChunkyScene extends Scene {
 				
 				if(context.isTrackingSkeleton(userList[i])) {
 
-					//drawSkeleton(userList[i]);
+					drawSkeleton(context, userList[i]);
 					skeletonTracked++;
 			    }
 				
@@ -73,6 +76,92 @@ public class ChunkyScene extends Scene {
 			isTrackingSkeleton=true;
 		} else {
 			isTrackingSkeleton=false;
+		}
+		
+	}
+	// draw the skeleton with the selected joints
+	private void drawSkeleton(SimpleOpenNI context, int userId) {
+		
+		ArrayList<PVector> skull = new ArrayList<PVector>();
+		
+		//add other joints
+		
+		skull.add(jointPos(context, userId, SimpleOpenNI.SKEL_HEAD));
+		
+		skull.add(jointPos(context, userId, SimpleOpenNI.SKEL_LEFT_HAND));
+		skull.add(jointPos(context, userId, SimpleOpenNI.SKEL_LEFT_FOOT));
+		
+		skull.add(jointPos(context, userId, SimpleOpenNI.SKEL_RIGHT_FOOT));
+		skull.add(jointPos(context, userId, SimpleOpenNI.SKEL_RIGHT_HAND));
+		
+		skulls.add(skull);
+	    
+	}
+	private PVector jointPos(SimpleOpenNI context, int userId, int jointID) {
+		
+		PVector joint = new PVector();
+		
+		float confidence = context.getJointPositionSkeleton(userId, jointID, joint);
+		//if(confidence < 0.5) return;
+		
+		PVector convertedJoint = new PVector();
+		context.convertRealWorldToProjective(joint, convertedJoint);
+		
+		return convertedJoint;
+
+	}
+	private void displaySkulls(){
+		
+		for(ArrayList<PVector> skull : skulls){
+			
+			PVector pv = new PVector();
+			PVector fv = new PVector();
+			
+			for(int i=0; i<skull.size(); i++){
+				
+				PVector v = skull.get(i);
+				v.x *= xRatio;
+				v.y *= yRatio;
+				
+				pApplet.noStroke();
+				pApplet.fill(255);
+				pApplet.ellipse((float)v.x, (float)v.y, 10, 10);
+
+				if(i==0){
+					fv.set(v);
+					pv.set(v);
+				} else if(i==skull.size()-1){
+					pApplet.pushMatrix();
+					pApplet.translate(0, 0, -1);
+					pApplet.strokeWeight(2);
+					pApplet.stroke(0xFFFFFFFF);
+					pApplet.line(v.x, v.y, pv.x, pv.y);
+					pApplet.popMatrix();
+					
+					pApplet.pushMatrix();
+					pApplet.translate(0, 0, -1);
+					pApplet.strokeWeight(2);
+					pApplet.stroke(0xFFFFFFFF);
+					pApplet.line(v.x, v.y, fv.x, fv.y);
+					pApplet.popMatrix();
+					
+				} else if(i>0){
+					pApplet.pushMatrix();
+					pApplet.translate(0, 0, -1);
+					pApplet.strokeWeight(2);
+					pApplet.stroke(0xFFFFFFFF);
+					pApplet.line(v.x, v.y, pv.x, pv.y);
+					pApplet.popMatrix();
+					pv.set(v);
+				}
+				
+				
+				
+				//PApplet.println(skulls.size()+" "+skull.size()+" "+(float)v.x*xRatio, (float)v.y*yRatio);
+				
+				
+			}
+			
 		}
 		
 	}
@@ -109,6 +198,7 @@ public class ChunkyScene extends Scene {
 	public void display(){
 		
 		displayCenterOfMasses();
+		displaySkulls();
 		
 	}
 }

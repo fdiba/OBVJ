@@ -90,7 +90,7 @@ public class OBVJ extends PApplet {
 		    return;
 		} else {
 
-			context.setMirror(true);
+			//context.setMirror(true);
 			
 			context.enableDepth();
 			context.enableUser();
