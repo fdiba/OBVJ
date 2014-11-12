@@ -96,10 +96,17 @@ public class OBVJ extends PApplet {
 			context.enableUser();
 			
 			App.minim = new Minim(this);
-			App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
-			App.player.play();	
-			//App.player.loop();			
-			App.player.mute();
+			
+			if(!DrawPointsAndLinesScene.useLiveMusic){
+				App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
+				App.player.play();	
+				//App.player.loop();			
+				App.player.mute();
+			} else {			
+				App.in = App.minim.getLineIn(Minim.MONO);
+			}
+			
+			
 			
 			//--- behringer -----------//		  
 			if(App.BCF2000){
@@ -263,7 +270,7 @@ public class OBVJ extends PApplet {
 	                
 	                {"alpha", 0, 255, App.colors[6], 0, 3, 0},
 	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                
@@ -309,7 +316,7 @@ public class OBVJ extends PApplet {
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
 	                	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0} };
 			

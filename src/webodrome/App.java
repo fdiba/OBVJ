@@ -1,5 +1,6 @@
 package webodrome;
 
+import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import themidibus.MidiBus;
@@ -31,6 +32,7 @@ public class App {
 	
 	public static Minim minim;
 	public static AudioPlayer player;
+	public static AudioInput in;
 	
 	public static boolean useColors;
 	
@@ -41,7 +43,7 @@ public class App {
 	
 	public static boolean fscreen = false;
 	
-	private static int sceneId = 3;
+	private static int sceneId = 0;
 	public static int oldSceneId = 999;
 	
 	public App() {

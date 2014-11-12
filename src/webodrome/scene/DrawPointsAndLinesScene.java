@@ -19,6 +19,7 @@ public class DrawPointsAndLinesScene extends Scene {
 	
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
+	public static boolean useLiveMusic = true;
 	
 	private Ramp ramp;
 	
@@ -318,9 +319,19 @@ public class DrawPointsAndLinesScene extends Scene {
 	private void addAndEraseBuffers(){
 		
 		FloatList bufferValues = new FloatList();
-		  
-		for(int i = 0; i < App.player.bufferSize(); i++) {
-			bufferValues.append(App.player.left.get(i));
+		
+		if(!DrawPointsAndLinesScene.useLiveMusic){
+		
+			for(int i = 0; i < App.player.bufferSize(); i++) {
+				bufferValues.append(App.player.left.get(i));
+			}
+			
+		} else {
+			
+			for(int i = 0; i < App.in.bufferSize(); i++) {
+				bufferValues.append(App.in.left.get(i));
+			}
+			
 		}
 	   
 		if(buffers.size() > 0) buffers.remove(0);
