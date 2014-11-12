@@ -12,12 +12,17 @@ public class ChunkyScene extends Scene {
 	public static PImage userImg;
 	public static boolean userIsPresent;
 	public static boolean isTrackingSkeleton;
+	public static boolean displayPoints;
+	public static boolean displayCross = true;
 	
 	private ArrayList<PVector> centerOfMasses;
 	private ArrayList<ArrayList<PVector>> skulls;
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaSkulls;
 	
-	int doParams = 20;
+	public static boolean isDrawingSkeleton = true;
+	public static int displayMode = 3;
+	
+	int doParams = 10;
 	
 	public ChunkyScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -38,7 +43,6 @@ public class ChunkyScene extends Scene {
 		}
 		
 		detectUsers(context);
-		
 		userImg.copy(context.userImage(), 0, 0, imgWidth, imgHeight, 0, 0, userImg.width, userImg.height);
 		
 	}
@@ -59,19 +63,25 @@ public class ChunkyScene extends Scene {
 				
 				if(context.isTrackingSkeleton(userList[i])) {
 
-					drawSkeleton(context, userList[i]);
+					if(isDrawingSkeleton)drawSkeleton(context, userList[i]);
 					skeletonTracked++;
 			    }
 				
 				PVector com = new PVector();
 				  
-				if(context.getCoM(userList[i],com)) {
+				if(displayCross){
 					
-					PVector com2d = new PVector();
-					context.convertRealWorldToProjective(com,com2d);
+					if(context.getCoM(userList[i],com)) {
+						
+						PVector com2d = new PVector();
+						context.convertRealWorldToProjective(com,com2d);
+						
+						centerOfMasses.add(com2d);
+					}
 					
-					centerOfMasses.add(com2d);
 				}
+				
+				
 			
 			
 				//PApplet.println(userList.length);
@@ -125,16 +135,117 @@ public class ChunkyScene extends Scene {
 		return convertedJoint;
 
 	}
+private void displaySkulls3(){
+		
+		//TODO PARAMS
+		//float addValue = 255/params.get("contours");
+		float addValue = 255/doParams;
+		int alpha = 0;
+		int index = 0;
+		
+		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
+			
+			alpha += addValue;
+			index++;
+			
+			for(ArrayList<PVector> skull : skulls){
+				
+				pApplet.pushMatrix();
+				pApplet.translate(0, 0, index);
+				pApplet.strokeWeight(2);
+				pApplet.stroke(0xFFFFFFFF, alpha);
+				pApplet.noFill();
+				
+				pApplet.beginShape();
+				
+				int maxId = skull.size()-1;
+				
+				PVector fv = new PVector();
+				PVector lv = skull.get(maxId);
+				
+				for(int i=0; i<=maxId; i++){
+					
+					PVector v = skull.get(i);
+					
+					if(i==0){
+						
+						pApplet.curveVertex(lv.x, lv.y);
+						pApplet.curveVertex(v.x, v.y);
+						fv.set(v);
+					
+					} else if(i==maxId){
+						pApplet.curveVertex(v.x, v.y);
+						pApplet.curveVertex(fv.x, fv.y);
+						
+						PVector sv = skull.get(1);
+						pApplet.curveVertex(sv.x,  sv.y);
+						
+					} else {
+						pApplet.curveVertex(v.x, v.y);
+					}
+						
+				}
+				pApplet.endShape();
+				pApplet.popMatrix();
+			}
+			
+		}
+		
+	}
+	@SuppressWarnings("unused")
+	private void displaySkulls2(){
+		
+		//TODO PARAMS
+		//float addValue = 255/params.get("contours");
+		float addValue = 255/doParams;
+		int alpha = 0;
+		int index = 0;
+		
+		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
+			
+			alpha += addValue;
+			index++;
+			
+			for(ArrayList<PVector> skull : skulls){
+				
+				PVector pv = new PVector();
+				PVector fv = new PVector();
+				
+				pApplet.pushMatrix();
+				pApplet.translate(0, 0, index);
+				pApplet.strokeWeight(2);
+				pApplet.stroke(0xFFFFFFFF, alpha);
+				pApplet.noFill();
+				
+				pApplet.beginShape();
+				
+				for(int i=0; i<skull.size(); i++){
+					
+					PVector v = skull.get(i);
+					
+					pApplet.curveVertex(v.x, v.y);
+					
+										
+				}
+				pApplet.endShape();
+				pApplet.popMatrix();
+			}
+			
+		}
+		
+	}
 	private void displaySkulls(){
 		
 		//TODO PARAMS
 		//float addValue = 255/params.get("contours");
 		float addValue = 255/doParams;
 		int alpha = 0;
+		int index = 0;
 		
 		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
 			
 			alpha += addValue;
+			index++;
 			
 			for(ArrayList<PVector> skull : skulls){
 				
@@ -145,34 +256,60 @@ public class ChunkyScene extends Scene {
 					
 					PVector v = skull.get(i);
 					
-					pApplet.noStroke();
-					pApplet.fill(0xFFFFFFFF, alpha);
-					pApplet.ellipse(v.x, v.y, 10, 10);
-
 					if(i==0){
 						fv.set(v);
 						pv.set(v);
-					} else if(i==skull.size()-1){
+						
+						index++;
 						
 						pApplet.pushMatrix();
+						pApplet.translate(0, 0, index);
+						if(displayPoints){
+							pApplet.noStroke();
+							pApplet.fill(0xFFFFFFFF, alpha);
+							pApplet.ellipse(v.x, v.y, 10, 10);
+						}
+						pApplet.popMatrix();
 						
-						pApplet.translate(0, 0, -1);
+					} else if(i==skull.size()-1){
 						pApplet.strokeWeight(2);
 						pApplet.stroke(0xFFFFFFFF, alpha);
-						
+						pApplet.pushMatrix();
+						pApplet.translate(0, 0, index);
 						pApplet.line(v.x, v.y, pv.x, pv.y);
-						pApplet.line(v.x, v.y, fv.x, fv.y);
+						pApplet.line(v.x, v.y, fv.x, fv.y);	
+						pApplet.popMatrix();
 						
+						index++;
+						
+						pApplet.pushMatrix();
+						pApplet.translate(0, 0, index);
+						if(displayPoints){
+							pApplet.noStroke();
+							pApplet.fill(0xFFFFFFFF, alpha);
+							pApplet.ellipse(v.x, v.y, 10, 10);
+						}
 						pApplet.popMatrix();
 						
 					} else if(i>0){
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, -1);
 						pApplet.strokeWeight(2);
 						pApplet.stroke(0xFFFFFFFF, alpha);
+						pApplet.pushMatrix();
+						pApplet.translate(0, 0, index);
 						pApplet.line(v.x, v.y, pv.x, pv.y);
 						pApplet.popMatrix();
 						pv.set(v);
+						
+						index++;
+						
+						pApplet.pushMatrix();
+						pApplet.translate(0, 0, index);
+						if(displayPoints){
+							pApplet.noStroke();
+							pApplet.fill(0xFFFFFFFF, alpha);
+							pApplet.ellipse(v.x, v.y, 10, 10);
+						}
+						pApplet.popMatrix();
 					}
 					
 					
@@ -184,8 +321,7 @@ public class ChunkyScene extends Scene {
 				
 			}
 			
-		}
-		
+		}	
 		
 	}
 	private void displayCenterOfMasses(){
@@ -221,7 +357,20 @@ public class ChunkyScene extends Scene {
 	public void display(){
 		
 		displayCenterOfMasses();
-		displaySkulls();
+		
+		switch (displayMode) {
+		case 1:
+			displaySkulls();
+			break;
+		case 2:
+			displaySkulls2();
+			break;
+		case 3:
+			displaySkulls3();
+			break;
+		default:
+			break;
+		}
 		
 	}
 }

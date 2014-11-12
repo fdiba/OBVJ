@@ -22,6 +22,7 @@ public class ShapeScene extends Scene {
 	public static boolean useStroke = true;
 	public static boolean userIsPresent;
 	public static boolean isTrackingSkeleton;
+	public static boolean displayCross;
 	
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
 	private ArrayList<Integer> colors;
@@ -101,15 +102,16 @@ public class ShapeScene extends Scene {
 			    }
 				
 				PVector com = new PVector();
-				  
-				if(context.getCoM(userList[i],com)) {
-					
-					PVector com2d = new PVector();
-					context.convertRealWorldToProjective(com,com2d);
-					
-					centerOfMasses.add(com2d);
+				
+				if(displayCross){
+					if(context.getCoM(userList[i],com)) {
+						
+						PVector com2d = new PVector();
+						context.convertRealWorldToProjective(com,com2d);
+						
+						centerOfMasses.add(com2d);
+					}
 				}
-			
 			
 				//PApplet.println(userList.length);
 			

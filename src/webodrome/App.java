@@ -33,7 +33,6 @@ public class App {
 	public static AudioPlayer player;
 	
 	public static boolean useColors;
-	public static boolean useMirror = true;
 	
 	//--- behringer ----------//
 	public final static boolean BCF2000 = false;

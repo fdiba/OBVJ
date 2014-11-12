@@ -267,7 +267,7 @@ public class OBVJ extends PApplet {
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                
-	                {"frameRate", 15, 30, App.colors[6], 1, 3, 25},
+	                {"frameRate", 1, 30, App.colors[6], 1, 3, 25},
 	                
 	                {"contours", 1, 20, App.colors[4], 1, 4, 10},
 	                

@@ -1,6 +1,5 @@
 package webodrome.ctrl;
 
-import java.awt.Shape;
 import java.util.Date;
 
 import processing.core.PApplet;
@@ -95,8 +94,6 @@ public class SecondApplet extends PApplet {
 			App.useColors = !App.useColors;
 		} else if(key=='s'){
 			savePicture();
-		} else if(key=='m'){
-			App.useMirror = !App.useMirror;
 		} else if(App.getSceneId() == 0 || App.getSceneId() == 1){
 		
 			
@@ -209,8 +206,25 @@ public class SecondApplet extends PApplet {
 			
 			if (key == 'f'){		
 				ShapeScene.useStroke = !ShapeScene.useStroke;
+			} else if (key == 'x'){		
+				ShapeScene.displayCross = !ShapeScene.displayCross;	
 			}
 			
+		} else if(App.getSceneId() == 3){
+			
+			if (key == 'o'){		
+				ChunkyScene.displayPoints = !ChunkyScene.displayPoints;
+			} else if (key == 'k'){		
+				ChunkyScene.isDrawingSkeleton = !ChunkyScene.isDrawingSkeleton;	
+			} else if (key == 'x'){		
+				ChunkyScene.displayCross = !ChunkyScene.displayCross;	
+			} else if (key == '1'){		
+				ChunkyScene.displayMode = 1;	
+			} else if (key == '2'){		
+				ChunkyScene.displayMode = 2;	
+			} else if (key == '3'){		
+				ChunkyScene.displayMode = 3;	
+			} 
 		}
 	}
 	public void savePicture() {
