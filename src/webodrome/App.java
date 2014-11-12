@@ -13,6 +13,8 @@ public class App {
 	
 	public static SecondApplet secondApplet;
 	
+	public static boolean useLiveMusic = true;
+	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 1150;
 	public static int highestValue = 7000;

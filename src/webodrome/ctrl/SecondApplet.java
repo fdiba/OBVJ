@@ -86,6 +86,15 @@ public class SecondApplet extends PApplet {
 			setSelectedValue(+50);
 		} else if (keyCode==DOWN) {
 			setSelectedValue(-50);
+		} else if(key=='m'){
+			
+			if(App.useLiveMusic){
+
+				if(App.in.isMonitoring())App.in.disableMonitoring();
+			    else App.in.enableMonitoring();
+			
+			}
+			
 		} else if(key=='n'){
 			nextScene();
 		} else if(key =='p'){
@@ -224,7 +233,7 @@ public class SecondApplet extends PApplet {
 				ChunkyScene.displayMode = 2;	
 			} else if (key == '3'){		
 				ChunkyScene.displayMode = 3;	
-			} 
+			}
 		}
 	}
 	public void savePicture() {
@@ -235,13 +244,13 @@ public class SecondApplet extends PApplet {
 	private void nextScene(){	
 		int id = App.getSceneId();
 		id++;
-		if(id>3)id=0;
+		if(id>4)id=0;
 		App.setSceneId(id);
 	}
 	private void prevScene(){
 		int id = App.getSceneId();
 		id--;
-		if(id<0)id=3;
+		if(id<0)id=4;
 		App.setSceneId(id);
 	}
 	private void editParams(int key, String[] parameters, int[] values){

@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Map;
 
+import javax.management.monitor.Monitor;
 import javax.sound.midi.MidiMessage;
 
 import ddf.minim.Minim;
@@ -18,6 +19,7 @@ import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
 import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawPointsAndLinesScene;
+import webodrome.scene.MonitorScene;
 import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
@@ -37,6 +39,7 @@ public class OBVJ extends PApplet {
 	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0 et 1
 	private ShapeScene shapeScene; //scene 2
 	private ChunkyScene chunkyScene; //scene 3
+	private MonitorScene monitorScene; //scene 4
 	
 	//---------------------------//
 
@@ -97,7 +100,7 @@ public class OBVJ extends PApplet {
 			
 			App.minim = new Minim(this);
 			
-			if(!DrawPointsAndLinesScene.useLiveMusic){
+			if(!App.useLiveMusic){
 				App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
 				App.player.play();	
 				//App.player.loop();			
@@ -139,6 +142,9 @@ public class OBVJ extends PApplet {
 			break;
 		case 3:
 			scene3();
+			break;
+		case 4:
+			scene4();
 			break;
 		default:
 			scene0();
@@ -337,6 +343,44 @@ public class OBVJ extends PApplet {
 		  
 		popMatrix();
 	
+	}
+	private void scene4(){
+		
+background(0);
+		
+		//-------------- init ------------------//
+		
+		int sceneId = App.getSceneId();
+		if (sceneId != App.oldSceneId) {
+			
+			App.oldSceneId = sceneId;
+			
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
+	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
+	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                	                
+	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
+	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
+	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0} };
+			
+			monitorScene = new MonitorScene(this, objects, w, h);
+			App.setActualScene(monitorScene);
+						
+		}
+		
+		//-------------- draw ------------------//
+
+		monitorScene.update(context);
+		
+		pushMatrix();
+		  
+		translateAndRotate();
+		  
+		monitorScene.display();
+		  
+		popMatrix();
+		
+		
 	}
 	private void translateAndRotate(){
 		

@@ -1,11 +1,13 @@
 package webodrome.scene;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.data.FloatList;
 import webodrome.App;
 import webodrome.ctrl.Menu;
 
@@ -24,7 +26,9 @@ public class Scene {
 	protected int imgHeight;
 	
 	protected float xRatio;
-	protected float yRatio; 
+	protected float yRatio;
+	
+	protected ArrayList<FloatList> buffers;
 	
 	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){
 		pApplet = _pApplet;
@@ -40,6 +44,28 @@ public class Scene {
 		yRatio = (float) h/imgHeight;
 		
 		createMenu(objects);
+	}
+	protected void addAndEraseBuffers(){
+		
+		FloatList bufferValues = new FloatList();
+		
+		if(!App.useLiveMusic){
+		
+			for(int i = 0; i < App.player.bufferSize(); i++) {
+				bufferValues.append(App.player.left.get(i));
+			}
+			
+		} else {
+			
+			for(int i = 0; i < App.in.bufferSize(); i++) {
+				bufferValues.append(App.in.left.get(i));
+			}
+			
+		}
+	   
+		if(buffers.size() > 0) buffers.remove(0);
+		buffers.add(bufferValues);
+		
 	}
 	public Scene(PApplet _pApplet){
 		pApplet = _pApplet;

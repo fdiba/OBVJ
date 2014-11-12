@@ -12,14 +12,12 @@ import webodrome.Ramp;
 public class DrawPointsAndLinesScene extends Scene {
 	
 	private PVector[] pvectors;	
-	private ArrayList<FloatList> buffers;
 	
 	private int lineNumber;
 	
 	
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
-	public static boolean useLiveMusic = true;
 	
 	private Ramp ramp;
 	
@@ -43,9 +41,7 @@ public class DrawPointsAndLinesScene extends Scene {
 		//lineNumber = 0;
 		
 		setBuffers(params.get("ySpace"));		
-		
-		
-		  		  
+		  
 		PApplet.println("----------------------------------" + "\n" +
 		                "depth limits: press l + UP OR DOWN" + "\n" +
 		                "dark lines visibility: press v" + "\n" +
@@ -72,10 +68,7 @@ public class DrawPointsAndLinesScene extends Scene {
 		addAndEraseBuffers();
 		
 	}
-	
-	
-	
-		public void display(){
+	public void display(){
 		
 		int ySpace = params.get("ySpace");
 		
@@ -315,28 +308,6 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 		}
 
-	}
-	private void addAndEraseBuffers(){
-		
-		FloatList bufferValues = new FloatList();
-		
-		if(!DrawPointsAndLinesScene.useLiveMusic){
-		
-			for(int i = 0; i < App.player.bufferSize(); i++) {
-				bufferValues.append(App.player.left.get(i));
-			}
-			
-		} else {
-			
-			for(int i = 0; i < App.in.bufferSize(); i++) {
-				bufferValues.append(App.in.left.get(i));
-			}
-			
-		}
-	   
-		if(buffers.size() > 0) buffers.remove(0);
-		buffers.add(bufferValues);
-		
 	}
 	private void setBuffers(int _ySpace){
 		
