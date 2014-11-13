@@ -45,7 +45,7 @@ public class App {
 	
 	public static boolean fscreen = false;
 	
-	private static int sceneId = 0;
+	private static int sceneId = 3;
 	public static int oldSceneId = 999;
 	
 	public App() {

@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.util.Date;
 import java.util.Map;
 
-import javax.management.monitor.Monitor;
 import javax.sound.midi.MidiMessage;
 
 import ddf.minim.Minim;
@@ -30,6 +29,9 @@ public class OBVJ extends PApplet {
 	
 	private int w = 1024;
 	private int h = 768;
+	
+	/*private int w = 640;
+	private int h = 480;*/
 	
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
@@ -193,7 +195,7 @@ public class OBVJ extends PApplet {
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
-	                {"ySpace", 10, 150, App.colors[5], 1, 4, 10},
+	                {"ySpace", 4, 150, App.colors[5], 1, 4, 4},
 	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
 	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
 	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
@@ -236,7 +238,7 @@ public class OBVJ extends PApplet {
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
-	                {"ySpace", 10, 150, App.colors[5], 1, 4, 10},
+	                {"ySpace", 10, 150, App.colors[5], 1, 4, 4},
 	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
 	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
 	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };

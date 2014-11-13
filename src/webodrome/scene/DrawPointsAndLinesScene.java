@@ -38,7 +38,6 @@ public class DrawPointsAndLinesScene extends Scene {
 		ramp = new Ramp(true, true);
 		
 		buffers = new ArrayList<FloatList>();
-		//lineNumber = 0;
 		
 		setBuffers(params.get("ySpace"));		
 		  
@@ -296,11 +295,13 @@ public class DrawPointsAndLinesScene extends Scene {
     		pApplet.strokeWeight((float) (weight + .5*2));
 			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);*/
         	
-        	float tmp_alpha  = alpha-75;
+        	
+        	//TODO DRAWING
+        	/*float tmp_alpha  = alpha-75;
         	tmp_alpha = PApplet.constrain(tmp_alpha, 0, 255);
         	pApplet.stroke(c, (float) (tmp_alpha));
     		pApplet.strokeWeight((float) (weight + .5));
-			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);
+			pApplet.line(oldVector.x*xRatio, oldVector.y*yRatio, ovz, actualVector.x*xRatio, actualVector.y*yRatio, avz);*/
         	
         	pApplet.stroke(c, alpha);
     		pApplet.strokeWeight(weight);

@@ -36,7 +36,7 @@ public class MonitorScene extends Scene {
 		
 		for(int i = 0; i < actualBufferValues.size(); i++) {
 		   
-			pApplet.line( i, h/2 + actualBufferValues.get(i)*50, i+1, h/2 + actualBufferValues.get(i+1)*50 );
+			pApplet.line( i, h/2 + actualBufferValues.get(i)*h/2, i+1, h/2 + actualBufferValues.get(i+1)*h/2 );
 		 
 		}
 		

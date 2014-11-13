@@ -124,29 +124,29 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
 						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 0, 0, 0, 25, 10, 120, 45, 255};
+				int[] values = {0, 0, 20, 0, 0, 0, 25, 4, 120, 45, 255};
 				editParams(0, parameters, values);
 				
-				App.useColors = true;
+				App.useColors = false;
 				DrawPointsAndLinesScene.multipleBuffers = false;
 				
 			} else if (key == '2'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
 						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 0, 0, 0, 60, 10, 172, 45, 255};
+				int[] values = {0, 0, 20, 0, 0, 0, 60, 4, 172, 45, 255};
 				editParams(0, parameters, values);
 				
-				App.useColors = true;
+				App.useColors = false;
 				DrawPointsAndLinesScene.multipleBuffers = true;
 			} else if (key == '3'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "rotateX", "rotateY", "rotateZ",
 						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 0, 0, 0, 140, 10, 60, 1, 255};
+				int[] values = {0, 0, 20, 0, 0, 0, 140, 4, 60, 1, 255};
 				editParams(0, parameters, values);
 				
-				App.useColors = true;
+				App.useColors = false;
 				DrawPointsAndLinesScene.multipleBuffers = false;
 				
 			} else if (key == '4') {
