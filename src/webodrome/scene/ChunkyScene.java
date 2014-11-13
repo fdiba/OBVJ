@@ -65,7 +65,7 @@ public class ChunkyScene extends Scene {
 		if(App.useLiveMusic && amplitude > 1){
 			addAndEraseBuffers();
 			if(megaSkulls.size()>0){
-				ArrayList<ArrayList<PVector>> editedSkulls = editLastSkulls(megaSkulls.get(megaSkulls.size()-1), amplitude);
+				ArrayList<ArrayList<PVector>> editedSkulls = editLastArrayList(megaSkulls.get(megaSkulls.size()-1), amplitude);
 				megaSkulls.remove(megaSkulls.size()-1);
 				megaSkulls.add(editedSkulls);
 			}
@@ -111,38 +111,17 @@ public class ChunkyScene extends Scene {
 						newCenterOfMasses.add(lv);
 												
 					}
-					
-					//PApplet.println(v.x, v.y, " ", lv.x, lv.y);
-				
+									
 				} else {
 					//not edited
 					newCenterOfMasses.add(v);
 					
 				}
-			
 			}
-			
-			
 		}
 		
 		return newCenterOfMasses;
 		
-	}
-	private ArrayList<ArrayList<PVector>> editLastSkulls(ArrayList<ArrayList<PVector>> skulls, int amplitude){
-
-		ArrayList<ArrayList<PVector>> editedSkulls = new ArrayList<ArrayList<PVector>>();
-		
-		for(int i=0; i<skulls.size(); i++) {
-
-			ArrayList<PVector> skull = skulls.get(i);
-			
-			if(App.useLiveMusic){
-				
-				skull = editVerticesPosBasedOnSound(skull, amplitude);
-				editedSkulls.add(skull);				
-			}
-		}
-		return editedSkulls;	
 	}
 	private void detectUsers(SimpleOpenNI context){
 		
@@ -352,45 +331,6 @@ public class ChunkyScene extends Scene {
 			
 		}
 		
-	}
-	private ArrayList<PVector> editVerticesPosBasedOnSound(ArrayList<PVector> skull, int amplitude){
-		
-		ArrayList<PVector> editedSkull = new ArrayList<PVector>();
-		PVector centroid = calculateCentroid(skull);
-		  
-		for(int i=0; i<skull.size(); i++){
-		    
-			int id = i;
-		    
-		    PVector v = skull.get(id);
-		  
-		    PVector addon = PVector.sub(centroid, v);
-		    addon.normalize();
-		    
-		    id = (int) PApplet.map(id, 0, skull.size()-1, 0, App.in.bufferSize()-1);
-		    
-		    float bufferValue = App.in.left.get(id); //-1 to 1
-		    
-		    addon.mult(amplitude*bufferValue);
-		    
-		    v.add(addon);
-		    editedSkull.add(v);
-		    
-		  }
-		
-		return editedSkull;
-		
-	}
-	private PVector calculateCentroid(ArrayList<PVector> skull){
-		 
-		PVector centroid = new PVector();
-		
-		for (PVector v : skull) {		
-			centroid.add(v);  
-		} 
-  
-		centroid.div(skull.size());
-		return centroid;
 	}
 	private void displayPoint(PVector v, int index, int alpha){
 		

@@ -67,6 +67,56 @@ public class Scene {
 		buffers.add(bufferValues);
 		
 	}
+	protected ArrayList<ArrayList<PVector>> editLastArrayList(ArrayList<ArrayList<PVector>> arrayLists, int amplitude){
+
+		ArrayList<ArrayList<PVector>> editedSkulls = new ArrayList<ArrayList<PVector>>();
+		
+		for(int i=0; i<arrayLists.size(); i++) {
+
+			ArrayList<PVector> arrayList = arrayLists.get(i);
+			
+			if(App.useLiveMusic){
+				
+				arrayList = editVerticesPosBasedOnSound(arrayList, amplitude);
+				editedSkulls.add(arrayList);				
+			}
+		}
+		return editedSkulls;	
+	}
+	protected ArrayList<PVector> editVerticesPosBasedOnSound(ArrayList<PVector> arrayList, int amplitude){
+		
+		ArrayList<PVector> editedSkull = new ArrayList<PVector>();
+		PVector centroid = calculateCentroid(arrayList);
+		  
+		for(int i=0; i<arrayList.size(); i++){
+		    
+			int id = i;
+		    
+		    PVector v = arrayList.get(id);
+		  
+		    PVector addon = PVector.sub(centroid, v);
+		    addon.normalize();
+		    
+		    id = (int) PApplet.map(id, 0, arrayList.size()-1, 0, App.in.bufferSize()-1);
+		    
+		    float bufferValue = App.in.left.get(id); //-1 to 1
+		    
+		    addon.mult(amplitude*bufferValue);
+		    
+		    v.add(addon);
+		    editedSkull.add(v);
+		    
+		  }
+		
+		return editedSkull;
+		
+	}
+	protected PVector calculateCentroid(ArrayList<PVector> arrayList){
+		PVector centroid = new PVector();
+		for (PVector v : arrayList) centroid.add(v);
+		centroid.div(arrayList.size());
+		return centroid;
+	}
 	public Scene(PApplet _pApplet){
 		pApplet = _pApplet;
 		menu = null;

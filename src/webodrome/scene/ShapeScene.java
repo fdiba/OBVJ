@@ -10,6 +10,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PShape;
 import processing.core.PVector;
+import processing.data.FloatList;
 import webodrome.App;
 import webodrome.Ramp;
 
@@ -36,6 +37,8 @@ public class ShapeScene extends Scene {
 	public ShapeScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
+		
+		if(App.useLiveMusic) buffers = new ArrayList<FloatList>();
 
 		img = pApplet.createImage(imgWidth, imgHeight, PApplet.RGB);
 		
@@ -80,6 +83,18 @@ public class ShapeScene extends Scene {
 		ArrayList<ArrayList<PVector>> contours = createContours();
 		
 		addContoursToMContours(contours);
+		
+		int amplitude = params.get("amplitude");
+		
+		//edit last contours
+		if(App.useLiveMusic && amplitude > 1){
+			addAndEraseBuffers();
+			if(megaContours.size()>0){
+				ArrayList<ArrayList<PVector>> editedContours = editLastArrayList(megaContours.get(megaContours.size()-1), amplitude);
+				megaContours.remove(megaContours.size()-1);
+				megaContours.add(editedContours);
+			}
+		}
 		
 	}
 	private void detectUsers(SimpleOpenNI context){
@@ -149,7 +164,7 @@ public class ShapeScene extends Scene {
 	}
 	public void display(){
 			
-		float addValue = 255/params.get("contours");
+		float addValue = 255/params.get("iterations");
 		int alpha = 0;
 			    
 	    for(int m=0; m<megaContours.size(); m++){			
@@ -214,7 +229,7 @@ public class ShapeScene extends Scene {
 			rampId+= rampValue;
 		}
 		
-		while(megaContours.size() > params.get("contours")){
+		while(megaContours.size() > params.get("iterations")){
 			megaContours.remove(0);
 			colors.remove(0);
 		}
@@ -226,7 +241,6 @@ public class ShapeScene extends Scene {
 		EdgeVertex eA, eB;
 	  
 		ArrayList<ArrayList<PVector>> contours = new ArrayList<ArrayList<PVector>>();
-	  
 	  
 		for(int n=0; n<blobDetection.getBlobNb(); n++){
 		  

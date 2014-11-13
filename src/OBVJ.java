@@ -84,7 +84,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(200+640/2, 260);
+		PFrame pFrame = new PFrame(200+640/2, 280);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -282,12 +282,13 @@ public class OBVJ extends PApplet {
 	                
 	                {"frameRate", 1, 30, App.colors[6], 1, 3, 25},
 	                
-	                {"contours", 1, 20, App.colors[4], 1, 4, 10},
+	                {"iterations", 1, 20, App.colors[4], 1, 4, 10},
 	                
 	                {"blurRadius", 1, 30, App.colors[5], 1, 5, 2},
 	                	                
 	                {"distMin", 10, 200, App.colors[3], 1, 6, 10},
-	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100} };
+	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100},
+	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300}  };
 			
 			shapeScene = new ShapeScene(this, objects, w, h);
 			App.setActualScene(shapeScene);
