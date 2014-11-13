@@ -27,7 +27,6 @@ public class ChunkyScene extends Scene {
 	public static boolean isDrawingSkeleton = true;
 	public static int displayMode = 3;
 	
-	private int doParams = 10;
 	private int lastNumberOfSkullInLastSkulls;
 	
 	public ChunkyScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
@@ -40,33 +39,36 @@ public class ChunkyScene extends Scene {
 		
 		lastNumberOfSkullInLastSkulls = 0;
 		
-		if(App.useLiveMusic) megaSkulls = new ArrayList<ArrayList<ArrayList<PVector>>>();
-		
+		megaSkulls = new ArrayList<ArrayList<ArrayList<PVector>>>();
+
 	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
 		
-		//TODO PARAMS
-		while(megaSkulls.size() > doParams){
+		while(megaSkulls.size() > params.get("iterations")){
 			megaSkulls.remove(0);
 		}
 		
+		//add skulls
 		detectUsers(context);
 		
 		userImg.copy(context.userImage(), 0, 0, imgWidth, imgHeight, 0, 0, userImg.width, userImg.height);
 		
-		if(App.useLiveMusic){
+		int amplitude = params.get("amplitude");
+		
+		//edit last skulls
+		if(App.useLiveMusic && amplitude > 1){
 			addAndEraseBuffers();
 			if(megaSkulls.size()>0){
-				ArrayList<ArrayList<PVector>> editedSkulls = editLastSkulls(megaSkulls.get(megaSkulls.size()-1));
+				ArrayList<ArrayList<PVector>> editedSkulls = editLastSkulls(megaSkulls.get(megaSkulls.size()-1), amplitude);
 				megaSkulls.remove(megaSkulls.size()-1);
 				megaSkulls.add(editedSkulls);
 			}
 		}
 
 	}
-	private ArrayList<ArrayList<PVector>> editLastSkulls(ArrayList<ArrayList<PVector>> skulls){
+	private ArrayList<ArrayList<PVector>> editLastSkulls(ArrayList<ArrayList<PVector>> skulls, int amplitude){
 
 		ArrayList<ArrayList<PVector>> editedSkulls = new ArrayList<ArrayList<PVector>>();
 		
@@ -75,7 +77,8 @@ public class ChunkyScene extends Scene {
 			ArrayList<PVector> skull = skulls.get(i);
 			
 			if(App.useLiveMusic){
-				skull = editVerticesPosBasedOnSound(skull);
+				
+				skull = editVerticesPosBasedOnSound(skull, amplitude);
 				editedSkulls.add(skull);				
 			}
 		}
@@ -115,8 +118,6 @@ public class ChunkyScene extends Scene {
 					}
 					
 				}
-
-				//PApplet.println(userList.length);
 			
 			}
 			
@@ -124,10 +125,10 @@ public class ChunkyScene extends Scene {
 			
 		} else {
 			userIsPresent = false;
+			if(megaSkulls.size() > 0)megaSkulls.remove(0);
 		}
 		
 		lastNumberOfSkullInLastSkulls = skulls.size();
-
 		
 		if(skeletonTracked>0){
 			isTrackingSkeleton=true;
@@ -147,6 +148,8 @@ public class ChunkyScene extends Scene {
 				int actualSkullId = skulls.size();
 				
 				if(actualSkullId <= lastSkulls.size()-1){
+					
+					//createNewJoints(context, userId);
 											
 					ArrayList<PVector> targetedSkull = lastSkulls.get(actualSkullId);
 					
@@ -239,9 +242,7 @@ public class ChunkyScene extends Scene {
 	}
 	private void displaySkulls3(){
 		
-		//TODO PARAMS
-		//float addValue = 255/params.get("contours");
-		float addValue = 255/doParams;
+		float addValue = 255/params.get("iterations");
 		int alpha = 0;
 		int index = 0;
 
@@ -294,13 +295,10 @@ public class ChunkyScene extends Scene {
 		}
 		
 	}
-	private ArrayList<PVector> editVerticesPosBasedOnSound(ArrayList<PVector> skull){
+	private ArrayList<PVector> editVerticesPosBasedOnSound(ArrayList<PVector> skull, int amplitude){
 		
 		ArrayList<PVector> editedSkull = new ArrayList<PVector>();
 		PVector centroid = calculateCentroid(skull);
-		
-		//TODO PARAMS
-		int amplitude = 300;
 		  
 		for(int i=0; i<skull.size(); i++){
 		    
@@ -337,10 +335,8 @@ public class ChunkyScene extends Scene {
 		return centroid;
 	}
 	private void displaySkulls33(){
-		
-		//TODO PARAMS
-		//float addValue = 255/params.get("contours");
-		float addValue = 255/doParams;
+
+		float addValue = 255/params.get("iterations");
 		int alpha = 0;
 		int index = 0;
 		
@@ -396,9 +392,7 @@ public class ChunkyScene extends Scene {
 	@SuppressWarnings("unused")
 	private void displaySkulls2(){
 		
-		//TODO PARAMS
-		//float addValue = 255/params.get("contours");
-		float addValue = 255/doParams;
+		float addValue = 255/params.get("iterations");
 		int alpha = 0;
 		int index = 0;
 		
@@ -437,9 +431,7 @@ public class ChunkyScene extends Scene {
 	}
 	private void displaySkulls(){
 		
-		//TODO PARAMS
-		//float addValue = 255/params.get("contours");
-		float addValue = 255/doParams;
+		float addValue = 255/params.get("iterations");
 		int alpha = 0;
 		int index = 0;
 		

@@ -111,8 +111,6 @@ public class OBVJ extends PApplet {
 				App.in = App.minim.getLineIn(Minim.MONO);
 			}
 			
-			
-			
 			//--- behringer -----------//		  
 			if(App.BCF2000){
 				MidiBus.list();
@@ -326,7 +324,10 @@ public class OBVJ extends PApplet {
 	                	                
 	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0} };
+	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
+	                
+	                {"iterations", 1, 20, App.colors[4], 1, 3, 10},
+	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300} };
 			
 			chunkyScene = new ChunkyScene(this, objects, w, h);
 			App.setActualScene(chunkyScene);
@@ -334,7 +335,6 @@ public class OBVJ extends PApplet {
 		}
 		
 		//-------------- draw ------------------//
-
 		chunkyScene.update(context);
 		
 		pushMatrix();
@@ -348,7 +348,7 @@ public class OBVJ extends PApplet {
 	}
 	private void scene4(){
 		
-background(0);
+		background(0);
 		
 		//-------------- init ------------------//
 		
