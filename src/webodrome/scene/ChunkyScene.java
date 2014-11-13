@@ -1,9 +1,6 @@
 package webodrome.scene;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import javax.lang.model.element.VariableElement;
 
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
@@ -21,6 +18,8 @@ public class ChunkyScene extends Scene {
 	public static boolean displayCross = true;
 	
 	private ArrayList<PVector> centerOfMasses;
+	private ArrayList<PVector> lastCenterOfMasses;
+	
 	private ArrayList<ArrayList<PVector>> skulls;
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaSkulls;
 	
@@ -40,6 +39,8 @@ public class ChunkyScene extends Scene {
 		lastNumberOfSkullInLastSkulls = 0;
 		
 		megaSkulls = new ArrayList<ArrayList<ArrayList<PVector>>>();
+		
+		lastCenterOfMasses = new ArrayList<PVector>();
 
 	}
 	public void update(SimpleOpenNI context){
@@ -52,6 +53,9 @@ public class ChunkyScene extends Scene {
 		
 		//add skulls
 		detectUsers(context);
+		
+		centerOfMasses = updateCOM(centerOfMasses);
+		lastCenterOfMasses = copyList(centerOfMasses);
 		
 		userImg.copy(context.userImage(), 0, 0, imgWidth, imgHeight, 0, 0, userImg.width, userImg.height);
 		
@@ -67,6 +71,62 @@ public class ChunkyScene extends Scene {
 			}
 		}
 
+	}
+	private ArrayList<PVector> copyList(ArrayList<PVector> newCenters){
+		
+		lastCenterOfMasses = new ArrayList<PVector>();
+		
+		for(PVector vector : newCenters){
+			
+			lastCenterOfMasses.add(vector);
+			
+		}
+		
+		return newCenters;
+	}
+	private ArrayList<PVector> updateCOM(ArrayList<PVector> newCenters){
+				
+		ArrayList<PVector> newCenterOfMasses = new ArrayList<PVector>();
+		
+		if(newCenters.size()>0){
+			
+			for(int i=0; i<newCenters.size(); i++){
+				
+				PVector v = newCenters.get(i);
+				
+				if(i < lastCenterOfMasses.size()){
+					
+					PVector lv = lastCenterOfMasses.get(i);
+					
+					if(lv.x != lv.x){ //NaN
+						
+						newCenterOfMasses.add(v);
+						
+					} else {
+						
+						//edit stuff
+						PVector distance = PVector.sub(v, lv);
+						distance.mult((float) 0.5);
+						lv.add(distance);
+						newCenterOfMasses.add(lv);
+												
+					}
+					
+					//PApplet.println(v.x, v.y, " ", lv.x, lv.y);
+				
+				} else {
+					//not edited
+					newCenterOfMasses.add(v);
+					
+				}
+			
+			}
+			
+			
+		}
+		
+		return newCenterOfMasses;
+		
 	}
 	private ArrayList<ArrayList<PVector>> editLastSkulls(ArrayList<ArrayList<PVector>> skulls, int amplitude){
 
@@ -336,11 +396,9 @@ public class ChunkyScene extends Scene {
 		
 		pApplet.pushMatrix();
 		pApplet.translate(0, 0, index);
-		if(displayPoints){
-			pApplet.noStroke();
-			pApplet.fill(0xFFFFFFFF, alpha);
-			pApplet.ellipse(v.x, v.y, 10, 10);
-		}
+		pApplet.noStroke();
+		pApplet.fill(0xFFFFFFFF, alpha);
+		pApplet.ellipse(v.x, v.y, 10, 10);
 		pApplet.popMatrix();
 		
 	}
