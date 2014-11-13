@@ -25,7 +25,7 @@ public class ChunkyScene extends Scene {
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaSkulls;
 	
 	public static boolean isDrawingSkeleton = true;
-	public static int displayMode = 3;
+	public static int displayMode = 2;
 	
 	private int lastNumberOfSkullInLastSkulls;
 	
@@ -141,16 +141,14 @@ public class ChunkyScene extends Scene {
 
 		if(megaSkulls.size()>0){
 			
-			//TODO do it better using userId instead of skull number in skulls
+			//TODO do it better using userId instead of skull number in skulls ?
 			if(skulls.size()<lastNumberOfSkullInLastSkulls){
 				
 				ArrayList<ArrayList<PVector>> lastSkulls = megaSkulls.get(megaSkulls.size()-1);
 				int actualSkullId = skulls.size();
 				
 				if(actualSkullId <= lastSkulls.size()-1){
-					
-					//createNewJoints(context, userId);
-											
+																
 					ArrayList<PVector> targetedSkull = lastSkulls.get(actualSkullId);
 					
 					ArrayList<PVector> skull = new ArrayList<PVector>();
@@ -240,7 +238,7 @@ public class ChunkyScene extends Scene {
 		return convertedJoint;
 
 	}
-	private void displaySkulls3(){
+	private void displaySkulls2(){
 		
 		float addValue = 255/params.get("iterations");
 		int alpha = 0;
@@ -334,100 +332,25 @@ public class ChunkyScene extends Scene {
 		centroid.div(skull.size());
 		return centroid;
 	}
-	private void displaySkulls33(){
-
-		float addValue = 255/params.get("iterations");
-		int alpha = 0;
-		int index = 0;
+	private void displayPoint(PVector v, int index, int alpha){
 		
-		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
-			
-			alpha += addValue;
-			index++;
-			
-			for(ArrayList<PVector> skull : skulls){
-				
-				pApplet.pushMatrix();
-				pApplet.translate(0, 0, index);
-				pApplet.strokeWeight(2);
-				pApplet.stroke(0xFFFFFFFF, alpha);
-				pApplet.noFill();
-				
-				pApplet.beginShape();
-				
-				int maxId = skull.size()-1;
-				
-				PVector fv = new PVector();
-				PVector lv = skull.get(maxId);
-				
-				for(int i=0; i<=maxId; i++){
-					
-					PVector v = skull.get(i);
-					
-					if(i==0){
-						
-						pApplet.curveVertex(lv.x, lv.y);
-						pApplet.curveVertex(v.x, v.y);
-						fv.set(v);
-					
-					} else if(i==maxId){
-						pApplet.curveVertex(v.x, v.y);
-						pApplet.curveVertex(fv.x, fv.y);
-						
-						PVector sv = skull.get(1);
-						pApplet.curveVertex(sv.x,  sv.y);
-						
-					} else {
-						pApplet.curveVertex(v.x, v.y);
-					}
-						
-				}
-				pApplet.endShape();
-				pApplet.popMatrix();
-			}
-			
+		pApplet.pushMatrix();
+		pApplet.translate(0, 0, index);
+		if(displayPoints){
+			pApplet.noStroke();
+			pApplet.fill(0xFFFFFFFF, alpha);
+			pApplet.ellipse(v.x, v.y, 10, 10);
 		}
+		pApplet.popMatrix();
 		
 	}
-	@SuppressWarnings("unused")
-	private void displaySkulls2(){
-		
-		float addValue = 255/params.get("iterations");
-		int alpha = 0;
-		int index = 0;
-		
-		for(ArrayList<ArrayList<PVector>> skulls : megaSkulls){
-			
-			alpha += addValue;
-			index++;
-			
-			for(ArrayList<PVector> skull : skulls){
-				
-				PVector pv = new PVector();
-				PVector fv = new PVector();
-				
-				pApplet.pushMatrix();
-				pApplet.translate(0, 0, index);
-				pApplet.strokeWeight(2);
-				pApplet.stroke(0xFFFFFFFF, alpha);
-				pApplet.noFill();
-				
-				pApplet.beginShape();
-				
-				for(int i=0; i<skull.size(); i++){
-					
-					PVector v = skull.get(i);
-					
-					pApplet.curveVertex(v.x, v.y);
-					
-										
-				}
-				pApplet.endShape();
-				pApplet.popMatrix();
-			}
-			
-		}
-		
+	private void displayLine(PVector a, PVector b, int index, int alpha){
+		pApplet.strokeWeight(2);
+		pApplet.stroke(0xFFFFFFFF, alpha);
+		pApplet.pushMatrix();
+		pApplet.translate(0, 0, index);
+		pApplet.line(a.x, a.y, b.x, b.y);
+		pApplet.popMatrix();
 	}
 	private void displaySkulls(){
 		
@@ -453,59 +376,25 @@ public class ChunkyScene extends Scene {
 						fv.set(v);
 						pv.set(v);
 						
-						index++;
-						
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, index);
-						if(displayPoints){
-							pApplet.noStroke();
-							pApplet.fill(0xFFFFFFFF, alpha);
-							pApplet.ellipse(v.x, v.y, 10, 10);
-						}
-						pApplet.popMatrix();
+						//index++;
+						if(displayPoints) displayPoint(v, index, alpha);
 						
 					} else if(i==skull.size()-1){
-						pApplet.strokeWeight(2);
-						pApplet.stroke(0xFFFFFFFF, alpha);
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, index);
-						pApplet.line(v.x, v.y, pv.x, pv.y);
-						pApplet.line(v.x, v.y, fv.x, fv.y);	
-						pApplet.popMatrix();
 						
-						index++;
+						displayLine(v, pv, index, alpha);
+						displayLine(v, fv, index, alpha);
 						
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, index);
-						if(displayPoints){
-							pApplet.noStroke();
-							pApplet.fill(0xFFFFFFFF, alpha);
-							pApplet.ellipse(v.x, v.y, 10, 10);
-						}
-						pApplet.popMatrix();
+						//index++;
+						if(displayPoints) displayPoint(v, index, alpha);
 						
 					} else if(i>0){
-						pApplet.strokeWeight(2);
-						pApplet.stroke(0xFFFFFFFF, alpha);
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, index);
-						pApplet.line(v.x, v.y, pv.x, pv.y);
-						pApplet.popMatrix();
+						
+						displayLine(v, pv, index, alpha);
 						pv.set(v);
 						
-						index++;
-						
-						pApplet.pushMatrix();
-						pApplet.translate(0, 0, index);
-						if(displayPoints){
-							pApplet.noStroke();
-							pApplet.fill(0xFFFFFFFF, alpha);
-							pApplet.ellipse(v.x, v.y, 10, 10);
-						}
-						pApplet.popMatrix();
+						//index++;
+						if(displayPoints) displayPoint(v, index, alpha);
 					}
-
-					//PApplet.println(skulls.size()+" "+skull.size()+" "+(float)v.x*xRatio, (float)v.y*yRatio);
 					
 				}
 				
@@ -554,9 +443,6 @@ public class ChunkyScene extends Scene {
 			break;
 		case 2:
 			displaySkulls2();
-			break;
-		case 3:
-			displaySkulls3();
 			break;
 		default:
 			break;

@@ -231,8 +231,6 @@ public class SecondApplet extends PApplet {
 				ChunkyScene.displayMode = 1;	
 			} else if (key == '2'){		
 				ChunkyScene.displayMode = 2;	
-			} else if (key == '3'){		
-				ChunkyScene.displayMode = 3;	
 			}
 		}
 	}
