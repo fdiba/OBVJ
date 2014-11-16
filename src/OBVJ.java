@@ -84,7 +84,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(200+640/2, 280);
+		PFrame pFrame = new PFrame(200+640/2, 300);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -288,7 +288,8 @@ public class OBVJ extends PApplet {
 	                	                
 	                {"distMin", 10, 200, App.colors[3], 1, 6, 10},
 	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100},
-	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300}  };
+	                {"amplitude", 1, 1000, App.colors[5], 1, 8, 10}, //TODO 8 and 9 not available
+	                {"strokeWeight", 1, 100, App.colors[5], 1, 9, 1} };
 			
 			shapeScene = new ShapeScene(this, objects, w, h);
 			App.setActualScene(shapeScene);
@@ -322,13 +323,16 @@ public class OBVJ extends PApplet {
 			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
 	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
 	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+	                
+	                {"alpha", 0, 200, App.colors[6], 0, 3, 0},
 	                	                
 	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
 	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
 	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
 	                
 	                {"iterations", 1, 20, App.colors[4], 1, 3, 10},
-	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300} };
+	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300},
+	                {"strokeWeight", 1, 100, App.colors[5], 1, 5, 2} };
 			
 			chunkyScene = new ChunkyScene(this, objects, w, h);
 			App.setActualScene(chunkyScene);

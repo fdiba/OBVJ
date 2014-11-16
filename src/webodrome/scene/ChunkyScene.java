@@ -8,6 +8,7 @@ import processing.core.PImage;
 import processing.core.PVector;
 import processing.data.FloatList;
 import webodrome.App;
+import webodrome.Ramp;
 
 public class ChunkyScene extends Scene {
 	
@@ -28,11 +29,21 @@ public class ChunkyScene extends Scene {
 	
 	private int lastNumberOfSkullInLastSkulls;
 	
+	private ArrayList<Integer> colors;
+	private Ramp ramp;
+	private int rampId;
+	private int rampValue;
+	
 	public ChunkyScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
 		
 		if(App.useLiveMusic) buffers = new ArrayList<FloatList>();
+		
+		colors = new ArrayList<Integer>();
+		ramp = new Ramp(true, false);
+		rampId = 0;
+		rampValue = 5;
 		
 		userImg = new PImage(imgWidth/2, imgHeight/2);
 		
@@ -277,9 +288,9 @@ public class ChunkyScene extends Scene {
 		return convertedJoint;
 
 	}
-	private void displaySkulls2(){
+	private void displaySkulls2(int c){
 		
-		float addValue = 255/params.get("iterations");
+		float addValue = (255-params.get("alpha"))/params.get("iterations");
 		int alpha = 0;
 		int index = 0;
 
@@ -292,8 +303,8 @@ public class ChunkyScene extends Scene {
 			
 				pApplet.pushMatrix();
 				pApplet.translate(0, 0, index);
-				pApplet.strokeWeight(2);
-				pApplet.stroke(0xFFFFFFFF, alpha);
+				pApplet.strokeWeight(params.get("strokeWeight"));
+				pApplet.stroke(c, alpha);
 				pApplet.noFill();
 				
 				pApplet.beginShape();
@@ -350,7 +361,7 @@ public class ChunkyScene extends Scene {
 		pApplet.line(a.x, a.y, b.x, b.y);
 		pApplet.popMatrix();
 	}
-	private void displaySkulls(){
+	private void displaySkulls(int c){
 		
 		float addValue = 255/params.get("iterations");
 		int alpha = 0;
@@ -427,20 +438,36 @@ public class ChunkyScene extends Scene {
 			pApplet.translate(0, 0, -1);
 			pApplet.stroke(255);
 			pApplet.strokeWeight(1);
-			pApplet.line(0, com.y*yRatio, w, com.y*yRatio);
-			pApplet.line(com.x*xRatio, 0, com.x*xRatio, h);
+			pApplet.line(0, com.y*yRatio, w*2, com.y*yRatio);
+			pApplet.line(com.x*xRatio, 0, com.x*xRatio, h*2);
 		pApplet.popMatrix();
 	}
 	public void display(){
+		
+		int c;
+		
+		if(App.useColors){
+        	
+			c = ramp.colors[rampId];
+        	rampId+= rampValue;
+    		
+    		if(rampId>=ramp.colors.length || rampId<=0 ){
+    			rampValue *= -1;
+    			rampId+= rampValue;
+    		}
+    		
+        } else {
+        	c = 0xFFFFFFFF;
+        }
 		
 		displayCenterOfMasses();
 		
 		switch (displayMode) {
 		case 1:
-			displaySkulls();
+			displaySkulls(c);
 			break;
 		case 2:
-			displaySkulls2();
+			displaySkulls2(c);
 			break;
 		default:
 			break;

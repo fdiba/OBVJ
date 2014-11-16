@@ -26,8 +26,8 @@ public class ShapeScene extends Scene {
 	public static boolean displayCross;
 	
 	private ArrayList<ArrayList<ArrayList<PVector>>> megaContours;
-	private ArrayList<Integer> colors;
 	
+	private ArrayList<Integer> colors;
 	private Ramp ramp;
 	private int rampId;
 	private int rampValue;
@@ -166,6 +166,8 @@ public class ShapeScene extends Scene {
 			
 		float addValue = 255/params.get("iterations");
 		int alpha = 0;
+		
+		int strokeWeight = params.get("strokeWeight");
 			    
 	    for(int m=0; m<megaContours.size(); m++){			
 	
@@ -192,7 +194,7 @@ public class ShapeScene extends Scene {
 			    
 			    if(useStroke){
 			    	shape.noFill();
-			    	shape.strokeWeight(1);
+			    	shape.strokeWeight(strokeWeight);
 			    	shape.stroke(c, alpha);
 			    } else {
 			    	shape.fill(c, alpha);
