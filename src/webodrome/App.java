@@ -17,7 +17,7 @@ public class App {
 	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 1150;
-	public static int highestValue = 7000;
+	public static int highestValue = 1600;
 	public static boolean switchValue;
 	
 	//colors : red, green, blue green, orange, dark blue
@@ -45,7 +45,7 @@ public class App {
 	
 	public static boolean fscreen = false;
 	
-	private static int sceneId = 2;
+	private static int sceneId = 0;
 	public static int oldSceneId = 999;
 	
 	public App() {
