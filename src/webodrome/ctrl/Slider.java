@@ -1,7 +1,5 @@
 package webodrome.ctrl;
 
-import javax.xml.soap.Text;
-
 import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;

@@ -35,6 +35,8 @@ public class OBVJ extends PApplet {
 	
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
+	
+	private int sl_frameRate = 24;
 		
 	//-------- scenes -----------//
 	
@@ -80,7 +82,7 @@ public class OBVJ extends PApplet {
 		size(w, h, OPENGL);
 		//size(w, h, P3D);
 		smooth(8);
-		frameRate(15); //---------------------------------- param -------//
+		frameRate(24); //---------------------------------- param -------//
 		
 		//noCursor();
 		
@@ -181,9 +183,7 @@ public class OBVJ extends PApplet {
 		if (sceneId != App.oldSceneId) {
 			
 			App.oldSceneId = sceneId;
-		
-			frameRate(15);
-			
+					
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},                
@@ -191,12 +191,13 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                
+	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -200, 200, 112, App.colors[6]},
-	                {"amplitude", 1, 500, 50, App.colors[4]},
-	                {"maxDist", 1, 250, 140, App.colors[7]},
-	                {"alpha", -255, 255, 255, App.colors[3]} };
+	                {"amplitude", 1, 500, 390, App.colors[4]},
+	                {"maxDist", 1, 250, 200, App.colors[7]},
+	                {"alpha", 0, 254, 38, App.colors[3]} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);
@@ -204,6 +205,8 @@ public class OBVJ extends PApplet {
 		}
 		
 		//-------------- draw ------------------//
+		
+		frameRate(App.getActualScene().params.get("frameRate"));
 		
 		drawPointsAndLinesScene.update(context);
 		
@@ -227,18 +230,16 @@ public class OBVJ extends PApplet {
 			
 			App.oldSceneId = sceneId;
 			
-			frameRate(15);
-		
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},
-	                {"strokeWeight", 4, 100, 4, App.colors[5]},
+	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"amplitude", 1, 200, 25, App.colors[4]},
-	                
 	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                
+	                {"amplitude", 1, 200, 25, App.colors[4]},
 	                {"depth", -200, 200, 112, App.colors[6]},
 	                {"maxDist", 1, 250, 45, App.colors[7]},
 	                {"alpha", -255, 255, 255, App.colors[3]} };
@@ -249,6 +250,8 @@ public class OBVJ extends PApplet {
 		}
 		
 		//-------------- draw ------------------//
+		
+		frameRate(App.getActualScene().params.get("frameRate"));
 
 		drawPointsAndLinesScene.update(context);
 		
@@ -279,7 +282,7 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 0, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"frameRate", 1, 30, 25, App.colors[6]},
+	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                
 	                {"iterations", 1, 20, 10, App.colors[4]},
 	                {"blurRadius", 1, 30, 2, App.colors[5]},

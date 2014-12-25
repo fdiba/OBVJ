@@ -35,7 +35,7 @@ public class DrawPointsAndLinesScene extends Scene {
 		
 		setVectors();
 		
-		ramp = new Ramp(true, true);
+		ramp = new Ramp(0, true);
 		
 		buffers = new ArrayList<FloatList>();
 		
@@ -257,7 +257,7 @@ public class DrawPointsAndLinesScene extends Scene {
 		}
         
         if(App.useColors){
-        	c = ramp.pickColor(actualDepthValue, lVal, hVal);  
+        	c = ramp.pickColor(actualDepthValue, lVal, hVal, params.get("alpha"));
         } else {
         	c = pApplet.color(blackAndWhiteColor);
         }
@@ -279,9 +279,10 @@ public class DrawPointsAndLinesScene extends Scene {
              
         if(	(isInFront && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
         	
-        	float yPos = params.get("ySpace") * lineNumber;
+        	//float yPos = params.get("ySpace") * lineNumber;
 
-        	float alpha = PApplet.map(yPos, 0, imgHeight, params.get("alpha"), 255);     	
+        	//float alpha = PApplet.map(yPos, 0, imgHeight, params.get("alpha"), 255);     	
+        	float alpha = 255;
         	
         	//PApplet.println(params.get("ySpace")+ " " + lineNumber + " "+ test+" "+alpha);
         	//int alpha = lineNumber;

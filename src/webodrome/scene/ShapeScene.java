@@ -49,7 +49,7 @@ public class ShapeScene extends Scene {
 		
 		megaContours = new ArrayList<ArrayList<ArrayList<PVector>>>();
 		colors = new ArrayList<Integer>();
-		ramp = new Ramp(true, false);
+		ramp = new Ramp(1, false);
 		rampId = 0;
 		rampValue = 5;
 		

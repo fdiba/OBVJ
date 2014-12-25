@@ -29,7 +29,6 @@ public class ChunkyScene extends Scene {
 	
 	private int lastNumberOfSkullInLastSkulls;
 	
-	private ArrayList<Integer> colors;
 	private Ramp ramp;
 	private int rampId;
 	private int rampValue;
@@ -40,8 +39,7 @@ public class ChunkyScene extends Scene {
 		
 		if(App.useLiveMusic) buffers = new ArrayList<FloatList>();
 		
-		colors = new ArrayList<Integer>();
-		ramp = new Ramp(true, false);
+		ramp = new Ramp(1, false);
 		rampId = 0;
 		rampValue = 5;
 		
@@ -276,6 +274,7 @@ public class ChunkyScene extends Scene {
 		
 		PVector joint = new PVector();
 		
+		@SuppressWarnings("unused")
 		float confidence = context.getJointPositionSkeleton(userId, jointID, joint);
 		//if(confidence < 0.5) return;
 		
@@ -344,14 +343,12 @@ public class ChunkyScene extends Scene {
 		
 	}
 	private void displayPoint(PVector v, int index, int alpha){
-		
 		pApplet.pushMatrix();
 		pApplet.translate(0, 0, index);
 		pApplet.noStroke();
 		pApplet.fill(0xFFFFFFFF, alpha);
 		pApplet.ellipse(v.x, v.y, 10, 10);
 		pApplet.popMatrix();
-		
 	}
 	private void displayLine(PVector a, PVector b, int index, int alpha){
 		pApplet.strokeWeight(2);
