@@ -16,8 +16,8 @@ public class App {
 	public static boolean useLiveMusic = true;
 	
 	//-------- depthMapControl ----------//
-	public static int lowestValue = 1150;
-	public static int highestValue = 1600;
+	public static int lowestValue = 550;
+	public static int highestValue = 2350;
 	public static boolean switchValue;
 	
 	//colors : red, green, blue green, orange, dark blue
@@ -39,7 +39,7 @@ public class App {
 	public static boolean useColors;
 	
 	//--- behringer ----------//
-	public final static boolean BCF2000 = false;
+	public final static boolean BCF2000 = true;
 	public static MidiBus midiBus;
 	public static BehringerBCF behringer;
 	

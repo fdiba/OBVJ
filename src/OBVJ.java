@@ -121,8 +121,6 @@ public class OBVJ extends PApplet {
 		
 		}
 
-		
-		
 	}
 	public void draw(){	
 				
@@ -186,20 +184,19 @@ public class OBVJ extends PApplet {
 		
 			frameRate(15);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
-	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0},
+	                {"yTrans", -2500, 2500, App.colors[1], -100},
+	                {"zTrans", -2500, 2500, App.colors[2], -200},                
+	                {"strokeWeight", 4, 100, App.colors[6], 4},
+	                {"rotateX", -360, 360, App.colors[0], 45},
+	                {"rotateY", -360, 360, App.colors[1], 0},
+	                {"rotateZ", -360, 360, App.colors[2], 0},
+	                {"amplitude", 1, 500, App.colors[4], 50},
 	                
-	                {"strokeWeight", 4, 100, App.colors[6], 0, 3, 4},
-	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
-	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
-	                {"amplitude", 1, 500, App.colors[4], 1, 3, 50},
-	                {"ySpace", 4, 150, App.colors[5], 1, 4, 4},
-	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
-	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
-	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
+	                {"ySpace", 4, 150, App.colors[5], 4},
+	                {"depth", -200, 200, App.colors[6], 112},
+	                {"maxDist", 1, 250, App.colors[7], 45},
+	                {"alpha", -255, 255, App.colors[3], 255} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);
@@ -232,20 +229,19 @@ public class OBVJ extends PApplet {
 			
 			frameRate(15);
 		
-			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
-	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0},
+	                {"yTrans", -2500, 2500, App.colors[1], -100},
+	                {"zTrans", -2500, 2500, App.colors[2], -200},
+	                {"strokeWeight", 4, 100, App.colors[5], 4},
+	                {"rotateX", -360, 360, App.colors[0], 45},
+	                {"rotateY", -360, 360, App.colors[1], 0},
+	                {"rotateZ", -360, 360, App.colors[2], 0},
+	                {"amplitude", 1, 200, App.colors[4], 25},
 	                
-	                {"strokeWeight", 4, 100, App.colors[5], 0, 3, 4},
-	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 45},
-	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
-	                {"amplitude", 1, 200, App.colors[4], 1, 3, 25},
-	                {"ySpace", 10, 150, App.colors[5], 1, 4, 4},
-	                {"depth", -200, 200, App.colors[6], 1, 5, 112},
-	                {"maxDist", 1, 250, App.colors[7], 1, 6, 45},
-	                {"alpha", -255, 255, App.colors[3], 1, 7, 255} };
+	                {"ySpace", 10, 150, App.colors[5], 4},
+	                {"depth", -200, 200, App.colors[6], 112},
+	                {"maxDist", 1, 250, App.colors[7], 45},
+	                {"alpha", -255, 255, App.colors[3], 255} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
 			App.setActualScene(drawPointsAndLinesScene);
@@ -276,26 +272,21 @@ public class OBVJ extends PApplet {
 			
 			App.oldSceneId = sceneId;
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
-	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0},
+	                {"yTrans", -2500, 2500, App.colors[1], -100},
+	                {"zTrans", -2500, 2500, App.colors[2], -200},
+	                {"alpha", 0, 255, App.colors[6], 0},
+	                {"rotateX", -360, 360, App.colors[0], 0},
+	                {"rotateY", -360, 360, App.colors[1], 0},
+	                {"rotateZ", -360, 360, App.colors[2], 0},
+	                {"frameRate", 1, 30, App.colors[6], 25},
 	                
-	                {"alpha", 0, 255, App.colors[6], 0, 3, 0},
-	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
-	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
-	                
-	                {"frameRate", 1, 30, App.colors[6], 1, 3, 25},
-	                
-	                {"iterations", 1, 20, App.colors[4], 1, 4, 10},
-	                
-	                {"blurRadius", 1, 30, App.colors[5], 1, 5, 2},
-	                	                
-	                {"distMin", 10, 200, App.colors[3], 1, 6, 10},
-	                {"edgeMinNumber", 3, 400, App.colors[7], 1, 7, 100},
-	                {"amplitude", 1, 1000, App.colors[5], 1, 8, 10}, //TODO 8 and 9 not available
-	                {"strokeWeight", 1, 100, App.colors[5], 1, 9, 1} };
+	                {"iterations", 1, 20, App.colors[4], 10},
+	                {"blurRadius", 1, 30, App.colors[5], 2},
+	                {"distMin", 10, 200, App.colors[3], 10},
+	                {"edgeMinNumber", 3, 400, App.colors[7], 100},
+	                {"amplitude", 1, 1000, App.colors[5], 10},
+	                {"strokeWeight", 1, 100, App.colors[5], 1} };
 			
 			shapeScene = new ShapeScene(this, objects, w, h);
 			App.setActualScene(shapeScene);
@@ -326,19 +317,17 @@ public class OBVJ extends PApplet {
 			
 			App.oldSceneId = sceneId;
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
-	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0},
+	                {"yTrans", -2500, 2500, App.colors[1], -100},
+	                {"zTrans", -2500, 2500, App.colors[2], -200},
+	                {"alpha", 0, 200, App.colors[6], 0},
+	                {"rotateX", -360, 360, App.colors[0], 0},
+	                {"rotateY", -360, 360, App.colors[1], 0},
+	                {"rotateZ", -360, 360, App.colors[2], 0},
+	                {"iterations", 1, 20, App.colors[4], 10},
 	                
-	                {"alpha", 0, 200, App.colors[6], 0, 3, 0},
-	                	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
-	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0},
-	                
-	                {"iterations", 1, 20, App.colors[4], 1, 3, 10},
-	                {"amplitude", 1, 1000, App.colors[5], 1, 4, 300},
-	                {"strokeWeight", 1, 100, App.colors[5], 1, 5, 3} };
+	                {"amplitude", 1, 1000, App.colors[5], 300},
+	                {"strokeWeight", 1, 100, App.colors[5], 3} };
 			
 			chunkyScene = new ChunkyScene(this, objects, w, h);
 			App.setActualScene(chunkyScene);
@@ -368,13 +357,12 @@ public class OBVJ extends PApplet {
 			
 			App.oldSceneId = sceneId;
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0, 0, 0},
-	                {"yTrans", -2500, 2500, App.colors[1], 0, 1, -100},
-	                {"zTrans", -2500, 2500, App.colors[2], 0, 2, -200},
-	                	                
-	                {"rotateX", -360, 360, App.colors[0], 1, 0, 0},
-	                {"rotateY", -360, 360, App.colors[1], 1, 1, 0},
-	                {"rotateZ", -360, 360, App.colors[2], 1, 2, 0} };
+			Object[][] objects = { {"xTrans", -2500, 2500, App.colors[0], 0},
+	                {"yTrans", -2500, 2500, App.colors[1], -100},
+	                {"zTrans", -2500, 2500, App.colors[2], -200},
+	                {"rotateX", -360, 360, App.colors[0], 0},
+	                {"rotateY", -360, 360, App.colors[1], 0},
+	                {"rotateZ", -360, 360, App.colors[2], 0} };
 			
 			monitorScene = new MonitorScene(this, objects, w, h);
 			App.setActualScene(monitorScene);
@@ -424,7 +412,6 @@ public class OBVJ extends PApplet {
 		save(name);	
 	}
 	//------------- MIDI ------------------//
-	@SuppressWarnings("unused")
 	public void midiMessage(MidiMessage message, long timestamp, String bus_name) {
 	  
 	   int channel = message.getMessage()[0] & 0xFF;

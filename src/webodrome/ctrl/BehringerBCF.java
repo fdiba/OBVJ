@@ -12,6 +12,8 @@ public class BehringerBCF {
 	private int chan185num98Value; //number 0 to 7
 	private int chan185num6Value; //value 0 to 127
 	
+	public final static int numSliders = 8;
+	
 	public BehringerBCF(MidiBus _midiBus){
 		
 		midiBus = _midiBus;
@@ -44,9 +46,9 @@ public class BehringerBCF {
 	    	if(slidersList == 0) { //first sliders grp       
 	    		id = chan185num98Value;
 	    	} else if (slidersList == 1){ //second sliders grp
-	    		id = chan185num98Value + 3;	    		
+	    		id = chan185num98Value + numSliders;	    		
 	    	}
-	    	
+	    		    	
 	    	if(id >= App.actualMenu.getSlidersLength()) return;
 	    	
 	    	if(number==38) {

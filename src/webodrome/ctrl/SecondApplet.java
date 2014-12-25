@@ -124,7 +124,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 4, 120, 45, 255};
+				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, 255};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -193,7 +193,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -200, -50, 4, -300, -180, 0, 100, 10, -200, 40, 255};
+				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40, 255};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;

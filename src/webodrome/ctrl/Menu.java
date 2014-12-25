@@ -21,6 +21,8 @@ public class Menu {
 		scene = _scene;
 		sliders = new Slider[objects.length];
 		
+		int numSliders = BehringerBCF.numSliders;
+		
 		for(int i=0; i<objects.length; i++){
 
 			String param = (String) objects[i][0];
@@ -29,10 +31,11 @@ public class Menu {
 			int color = (int) objects[i][3];
 			
 			sliders[i] = new Slider(scene, new PVector(location.x, location.y + 15*i), param, lowValue, maxValue, color);
+						
+			int row = i/numSliders;
+			int sliderId = i%numSliders;
 			
-			int row = (int) objects[i][4];
-			int sliderId = (int) objects[i][5];
-			int value = (int) objects[i][6];	
+			int value = (int) objects[i][4];	
 			
 			if(App.BCF2000) sliders[i].setbehSlider(row, sliderId);
 			sliders[i].initValue(value);
