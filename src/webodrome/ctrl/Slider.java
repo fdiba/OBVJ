@@ -1,5 +1,7 @@
 package webodrome.ctrl;
 
+import javax.xml.soap.Text;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;
@@ -21,6 +23,7 @@ public class Slider {
     private SliderController sliderCtrl;
     private boolean dragging;
     private Scene scene;
+    private float value;
 
 	public Slider(Scene _scene, PVector _loc, String _param, float _lowValue, float _maxValue, int _color) {
 
@@ -42,7 +45,7 @@ public class Slider {
 	}
 	public void initValue(float val){
 	    
-		float value = PApplet.map(val, lowValue, maxValue, location.x, location.x+WIDTH);
+		value = PApplet.map(val, lowValue, maxValue, location.x, location.x+WIDTH);
 		sliderCtrl.setXLocation(value);
 		    
 		if(App.BCF2000){     
@@ -94,9 +97,9 @@ public class Slider {
 	  
 	}
 	private void editValue(){
-	    float value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
+	    value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
 	    scene.params.put(param, (int) value);
-	    PApplet.println(param + ": " + value);
+	    //PApplet.println(param + ": " + value);
 	}
 	public void display(PApplet p) {
 		p.rectMode(PApplet.CORNER);
@@ -104,6 +107,8 @@ public class Slider {
 		p.fill(color);
 		p.rect(location.x, location.y, WIDTH, 10);
 	    sliderCtrl.display(p);
+	    String str = param+" | "+(int)lowValue+ " | "+(int)maxValue+ " | "+(int)value;
+	    p.text(str, location.x + WIDTH + 15, location.y + 10);
 		
 	}
 }

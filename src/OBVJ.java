@@ -84,7 +84,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(200+640/2, 300);
+		PFrame pFrame = new PFrame(360+640/2, 340);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -191,11 +191,11 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"amplitude", 1, 500, 50, App.colors[4]},
-	                
 	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                
 	                {"depth", -200, 200, 112, App.colors[6]},
-	                {"maxDist", 1, 250, 45, App.colors[7]},
+	                {"amplitude", 1, 500, 50, App.colors[4]},
+	                {"maxDist", 1, 250, 140, App.colors[7]},
 	                {"alpha", -255, 255, 255, App.colors[3]} };
 			
 			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
@@ -238,7 +238,7 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
 	                {"amplitude", 1, 200, 25, App.colors[4]},
 	                
-	                {"ySpace", 10, 150, 4, App.colors[5]},
+	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -200, 200, 112, App.colors[6]},
 	                {"maxDist", 1, 250, 45, App.colors[7]},
 	                {"alpha", -255, 255, 255, App.colors[3]} };

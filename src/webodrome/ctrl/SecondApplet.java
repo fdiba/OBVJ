@@ -3,6 +3,7 @@ package webodrome.ctrl;
 import java.util.Date;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawPointsAndLinesScene;
@@ -11,7 +12,18 @@ import webodrome.scene.ShapeScene;
 @SuppressWarnings("serial")
 public class SecondApplet extends PApplet {
 	
+	private int[] colors;
+	private PVector[] positions;
+	private PVector vPos;
+	
 	public SecondApplet() {
+		colors = new int[2];
+		colors[0] = color(255, 0, 255);
+		colors[1] = color(0, 255, 0);
+		positions = new PVector[2];
+		positions[0] = new PVector(180, 10);
+		positions[1] = new PVector(190, 10);
+		vPos = new PVector(340, 20);
 	}
 	
 	public void setup(){
@@ -21,61 +33,37 @@ public class SecondApplet extends PApplet {
 	}
 	public void draw(){
 		
-		background(0x000000);
+		background(0xFF333333);
 
 		if(App.getActualScene() != null){
 			
-			App.getActualScene().displayMenu2();
-			
-			if(App.getSceneId() == 2) {
+			if(App.getSceneId() == 2) { //scene 2
+				
+				if(ShapeScene.userIsPresent)displayCube(colors[0], positions[0]);
+				if(ShapeScene.isTrackingSkeleton)displayCube(colors[1], positions[1]);
 				displayMiniature();
 				
-				if(ShapeScene.userIsPresent){
-					
-					displayCube();
-					
-				}
-				if(ShapeScene.isTrackingSkeleton){
-					displayCube2();
-				}
+			} else if (App.getSceneId() == 3){ //scene 3
 				
-				
-			} else if (App.getSceneId() == 3){
-				
-				if(ChunkyScene.userIsPresent){
-					
-					displayCube();
-					
-				}
-				if(ChunkyScene.isTrackingSkeleton){
-					displayCube2();
-				}
-				
+				if(ChunkyScene.userIsPresent)displayCube(colors[0], positions[0]);
+				if(ChunkyScene.isTrackingSkeleton)displayCube(colors[1], positions[1]);	
 				displayUserImage();
 			}
+			
+			App.getActualScene().displayMenu();
 		
 		}
 		
 	}
-	private void displayCube(){
-		
-		fill(255, 0, 255);
-		rect(180, 10, 10, 10);
-		
-	}
-	private void displayCube2(){
-		
-		fill(0, 255, 0);
-		rect(180, 20, 10, 10);
-		
+	private void displayCube(int c, PVector loc){
+		fill(c);
+		rect(loc.x, loc.y, 10, 10);
 	}
 	private void displayUserImage(){
-		image(ChunkyScene.userImg, 200, 0);
+		if(ChunkyScene.userImg != null)image(ChunkyScene.userImg, vPos.x, vPos.y);
 	}
 	private void displayMiniature(){
-		
-		image(ShapeScene.blobImg, 200, 0);
-		
+		if(ShapeScene.blobImg != null)image(ShapeScene.blobImg, vPos.x, vPos.y);
 	}
 	//--------------- keys ---------------------//
 	public void keyPressed() {

@@ -15,6 +15,8 @@ public class Menu {
 	private int showTime;
 	private final int SHOWTIME_MAX = 23;
 	
+	private int yPos;
+	
 	public Menu(Scene _scene, PVector _loc, Object[][] objects){
 		
 		location = _loc;
@@ -24,7 +26,7 @@ public class Menu {
 		int numSliders = BehringerBCF.numSliders;
 		
 		int color;
-		
+				
 		for(int i=0; i<objects.length; i++){
 
 			String param = (String) objects[i][0];
@@ -37,10 +39,15 @@ public class Menu {
 				color = (int) App.colors[i];
 			}
 			
-			sliders[i] = new Slider(scene, new PVector(location.x, location.y + 15*i), param, lowValue, maxValue, color);
-						
+			
 			int row = i/numSliders;
-			int sliderId = i%numSliders;	
+			int sliderId = i%numSliders;
+			int gapBetweenSliders = 15*row;
+			
+			yPos = (int) (location.y + 15*i + gapBetweenSliders);
+			
+			sliders[i] = new Slider(scene, new PVector(location.x, yPos), param, lowValue, maxValue, color);
+						
 			
 			if(App.BCF2000) sliders[i].setbehSlider(row, sliderId);
 			
@@ -55,29 +62,16 @@ public class Menu {
 	public void reveal(){
 		showTime = SHOWTIME_MAX;    
 	}
-	public void display2(SecondApplet p){
+	public void display(SecondApplet p){
 		
 		float mx, my, mwidth, mheight;
 	    mx = location.x-10;
 	    my = location.y-10;
-	    mwidth = 120;
-	    mheight = 15*sliders.length - 35;
+	    mwidth = 300;
+	    mheight =  yPos;
 		
 		drawBorders(p, mx, my, mwidth, mheight);
 		for (Slider s: sliders) s.display(p);
-	}
-	public void display(PApplet p){
-
-	    float mx, my, mwidth, mheight;
-	    mx = location.x-10;
-	    my = location.y-10;
-	    mwidth = 120;
-	    mheight = location.y + 15*sliders.length - 35;
-	    
-	    if(p.mouseX > mx && p.mouseX < mx+mwidth && p.mouseY > my && p.mouseY < my + mheight || showTime>0) {
-	    	drawBorders(p, mx, my, mwidth, mheight);
-	    	for (Slider s: sliders) s.display(p);
-	    }
 	}
 	public int getSlidersLength(){
 		return sliders.length;
@@ -89,8 +83,8 @@ public class Menu {
 		p.noFill();
 		p.rectMode(PApplet.CORNER);
 		p.strokeWeight(1);
-		p.stroke(App.colors[4], 127);
-		p.rect(mx, my, mwidth,  15*(sliders.length+1));  
+		p.stroke(0xFFFFFFFF, 127);
+		p.rect(mx, my, mwidth, mheight);  
 	}
 	public void resetSliders(){
 		for (Slider s: sliders) s.reset();

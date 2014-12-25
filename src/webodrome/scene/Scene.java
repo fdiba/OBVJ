@@ -125,19 +125,14 @@ public class Scene {
 		menu = new Menu(this, new PVector(40, 30), objects);
 	}
 	public void update(){
-		//if(menu!=null)menu.update(pApplet);
 		if(menu!=null)menu.update(App.secondApplet);
 	}
 	public void update(SimpleOpenNI context){
-		//if(menu!=null)menu.update(pApplet);
 		if(menu!=null)menu.update(App.secondApplet);
 		
 		depthValues = context.depthMap();
 	}
 	public void displayMenu(){
-		menu.display(pApplet);
-	}
-	public void displayMenu2(){
-		menu.display2(App.secondApplet);
+		menu.display(App.secondApplet);
 	}
 }
