@@ -72,7 +72,7 @@ public class ChunkyScene extends Scene {
 		
 		//edit last skulls
 		if(App.useLiveMusic && amplitude > 1){
-			addAndEraseBuffers();
+			addUpdateAndEraseBuffers();
 			if(megaSkulls.size()>0){
 				ArrayList<ArrayList<PVector>> editedSkulls = editLastArrayList(megaSkulls.get(megaSkulls.size()-1), amplitude);
 				megaSkulls.remove(megaSkulls.size()-1);

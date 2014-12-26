@@ -193,7 +193,7 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"reduce", 5, 10, 5, App.colors[6]},
+	                {"rawData", 0, 10, 5, App.colors[6]},
 	                
 	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
@@ -242,7 +242,7 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},	                
 	                {"ySpace", 4, 150, 4, App.colors[5]},	 
 	                
-	                {"amplitude", 1, 200, 25, App.colors[4]},
+	                {"amplitude", 1, 200, 180, App.colors[4]},
 	                {"depth", -200, 200, 112, App.colors[6]},
 	                {"maxDist", 1, 250, 45, App.colors[7]},
 	                {"alpha", -255, 255, 255, App.colors[3]} };
@@ -279,8 +279,8 @@ public class OBVJ extends PApplet {
 			App.oldSceneId = sceneId;
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -100},
-	                {"zTrans", -2500, 2500, -200},
+	                {"yTrans", -2500, 2500, 0},
+	                {"zTrans", -2500, 2500, 0},
 	                {"alpha", 0, 255, 0, App.colors[6]},
 	                {"rotateX", -360, 360, 0, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
@@ -324,8 +324,8 @@ public class OBVJ extends PApplet {
 			App.oldSceneId = sceneId;
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -100},
-	                {"zTrans", -2500, 2500, -200},
+	                {"yTrans", -2500, 2500, 0},
+	                {"zTrans", -2500, 2500, 0},
 	                {"alpha", 0, 200, 0, App.colors[6]},
 	                {"rotateX", -360, 360, 0, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
@@ -364,8 +364,8 @@ public class OBVJ extends PApplet {
 			App.oldSceneId = sceneId;
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -100},
-	                {"zTrans", -2500, 2500, -200},
+	                {"yTrans", -2500, 2500, 0},
+	                {"zTrans", -2500, 2500, 0},
 	                {"rotateX", -360, 360, 0, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]} };

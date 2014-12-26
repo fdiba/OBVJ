@@ -61,20 +61,75 @@ public class DrawLineScene extends Scene {
 		
 		lineNumber = 0;
 				
-		addAndEraseBuffers();
+		updateBuffers();
+				
+		//editPoints();
 		
 	}
 	public void display(){
 		
 		int ySpace = params.get("ySpace");
 		
-		
-		for (int i=10; i<imgHeight; i+= ySpace){
+		//TODO reverse it
+		for (int i=0; i<imgHeight; i+= ySpace){
 		    
 			oldVector = null;
 			oldDepthValue = 0;
 			oldBufferValue = 0;
 	    
+			FloatList actualBufferValues;
+	    
+		    if(multipleBuffers){ //display different lines
+		    	
+		    	if(lineNumber>buffers.size()-1){
+		    		
+		    		actualBufferValues = buffers.get(lineNumber-1);
+		    		
+		    		FloatList bufferValues = new FloatList();
+		    		bufferValues = actualBufferValues.copy();
+					buffers.add(bufferValues);
+		    		
+		    	} else {
+		    		actualBufferValues = buffers.get(lineNumber);
+		    	}
+		    	
+		    	
+		    } else { //display the same line
+		    	actualBufferValues = buffers.get(buffers.size()-1); 
+		    }
+		    
+		    if(actualBufferValues.size() > 0) drawLines(i, actualBufferValues, lineNumber);
+		    		    
+		    lineNumber++;    
+	
+		}
+		
+		checkNumBuffers();
+		
+	}
+	private void checkNumBuffers(){
+		
+		while(buffers.size()>lineNumber){
+			buffers.remove(0);
+		}
+	}
+	protected void editPoints(){
+		
+		
+		int ySpace = params.get("ySpace");
+		int foo=0;
+		
+		for (int i=0; i<imgHeight; i+= ySpace){
+			
+			foo=i;
+		}
+		
+		PApplet.println(foo+" "+imgHeight/ySpace);
+		
+		/*int ySpace = params.get("ySpace");
+		
+		for (int i=10; i<imgHeight; i+= ySpace){
+		    
 			FloatList actualBufferValues;
 	    
 		    if(multipleBuffers){ //display different lines
@@ -85,16 +140,24 @@ public class DrawLineScene extends Scene {
 		    
 		    if(actualBufferValues.size() > 0) {
 		    	
-		    	editPointsPosition(i, actualBufferValues, lineNumber);
+		    	for(int j=0; j<imgWidth; j+=10){
+	      		    
+					actualVector = pvectors[j+i*imgWidth];
+				   
+					int k = (int) PApplet.map(j, 0, imgWidth-1, 0, actualBufferValues.size()-1);
+				    
+					actualBufferValue = actualBufferValues.get(k);
+					
+					actualDepthValue = depthValues[j+i*imgWidth];
+				
+		    	}  
 		    
 		    }
-		    
-		    lineNumber++;    
-	
-		}
+		
+		}*/
 		
 	}
-	private void editPointsPosition(int i, FloatList actualBufferValues, int lineNumber){
+	private void drawLines(int i, FloatList actualBufferValues, int lineNumber){
 		
 		int hVal = App.highestValue;
 		int lVal = App.lowestValue;
@@ -118,7 +181,7 @@ public class DrawLineScene extends Scene {
 		    	} else { //background
 	                
 			        if(actualDepthValue < lVal) {
-			        	//depthValue = lVal;
+			        	//actualDepthValue = lVal;
 			        	actualDepthValue = hVal;
 			        } else if(actualDepthValue > hVal){
 			        	actualDepthValue = hVal;
@@ -137,7 +200,6 @@ public class DrawLineScene extends Scene {
 		}  
 
 	}
-	
 	private void drawLine(int lVal, int hVal, boolean isInFront, int lineNumber){
 		
 		int c;
@@ -155,7 +217,6 @@ public class DrawLineScene extends Scene {
         	c = pApplet.color(blackAndWhiteColor);
         }
         
-        
         int strokeMax = params.get("strokeWeight");
         
         float weight = (float) PApplet.map(actualDepthValue, lVal, hVal, strokeMax, 1);
@@ -164,9 +225,9 @@ public class DrawLineScene extends Scene {
       
         pApplet.stroke(c);
 		pApplet.strokeWeight(weight);
-
-		float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
-        float avz = actualVector.z - actualDepthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
+		
+		float ovz = -(oldDepthValue*params.get("depth") + oldBufferValue);
+        float avz = -(actualDepthValue*params.get("depth") + actualBufferValue);
         
         float distance = PApplet.abs(ovz-avz);
              

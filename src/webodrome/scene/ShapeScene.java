@@ -88,7 +88,7 @@ public class ShapeScene extends Scene {
 		
 		//edit last contours
 		if(App.useLiveMusic && amplitude > 1){
-			addAndEraseBuffers();
+			addUpdateAndEraseBuffers();
 			if(megaContours.size()>0){
 				ArrayList<ArrayList<PVector>> editedContours = editLastArrayList(megaContours.get(megaContours.size()-1), amplitude);
 				megaContours.remove(megaContours.size()-1);

@@ -45,10 +45,8 @@ private PVector[] pvectors;
 		super.update(context);
 		
 		lineNumber = 0;
-		
-		//depthValues = context.depthMap();
-		
-		addAndEraseBuffers();
+				
+		updateBuffers();
 		
 	}
 	public void display(){
@@ -56,7 +54,7 @@ private PVector[] pvectors;
 		int ySpace = params.get("ySpace");
 		
 		
-		for (int i=10; i<imgHeight; i+= ySpace){
+		for (int i=0; i<imgHeight; i+= ySpace){
 		    
 			oldVector = null;
 			oldDepthValue = 0;
@@ -64,8 +62,21 @@ private PVector[] pvectors;
 	    
 			FloatList actualBufferValues;
 	    
-		    if(multipleBuffers){ //display different lines
-		    	actualBufferValues = buffers.get(lineNumber);
+			if(multipleBuffers){ //display different lines
+		    	
+		    	if(lineNumber>buffers.size()-1){
+		    		
+		    		actualBufferValues = buffers.get(lineNumber-1);
+		    		
+		    		FloatList bufferValues = new FloatList();
+		    		bufferValues = actualBufferValues.copy();
+					buffers.add(bufferValues);
+		    		
+		    	} else {
+		    		actualBufferValues = buffers.get(lineNumber);
+		    	}
+		    	
+		    	
 		    } else { //display the same line
 		    	actualBufferValues = buffers.get(buffers.size()-1); 
 		    }
@@ -76,8 +87,16 @@ private PVector[] pvectors;
 		  
 		}
 		
+		checkNumBuffers();
+		
 	}
-private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNumber){
+	private void checkNumBuffers(){
+		
+		while(buffers.size()>lineNumber){
+			buffers.remove(0);
+		}
+	}
+	private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNumber){
 		
 		int hVal = App.highestValue;
 		int lVal = App.lowestValue;
@@ -144,8 +163,8 @@ private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNu
 	    pApplet.stroke(c);
 		pApplet.strokeWeight(weight);
 	
-		float ovz = oldVector.z - oldDepthValue*params.get("depth") - oldBufferValue*params.get("amplitude");
-	    float avz = actualVector.z - actualDepthValue*params.get("depth") - actualBufferValue*params.get("amplitude");
+		float ovz = -1*(oldDepthValue*params.get("depth") + oldBufferValue);
+        float avz = -1*(actualDepthValue*params.get("depth") + actualBufferValue);
 	    
 	    float distance = PApplet.abs(ovz-avz);
 	         

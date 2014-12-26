@@ -21,7 +21,7 @@ public class MonitorScene extends Scene {
 		
 		buffers = new ArrayList<FloatList>();
 		
-		addAndEraseBuffers();
+		addUpdateAndEraseBuffers();
 		
 	}
 	public void display(){

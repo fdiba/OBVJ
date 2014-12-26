@@ -31,6 +31,7 @@ public class Scene {
 	protected ArrayList<FloatList> buffers;
 	
 	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){
+		
 		pApplet = _pApplet;
 		params = new HashMap<String, Integer>();
 		
@@ -45,19 +46,62 @@ public class Scene {
 		
 		createMenu(objects);
 	}
-	//TODO update it
-	protected void addAndEraseBuffers(){
+	//TODO UPDATE
+	protected void updateBuffers(){
 		
 		int bSize = buffers.size();
 		FloatList bufferValues = new FloatList();
 		
 		if(!App.useLiveMusic){
 			
-			for(int i = 0; i < App.player.bufferSize(); i++) bufferValues.append(App.player.left.get(i));
+			for(int i = 0; i < App.player.bufferSize(); i++) {
+
+				float value = App.player.left.get(i);
+				value *= params.get("amplitude");
+				bufferValues.append(value);
+			
+			}
 		
 		} else {
 			
-			for(int i = 0; i < App.in.bufferSize(); i++) bufferValues.append(App.in.left.get(i));
+			for(int i = 0; i < App.in.bufferSize(); i++) {
+				
+				float value = App.in.left.get(i);
+				value *= params.get("amplitude");
+				bufferValues.append(value);
+			
+			}
+		}
+	   
+		if(bSize > 0) buffers.remove(0);
+		buffers.add(bufferValues);
+		
+	}
+	//TODO UPDATE FOR EACH SCENE
+	protected void addUpdateAndEraseBuffers(){
+		
+		int bSize = buffers.size();
+		FloatList bufferValues = new FloatList();
+		
+		if(!App.useLiveMusic){
+			
+			for(int i = 0; i < App.player.bufferSize(); i++) {
+
+				float value = App.player.left.get(i);
+				//value *= params.get("amplitude");
+				bufferValues.append(value);
+			
+			}
+		
+		} else {
+			
+			for(int i = 0; i < App.in.bufferSize(); i++) {
+				
+				float value = App.in.left.get(i);
+				//value *= params.get("amplitude");
+				bufferValues.append(value);
+			
+			}
 		}
 	   
 		if(bSize > 0) buffers.remove(0);

@@ -1,6 +1,5 @@
 package webodrome.ctrl;
 
-import processing.core.PApplet;
 import themidibus.MidiBus;
 import webodrome.App;
 
