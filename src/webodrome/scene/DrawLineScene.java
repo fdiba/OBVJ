@@ -30,7 +30,7 @@ public class DrawLineScene extends Scene {
 		
 		super(_pApplet, objects, _width, _height);
 		
-		PApplet.println(xRatio+" "+yRatio);
+		//PApplet.println(xRatio+" "+yRatio);
 		
 		setVectors();
 		
@@ -82,8 +82,8 @@ public class DrawLineScene extends Scene {
 		    if(multipleBuffers){ //display different lines
 		    	
 		    	if(lineNumber>buffers.size()-1){
-		    		
-		    		actualBufferValues = buffers.get(lineNumber-1);
+		    				    		
+		    		actualBufferValues = buffers.get(buffers.size()-1);
 		    		
 		    		FloatList bufferValues = new FloatList();
 		    		bufferValues = actualBufferValues.copy();

@@ -66,7 +66,7 @@ private PVector[] pvectors;
 		    	
 		    	if(lineNumber>buffers.size()-1){
 		    		
-		    		actualBufferValues = buffers.get(lineNumber-1);
+		    		actualBufferValues = buffers.get(buffers.size()-1);
 		    		
 		    		FloatList bufferValues = new FloatList();
 		    		bufferValues = actualBufferValues.copy();
