@@ -105,8 +105,8 @@ public class SecondApplet extends PApplet {
 			}  else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-									   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45, 255};
+									   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -115,8 +115,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '1'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, 255};
+						   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -125,8 +125,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '2'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250, 255};
+						   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -135,8 +135,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '3'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-						   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 1, 255};
+						   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 1};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -145,8 +145,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '4') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 70, 60, 60, 45, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, -50, 20, 16, -290, 0, 90, 70, 60, 60, 45};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -155,8 +155,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '5') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 115, 10, 60, 45, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, -50, 20, 16, -290, 0, 90, 115, 10, 60, 45};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -165,8 +165,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '6') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -50, 50, 50, -100, 0, 90, 450, 10, -72, 1, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, -50, 50, 50, -100, 0, 90, 450, 10, -72, 1};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -175,8 +175,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '7') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 10, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 10};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -185,8 +185,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '8') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -195,8 +195,8 @@ public class SecondApplet extends PApplet {
 			} else if (key == '9') {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-			   			   "amplitude", "ySpace", "depth", "maxDist", "alpha"};
-				int[] values = {0, 0, 50, 8, -360, -180, -360, 500, 10, -200, 250, 255};
+			   			   "amplitude", "ySpace", "depth", "maxDist"};
+				int[] values = {0, 0, 50, 8, -360, -180, -360, 500, 10, -200, 250};
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
@@ -260,8 +260,6 @@ public class SecondApplet extends PApplet {
 			
 			for (int i=0; i<parameters.length; i++){
 				App.getActualScene().params.put(parameters[i], values[i]);
-				//TODO UPDATE IT
-				//App.actualMenu.sliders[i].initValue(values[i]);
 			}
 			
 			App.getActualScene().menu.reinitSlidersValueAndPos();

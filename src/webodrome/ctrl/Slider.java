@@ -42,21 +42,14 @@ public class Slider {
 		
 	}
 	public void initValueAndPos(float _value){
-		
 		value = _value;
-	    
-		float xPos = PApplet.map(value, lowValue, maxValue, location.x, location.x+WIDTH);
-		sliderCtrl.setXLocation(xPos);
-		    
-		if(App.BCF2000){     
-			int behValue = (int) PApplet.map(value, lowValue, maxValue, 0, 127);
-			App.behringer.setSliderPosition(row, id, behValue);
-		}
-    
+		initPos();
 	}
 	public void reinitValueAndPos(){
-		
 		value = App.getActualScene().params.get(param);
+		initPos();
+	}
+	private void initPos(){
 		
 		float xPos = PApplet.map(value, lowValue, maxValue, location.x, location.x+WIDTH);
 		sliderCtrl.setXLocation(xPos);

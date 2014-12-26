@@ -124,7 +124,7 @@ public class Ramp{
   	}
   	public int pickColor(float depthValue, int lowestValue, int highestValue, int offset){
   		int colorId = (int) PApplet.map(depthValue, lowestValue, highestValue, 0, colors.length-1-offset);
-  		return colors[colorId];  
+		return colors[colorId];  	
   	}
   	public int pickColor(float depthValue, int lowestValue, int highestValue){
   		int colorId = (int) PApplet.map(depthValue, lowestValue, highestValue, 0, colors.length-1);
