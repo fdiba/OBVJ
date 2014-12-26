@@ -60,9 +60,7 @@ public class DrawLineScene extends Scene {
 		super.update(context);
 		
 		lineNumber = 0;
-		
-		//depthValues = context.depthMap();
-		
+				
 		addAndEraseBuffers();
 		
 	}
@@ -104,8 +102,12 @@ public class DrawLineScene extends Scene {
 		for(int j=0; j<imgWidth; j+=10){
       		    
 			actualVector = pvectors[j+i*imgWidth];
-		    actualBufferValue = actualBufferValues.get(j);
-		    actualDepthValue = depthValues[j+i*imgWidth];
+		   
+			int k = (int) PApplet.map(j, 0, imgWidth-1, 0, actualBufferValues.size()-1);
+		    
+			actualBufferValue = actualBufferValues.get(k);
+			
+			actualDepthValue = depthValues[j+i*imgWidth];
 	    	    
 		    if(oldVector != null){
 	            
@@ -201,7 +203,7 @@ public class DrawLineScene extends Scene {
 	}
 	private void setBuffers(int _ySpace){
 		
-		for (int i=10; i<imgHeight; i+= _ySpace){
+		for (int i=0; i<imgHeight; i+= _ySpace){
 			FloatList bufferValues = new FloatList();
 			buffers.add(bufferValues);
 		}

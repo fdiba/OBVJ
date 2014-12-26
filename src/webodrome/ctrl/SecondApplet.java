@@ -7,6 +7,7 @@ import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawLineScene;
+import webodrome.scene.DrawPointScene;
 import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
@@ -91,13 +92,16 @@ public class SecondApplet extends PApplet {
 			App.useColors = !App.useColors;
 		} else if(key=='s'){
 			savePicture();
-		} else if(App.getSceneId() == 0 || App.getSceneId() == 1){
+		} else if(App.getSceneId() == 0){
 		
-			
 			if (key == 'v') {
+				
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
+			
 			} else if (key == 'b') {
+				
 				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
+			
 			}  else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -127,6 +131,7 @@ public class SecondApplet extends PApplet {
 				
 				App.useColors = false;
 				DrawLineScene.multipleBuffers = true;
+				
 			} else if (key == '3'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -199,6 +204,15 @@ public class SecondApplet extends PApplet {
 				
 			}
 			
+		} else if(App.getSceneId() == 1){
+			
+			if (key == 'v') {
+				DrawPointScene.linesVisibility = !DrawPointScene.linesVisibility;
+			} else if (key == 'b') {
+				DrawPointScene.multipleBuffers = !DrawPointScene.multipleBuffers;
+			}
+			
+			
 		} else if(App.getSceneId() == 2){
 			
 			if (key == 'f'){		
@@ -246,8 +260,11 @@ public class SecondApplet extends PApplet {
 			
 			for (int i=0; i<parameters.length; i++){
 				App.getActualScene().params.put(parameters[i], values[i]);
-				App.actualMenu.sliders[i].initValue(values[i]);
+				//TODO UPDATE IT
+				//App.actualMenu.sliders[i].initValue(values[i]);
 			}
+			
+			App.getActualScene().menu.reinitSlidersValueAndPos();
 
 			break;
 

@@ -1,5 +1,6 @@
 package webodrome.ctrl;
 
+import processing.core.PApplet;
 import themidibus.MidiBus;
 import webodrome.App;
 
@@ -30,7 +31,7 @@ public class BehringerBCF {
     
 	}
 	public void midiMessage(int channel, int number, int value){
-	    
+			    
 		if(channel == 154 && number != slidersList){
 	    
 			slidersList = number;

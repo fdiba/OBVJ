@@ -193,12 +193,13 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
+	                {"reduce", 5, 10, 5, App.colors[6]},
 	                
+	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -200, 200, 112, App.colors[6]},
 	                {"amplitude", 1, 500, 390, App.colors[4]},
-	                {"maxDist", 1, 250, 200, App.colors[7]},
+	                {"maxDist", 1, 250, 250, App.colors[7]},
 	                {"alpha", 0, 254, 38, App.colors[3]} };
 			
 			drawLineScene = new DrawLineScene(this, objects, w, h);
@@ -238,8 +239,8 @@ public class OBVJ extends PApplet {
 	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
-	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                {"rotateZ", -360, 360, 0, App.colors[2]},	                
+	                {"ySpace", 4, 150, 4, App.colors[5]},	 
 	                
 	                {"amplitude", 1, 200, 25, App.colors[4]},
 	                {"depth", -200, 200, 112, App.colors[6]},

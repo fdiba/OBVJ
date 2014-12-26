@@ -85,7 +85,11 @@ private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNu
 		for(int j=0; j<imgWidth; j+=10){
       		    
 			actualVector = pvectors[j+i*imgWidth];
-		    actualBufferValue = actualBufferValues.get(j);
+			
+			int k = (int) PApplet.map(j, 0, imgWidth-1, 0, actualBufferValues.size()-1);
+		    
+			actualBufferValue = actualBufferValues.get(k);
+		    
 		    actualDepthValue = depthValues[j+i*imgWidth];
 	    	    
 		    if(oldVector != null){
@@ -168,7 +172,7 @@ private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNu
 	}
 	private void setBuffers(int _ySpace){
 		
-		for (int i=10; i<imgHeight; i+= _ySpace){
+		for (int i=0; i<imgHeight; i+= _ySpace){
 			FloatList bufferValues = new FloatList();
 			buffers.add(bufferValues);
 		}

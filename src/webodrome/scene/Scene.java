@@ -45,25 +45,22 @@ public class Scene {
 		
 		createMenu(objects);
 	}
+	//TODO update it
 	protected void addAndEraseBuffers(){
 		
+		int bSize = buffers.size();
 		FloatList bufferValues = new FloatList();
 		
 		if(!App.useLiveMusic){
-		
-			for(int i = 0; i < App.player.bufferSize(); i++) {
-				bufferValues.append(App.player.left.get(i));
-			}
 			
+			for(int i = 0; i < App.player.bufferSize(); i++) bufferValues.append(App.player.left.get(i));
+		
 		} else {
 			
-			for(int i = 0; i < App.in.bufferSize(); i++) {
-				bufferValues.append(App.in.left.get(i));
-			}
-			
+			for(int i = 0; i < App.in.bufferSize(); i++) bufferValues.append(App.in.left.get(i));
 		}
 	   
-		if(buffers.size() > 0) buffers.remove(0);
+		if(bSize > 0) buffers.remove(0);
 		buffers.add(bufferValues);
 		
 	}

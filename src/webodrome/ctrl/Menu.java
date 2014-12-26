@@ -52,7 +52,7 @@ public class Menu {
 			if(App.BCF2000) sliders[i].setbehSlider(row, sliderId);
 			
 			int value = (int) objects[i][3];
-			sliders[i].initValue(value);
+			sliders[i].initValueAndPos(value);
 			
 			scene.params.put(param, value);
 			
@@ -85,6 +85,9 @@ public class Menu {
 		p.strokeWeight(1);
 		p.stroke(0xFFFFFFFF, 127);
 		p.rect(mx, my, mwidth, mheight);  
+	}
+	public void reinitSlidersValueAndPos(){
+		for (Slider s: sliders) s.reinitValueAndPos();
 	}
 	public void resetSliders(){
 		for (Slider s: sliders) s.reset();

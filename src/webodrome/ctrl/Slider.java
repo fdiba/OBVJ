@@ -41,19 +41,34 @@ public class Slider {
 	    color = _color;
 		
 	}
-	public void initValue(float val){
+	public void initValueAndPos(float _value){
+		
+		value = _value;
 	    
-		value = PApplet.map(val, lowValue, maxValue, location.x, location.x+WIDTH);
-		sliderCtrl.setXLocation(value);
+		float xPos = PApplet.map(value, lowValue, maxValue, location.x, location.x+WIDTH);
+		sliderCtrl.setXLocation(xPos);
 		    
 		if(App.BCF2000){     
-			int behValue = (int) PApplet.map(val, lowValue, maxValue, 0, 127);
+			int behValue = (int) PApplet.map(value, lowValue, maxValue, 0, 127);
 			App.behringer.setSliderPosition(row, id, behValue);
 		}
     
 	}
-	public void editValWithBeh(int value){
-		float xPos = PApplet.map(value, 0, 127, lowXPos, maxYPos);
+	public void reinitValueAndPos(){
+		
+		value = App.getActualScene().params.get(param);
+		
+		float xPos = PApplet.map(value, lowValue, maxValue, location.x, location.x+WIDTH);
+		sliderCtrl.setXLocation(xPos);
+		    
+		if(App.BCF2000){     
+			int behValue = (int) PApplet.map(value, lowValue, maxValue, 0, 127);
+			App.behringer.setSliderPosition(row, id, behValue);
+		}
+		
+	}
+	public void editValWithBeh(int _value){
+		float xPos = PApplet.map(_value, 0, 127, lowXPos, maxYPos);
 	    sliderCtrl.location.x = xPos;
 	    editValue();
 	}
