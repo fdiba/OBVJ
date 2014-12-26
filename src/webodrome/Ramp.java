@@ -22,8 +22,8 @@ public class Ramp{
 			// from red (FF0000) to yellow (FFFF00) to green (00FF00)
   			useColors();
 			break;
-
 		default:
+			useColors();
 			break;
 		}
 

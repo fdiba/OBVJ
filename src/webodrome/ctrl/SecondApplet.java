@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;
-import webodrome.scene.DrawPointsAndLinesScene;
+import webodrome.scene.DrawLineScene;
 import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
@@ -95,9 +95,9 @@ public class SecondApplet extends PApplet {
 		
 			
 			if (key == 'v') {
-				DrawPointsAndLinesScene.linesVisibility = !DrawPointsAndLinesScene.linesVisibility;
+				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == 'b') {
-				DrawPointsAndLinesScene.multipleBuffers = !DrawPointsAndLinesScene.multipleBuffers;
+				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
 			}  else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -106,7 +106,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 			
 			} else if (key == '1'){
 				
@@ -116,7 +116,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '2'){
 				
@@ -126,7 +126,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = true;
+				DrawLineScene.multipleBuffers = true;
 			} else if (key == '3'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -135,7 +135,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '4') {
 				
@@ -145,7 +145,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '5') {
 				
@@ -155,7 +155,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '6') {
 				
@@ -165,7 +165,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '7') {
 				
@@ -175,7 +175,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = true;
+				DrawLineScene.multipleBuffers = true;
 				
 			} else if (key == '8') {
 				
@@ -185,7 +185,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = false;
+				DrawLineScene.multipleBuffers = false;
 				
 			} else if (key == '9') {
 				
@@ -195,7 +195,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				App.useColors = false;
-				DrawPointsAndLinesScene.multipleBuffers = true;
+				DrawLineScene.multipleBuffers = true;
 				
 			}
 			

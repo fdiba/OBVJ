@@ -17,7 +17,8 @@ import webodrome.App;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.PFrame;
 import webodrome.scene.ChunkyScene;
-import webodrome.scene.DrawPointsAndLinesScene;
+import webodrome.scene.DrawLineScene;
+import webodrome.scene.DrawPointScene;
 import webodrome.scene.MonitorScene;
 import webodrome.scene.ShapeScene;
 
@@ -40,7 +41,8 @@ public class OBVJ extends PApplet {
 		
 	//-------- scenes -----------//
 	
-	private DrawPointsAndLinesScene drawPointsAndLinesScene; //scene 0 et 1
+	private DrawLineScene drawLineScene; //scene 0
+	private DrawPointScene drawPointScene; //scene 1
 	private ShapeScene shapeScene; //scene 2
 	private ChunkyScene chunkyScene; //scene 3
 	private MonitorScene monitorScene; //scene 4
@@ -199,8 +201,8 @@ public class OBVJ extends PApplet {
 	                {"maxDist", 1, 250, 200, App.colors[7]},
 	                {"alpha", 0, 254, 38, App.colors[3]} };
 			
-			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
-			App.setActualScene(drawPointsAndLinesScene);
+			drawLineScene = new DrawLineScene(this, objects, w, h);
+			App.setActualScene(drawLineScene);
 					
 		}
 		
@@ -208,13 +210,13 @@ public class OBVJ extends PApplet {
 		
 		frameRate(App.getActualScene().params.get("frameRate"));
 		
-		drawPointsAndLinesScene.update(context);
+		drawLineScene.update(context);
 		
 		pushMatrix();
 		  
 		translateAndRotate();
 		  
-		drawPointsAndLinesScene.display();
+		drawLineScene.display();
 		  
 		popMatrix();
 						
@@ -244,8 +246,8 @@ public class OBVJ extends PApplet {
 	                {"maxDist", 1, 250, 45, App.colors[7]},
 	                {"alpha", -255, 255, 255, App.colors[3]} };
 			
-			drawPointsAndLinesScene = new DrawPointsAndLinesScene(this, objects, w, h);
-			App.setActualScene(drawPointsAndLinesScene);
+			drawPointScene = new DrawPointScene(this, objects, w, h);
+			App.setActualScene(drawPointScene);
 					
 		}
 		
@@ -253,13 +255,13 @@ public class OBVJ extends PApplet {
 		
 		frameRate(App.getActualScene().params.get("frameRate"));
 
-		drawPointsAndLinesScene.update(context);
+		drawPointScene.update(context);
 		
 		pushMatrix();
 		  
 		translateAndRotate();
 		  
-		drawPointsAndLinesScene.display1();
+		drawPointScene.display();
 		  
 		popMatrix();
 		
