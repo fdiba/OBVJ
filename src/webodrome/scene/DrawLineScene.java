@@ -79,6 +79,7 @@ public class DrawLineScene extends Scene {
 				
 		int actualHLines=0;
 		int depth = params.get("depth");
+		float rawData = (float) (params.get("rawData")*0.1);
 		
 		for (int i=0; i<imgHeight; i+= ySpace){
 			
@@ -95,6 +96,8 @@ public class DrawLineScene extends Scene {
 			for(int j=0; j<imgWidth; j+=xSpace){
 				
 				PVector v = pvectors[j+i*imgWidth];
+				PVector target = new PVector();
+				
 				int valueId = (int) PApplet.map(j, 0, imgWidth-1, 0, bSize);
 				float bValue = actualBufferValues.get(valueId);
 				float depthValue = depthValues[j+i*imgWidth];
@@ -110,8 +113,11 @@ public class DrawLineScene extends Scene {
 				
 				float mvt = depthValue*depth + bValue;
 				
-				//TODO
-				v.z = 0 - mvt;
+				target.z -= mvt;
+				
+				PVector sub = PVector.sub(target, v);
+
+				v.z += sub.z*rawData;
 				
 				if(v.z>zMax)zMax=v.z;
 				if(v.z<zMin)zMin=v.z;
