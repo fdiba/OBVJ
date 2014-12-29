@@ -58,7 +58,7 @@ public class Scene {
 
 				float value = App.player.left.get(i);
 				value *= amplitude;
-				bufferValues.append(value);
+				bufferValues.append(-value);
 			
 			}
 		
@@ -67,8 +67,9 @@ public class Scene {
 			for(int i = 0; i < App.in.bufferSize(); i++) {
 				
 				float value = App.in.left.get(i);
+				PApplet.println(value);
 				value *= amplitude;
-				bufferValues.append(value);
+				bufferValues.append(-value);
 			
 			}
 		}

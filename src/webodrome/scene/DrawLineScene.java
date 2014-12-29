@@ -110,6 +110,7 @@ public class DrawLineScene extends Scene {
 				
 				float mvt = depthValue*depth + bValue;
 				
+				//TODO
 				v.z = 0 - mvt;
 				
 				if(v.z>zMax)zMax=v.z;

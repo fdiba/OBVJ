@@ -197,7 +197,7 @@ public class OBVJ extends PApplet {
 	                
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
-	                {"xSpace", 10, 150, 10, App.colors[4]},
+	                {"xSpace", 4, 150, 10, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -1000, 1000, 110, App.colors[6]},
 	                {"amplitude", 1, 500, 390, App.colors[4]},
