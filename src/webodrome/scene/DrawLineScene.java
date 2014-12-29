@@ -13,6 +13,7 @@ public class DrawLineScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
+	public static int mode = 0;
 	
 	private Ramp ramp;
 	
@@ -37,6 +38,7 @@ public class DrawLineScene extends Scene {
 		                "depth limits: press l + UP OR DOWN" + "\n" +
 		                "dark lines visibility: press v" + "\n" +
 		                "use multiple buffers: press b" + "\n" +
+		                "use shapes: press h" + "\n" +
 		          		"use colors: press c");
 				
 	}
@@ -119,7 +121,7 @@ public class DrawLineScene extends Scene {
 		}
 		
 	}
-	public void display(){
+	private void displayLines(){
 		
 		int c;
 		int blackAndWhiteColor = 255;
@@ -177,6 +179,83 @@ public class DrawLineScene extends Scene {
 				
 			}
 				
-		}		
+		}	
+		
+	}
+	private void displayTextures(){
+
+		int alpha = params.get("alpha");
+		pApplet.fill(0xFF666666, alpha);
+		pApplet.strokeWeight(1);
+		pApplet.stroke(0xFF999999, 125);
+		
+		int xJump=xSpace*2;
+		int yJump=ySpace;
+		
+		int xPosMax = imgWidth-xJump;
+		int yPosMax = imgHeight;
+		
+		for (int i=ySpace; i<yPosMax; i+=yJump){
+			
+			pApplet.beginShape(PApplet.TRIANGLE_STRIP);
+			int prevLine = i-ySpace;
+			
+			for(int j=0; j<xPosMax; j+=xJump){
+								
+				int nextId = j+xSpace;
+				
+				PVector v1 = pvectors[j+i*imgWidth];
+				PVector v2 = pvectors[j+prevLine*imgWidth];
+				PVector v3 = pvectors[nextId+i*imgWidth];
+				PVector v4 = pvectors[nextId+prevLine*imgWidth];
+				
+				pApplet.vertex(v1.x, v1.y, v1.z);
+				pApplet.vertex(v2.x, v2.y, v2.z);
+				pApplet.vertex(v3.x, v3.y, v3.z);
+				pApplet.vertex(v4.x, v4.y, v4.z);
+				
+			}
+			pApplet.endShape();	
+		}
+	}
+	private void displayUncutLines(){
+		
+		int alpha = params.get("alpha");
+		
+		pApplet.noFill();
+		pApplet.strokeWeight(1);
+		pApplet.stroke(0xFFFFFFFF, alpha);
+		
+		for (int i=0; i<imgHeight; i+= ySpace){
+			
+			pApplet.beginShape();
+			
+			for(int j=0; j<imgWidth; j+=xSpace){
+				
+				PVector v = pvectors[j+i*imgWidth];
+				pApplet.vertex(v.x, v.y, v.z);
+				
+			}
+			pApplet.endShape();	
+		}	
+		
+	}
+	public void display(){
+		
+		switch (mode) {
+		case 0:
+			displayLines();
+			break;
+		case 1:
+			displayUncutLines();
+			break;
+		case 2:
+			displayTextures();
+			break;
+		default:
+			displayLines();
+			break;
+		}
+	
 	}
 }

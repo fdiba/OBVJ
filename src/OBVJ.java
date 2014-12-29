@@ -184,6 +184,7 @@ public class OBVJ extends PApplet {
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			
+			frameRate(sl_frameRate);
 			App.oldSceneId = sceneId;
 					
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
@@ -195,13 +196,13 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
+	                {"alpha", 0, 255, 127, App.colors[6]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
-	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -1000, 1000, 110, App.colors[6]},
 	                {"amplitude", 1, 500, 390, App.colors[4]},
-	                {"maxDist", 1, 250, 250, App.colors[7]},
+	                {"maxDist", 1, 1500, 500, App.colors[7]},
 	                {"alphaTS", 0, 254, 38, App.colors[3]} };
 			
 			drawLineScene = new DrawLineScene(this, objects, w, h);
@@ -210,8 +211,6 @@ public class OBVJ extends PApplet {
 		}
 		
 		//-------------- draw ------------------//
-		
-		frameRate(App.getActualScene().params.get("frameRate"));
 		
 		drawLineScene.update(context);
 		
@@ -233,6 +232,7 @@ public class OBVJ extends PApplet {
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			
+			frameRate(sl_frameRate);
 			App.oldSceneId = sceneId;
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
@@ -245,7 +245,6 @@ public class OBVJ extends PApplet {
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
 	                {"depthTS", -200, 200, -74, App.colors[6]},
-	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -1000, 1000, 110, App.colors[6]},
@@ -260,8 +259,6 @@ public class OBVJ extends PApplet {
 		
 		//-------------- draw ------------------//
 		
-		frameRate(App.getActualScene().params.get("frameRate"));
-
 		drawPointScene.update(context);
 		
 		pushMatrix();

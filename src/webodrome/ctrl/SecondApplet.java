@@ -29,7 +29,7 @@ public class SecondApplet extends PApplet {
 	
 	public void setup(){
 		
-		frameRate(12);
+		frameRate(24);
 		
 	}
 	public void draw(){
@@ -98,7 +98,10 @@ public class SecondApplet extends PApplet {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == 'b') {
 				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
-			}  else if (key == '0'){
+			}  else if (key == 'h') {
+				DrawLineScene.mode++;
+				if(DrawLineScene.mode>2)DrawLineScene.mode=0;
+			} else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 									   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
