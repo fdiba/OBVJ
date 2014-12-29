@@ -46,9 +46,9 @@ public class Scene {
 		
 		createMenu(objects);
 	}
-	//TODO UPDATE
 	protected void updateBuffers(){
-		
+
+		int amplitude = params.get("amplitude");
 		int bSize = buffers.size();
 		FloatList bufferValues = new FloatList();
 		
@@ -57,7 +57,7 @@ public class Scene {
 			for(int i = 0; i < App.player.bufferSize(); i++) {
 
 				float value = App.player.left.get(i);
-				value *= params.get("amplitude");
+				value *= amplitude;
 				bufferValues.append(value);
 			
 			}
@@ -67,7 +67,7 @@ public class Scene {
 			for(int i = 0; i < App.in.bufferSize(); i++) {
 				
 				float value = App.in.left.get(i);
-				value *= params.get("amplitude");
+				value *= amplitude;
 				bufferValues.append(value);
 			
 			}
