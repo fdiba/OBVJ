@@ -18,6 +18,7 @@ public class DrawLineScene extends Scene {
 	
 	private Ramp ramp;
 	
+	private int xSpace;
 	private int ySpace;
 	
 	private float zMin, zMax;	
@@ -28,7 +29,7 @@ public class DrawLineScene extends Scene {
 				
 		setVectors();
 		
-		ramp = new Ramp(0, true);
+		ramp = new Ramp(1, true);
 		
 		buffers = new ArrayList<FloatList>();
 		
@@ -64,6 +65,7 @@ public class DrawLineScene extends Scene {
 		
 		checkNumBuffers(actualNumberOfHLines);
 		
+		xSpace = params.get("xSpace");
 		editVectorsPos();
 
 	}
@@ -90,8 +92,7 @@ public class DrawLineScene extends Scene {
 			
 			int bSize = actualBufferValues.size()-1;
 			
-			//TODO ADD PARAMS
-			for(int j=0; j<imgWidth; j+=10){
+			for(int j=0; j<imgWidth; j+=xSpace){
 				
 				PVector v = pvectors[j+i*imgWidth];
 				int valueId = (int) PApplet.map(j, 0, imgWidth-1, 0, bSize);
@@ -105,9 +106,9 @@ public class DrawLineScene extends Scene {
 		        	depthValue = hVal;
 		        }
 				
-				depthValue = PApplet.map(depthValue, lVal, hVal, 0, 1);
+				depthValue = PApplet.map(depthValue, lVal, hVal, -1, 1);
 				
-				float mvt = depthValue*depth - bValue;
+				float mvt = depthValue*depth + bValue;
 				
 				v.z = 0 - mvt;
 				
@@ -125,17 +126,17 @@ public class DrawLineScene extends Scene {
 		
 		int c;
 		int blackAndWhiteColor = 255;
-		int threshold = params.get("alpha");
+		int alphaTS = params.get("alphaTS");
 		int strokeMax = params.get("strokeWeight");
 		int maxDist = params.get("maxDist");
+		int depthTS = params.get("depthTS");
 		boolean isInFront;
 				
 		for (int i=0; i<imgHeight; i+= ySpace){
 			
 			PVector pVector = new PVector();
 			
-			//TODO ADD PARAMS
-			for(int j=0; j<imgWidth; j+=10){
+			for(int j=0; j<imgWidth; j+=xSpace){
 				
 				PVector v = pvectors[j+i*imgWidth];
 				
@@ -147,8 +148,7 @@ public class DrawLineScene extends Scene {
 					
 					float distance = PApplet.dist(v.x, v.y, v.z, pVector.x, pVector.y, pVector.z);
 					
-					//TODO PARAM -500 --> 0;
-					if(v.z > -100){
+					if(v.z > depthTS){
 						isInFront = true;
 					} else {
 						isInFront = false;
@@ -157,7 +157,7 @@ public class DrawLineScene extends Scene {
 					if( (distance < maxDist && isInFront) || (distance < maxDist && linesVisibility) ){
 						
 						if(App.useColors){
-				        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, threshold);
+				        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, alphaTS);
 				        } else {
 
 				        	if(isInFront)blackAndWhiteColor = 0xFFFFFFFF;
