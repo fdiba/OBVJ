@@ -10,30 +10,24 @@ import webodrome.App;
 import webodrome.Ramp;
 
 public class DrawPointScene extends Scene {
-	
-private PVector[] pvectors;	
-	
-	private int lineNumber;
-	
+		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
 	
 	private Ramp ramp;
 	
-	//-----------//
-	private PVector oldVector, actualVector;
-	private float oldBufferValue, actualBufferValue;
-	private float oldDepthValue, actualDepthValue;
+	private int xSpace;
+	private int ySpace;
+	
+	private float zMin, zMax;	
 	
 	public DrawPointScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
-		
-		PApplet.println(xRatio+" "+yRatio);
-		
+				
 		setVectors();
 		
-		ramp = new Ramp(0, true);
+		ramp = new Ramp(1, true);
 		
 		buffers = new ArrayList<FloatList>();
 		
@@ -43,158 +37,130 @@ private PVector[] pvectors;
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
-		
-		lineNumber = 0;
-				
+						
 		updateBuffers();
+		
+		ySpace = params.get("ySpace");
+		int actualNumberOfHLines=0;
+		
+		for (int i=0; i<imgHeight; i+= ySpace){
+			actualNumberOfHLines++;
+		}
+		
+		checkNumBuffers(actualNumberOfHLines);
+		
+		xSpace = params.get("xSpace");
+		editVectorsPos();
+		
+	}
+	private void editVectorsPos(){
+		
+		int lVal = App.lowestValue;
+		int hVal = App.highestValue;
+		
+		zMin = 0;
+		zMax = -9999999;
+				
+		int actualHLines=0;
+		int depth = params.get("depth");
+		float rawData = (float) (params.get("rawData")*0.1);
+		
+		for (int i=0; i<imgHeight; i+= ySpace){
+			
+			FloatList actualBufferValues;
+			
+			if(multipleBuffers){ //display different lines
+		    	actualBufferValues = buffers.get(actualHLines);
+		    } else { //display the same line
+		    	actualBufferValues = buffers.get(buffers.size()-1); 
+		    }
+			
+			int bSize = actualBufferValues.size()-1;
+			
+			for(int j=0; j<imgWidth; j+=xSpace){
+				
+				PVector v = pvectors[j+i*imgWidth];
+				PVector target = new PVector();
+				
+				int valueId = (int) PApplet.map(j, 0, imgWidth-1, 0, bSize);
+				float bValue = actualBufferValues.get(valueId);
+				float depthValue = depthValues[j+i*imgWidth];
+				
+				if(depthValue < lVal) {
+		        	//depthValue = lVal;
+					depthValue = hVal;
+		        } else if(depthValue > hVal){
+		        	depthValue = hVal;
+		        }
+				
+				depthValue = PApplet.map(depthValue, lVal, hVal, -1, 1);
+				
+				float mvt = depthValue*depth + bValue;
+				
+				target.z -= mvt;
+				
+				PVector sub = PVector.sub(target, v);
+
+				v.z += sub.z*rawData;
+				
+				if(v.z>zMax)zMax=v.z;
+				if(v.z<zMin)zMin=v.z;
+
+			}
+			
+			actualHLines++;
+			
+		}
 		
 	}
 	public void display(){
 		
-		int ySpace = params.get("ySpace");
-		
-		
-		for (int i=0; i<imgHeight; i+= ySpace){
-		    
-			oldVector = null;
-			oldDepthValue = 0;
-			oldBufferValue = 0;
-	    
-			FloatList actualBufferValues;
-	    
-			if(multipleBuffers){ //display different lines
-		    	
-		    	if(lineNumber>buffers.size()-1){
-		    		
-		    		actualBufferValues = buffers.get(buffers.size()-1);
-		    		
-		    		FloatList bufferValues = new FloatList();
-		    		bufferValues = actualBufferValues.copy();
-					buffers.add(bufferValues);
-		    		
-		    	} else {
-		    		actualBufferValues = buffers.get(lineNumber);
-		    	}
-		    	
-		    	
-		    } else { //display the same line
-		    	actualBufferValues = buffers.get(buffers.size()-1); 
-		    }
-		    
-		    if(actualBufferValues.size() > 0) editPointsPosition1(i, actualBufferValues, lineNumber);
-		    
-		    lineNumber++;    
-		  
-		}
-		
-		checkNumBuffers();
-		
-	}
-	private void checkNumBuffers(){
-		
-		while(buffers.size()>lineNumber){
-			buffers.remove(0);
-		}
-	}
-	private void editPointsPosition1(int i, FloatList actualBufferValues, int lineNumber){
-		
-		int hVal = App.highestValue;
-		int lVal = App.lowestValue;
-	    
-		for(int j=0; j<imgWidth; j+=10){
-      		    
-			actualVector = pvectors[j+i*imgWidth];
-			
-			int k = (int) PApplet.map(j, 0, imgWidth-1, 0, actualBufferValues.size()-1);
-		    
-			actualBufferValue = actualBufferValues.get(k);
-		    
-		    actualDepthValue = depthValues[j+i*imgWidth];
-	    	    
-		    if(oldVector != null){
-	            
-		    	if(actualDepthValue >= lVal && actualDepthValue <= hVal){ //foreground
-		    		
-		    		drawPoint(lVal, hVal, true, lineNumber);
-		    	
-		    	} else { //background
-	                
-			        if(actualDepthValue < lVal) {
-			        	//depthValue = lVal;
-			        	actualDepthValue = hVal;
-			        } else if(actualDepthValue > hVal){
-			        	actualDepthValue = hVal;
-			        }
-	
-			        drawPoint(lVal, hVal, false, lineNumber);
-			        
-		    	}
-		    	
-		    }
-		    
-		    oldVector = actualVector;
-		    oldDepthValue = actualDepthValue;
-		    oldBufferValue = actualBufferValue;
-		
-		}  
-
-	}
-	private void drawPoint(int lVal, int hVal, boolean isInFront, int lineNumber){
-		
 		int c;
-		int blackAndWhiteColor;
+		int blackAndWhiteColor = 255;
+		int alphaTS = params.get("alphaTS");
+		int strokeMax = params.get("strokeWeight");
+		//int maxDist = params.get("maxDist");
+		int depthTS = params.get("depthTS");
+		boolean isInFront;
 		
-		if(isInFront){
-			blackAndWhiteColor = 255;
-		} else {
-			blackAndWhiteColor = 75;
+		pApplet.noStroke();
+				
+		for (int i=0; i<imgHeight; i+= ySpace){
+						
+			for(int j=0; j<imgWidth; j+=xSpace){
+				
+				PVector v = pvectors[j+i*imgWidth];
+
+				if(v.z > depthTS) isInFront = true;
+				else isInFront = false;
+				
+				if(isInFront || linesVisibility){
+					
+					if(App.useColors){
+			        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, alphaTS);
+			        } else {
+
+			        	if(isInFront)blackAndWhiteColor = 0xFFFFFFFF;
+			        	else blackAndWhiteColor = 0xFF666666;
+			        	
+			        	c = blackAndWhiteColor;
+			        }
+			        
+			        float weight = (float) PApplet.map(v.z, (int)zMin, (int)zMax, 1, strokeMax);
+					
+					pApplet.fill(c);
+
+					pApplet.pushMatrix();
+			    	pApplet.translate(0, 0, v.z);
+			    	pApplet.ellipse(v.x, v.y, weight, weight);
+			    	pApplet.popMatrix();
+					
+				}
+
+			}
+				
 		}
-	    
-	    if(App.useColors){
-	    	c = ramp.pickColor(actualDepthValue, lVal, hVal);  
-	    } else {
-	    	c = pApplet.color(blackAndWhiteColor);
-	    }
-	    
-	    float weight = (float) PApplet.map(actualDepthValue, lVal, hVal, 4, 1);
-		//weight *= xRatio;
-	    actualDepthValue = PApplet.map(actualDepthValue, lVal, hVal, -1, 1);
-	  
-	    pApplet.stroke(c);
-		pApplet.strokeWeight(weight);
-	
-		float ovz = -1*(oldDepthValue*params.get("depth") + oldBufferValue);
-        float avz = -1*(actualDepthValue*params.get("depth") + actualBufferValue);
-	    
-	    float distance = PApplet.abs(ovz-avz);
-	         
-	    if(	(isInFront && distance < params.get("maxDist")) || (distance < params.get("maxDist") && linesVisibility) ){
-	    	
-	    	float yPos = params.get("ySpace") * lineNumber;
-	    	float alpha = PApplet.map(yPos, 0, imgHeight, params.get("alpha"), 255);
-	    				
-			
-	    	pApplet.stroke(c, alpha);
-			pApplet.strokeWeight(weight);
-	    	pApplet.point(actualVector.x*xRatio, actualVector.y*yRatio, avz);
-			
-		}
-	
-	}
-	private void setVectors(){
-		pvectors = new PVector[imgWidth*imgHeight]; 
-		for (int i=0; i<imgHeight; i++){			
-			for(int j=0; j<imgWidth; j++){
-				pvectors[j+i*imgWidth] = new PVector(j, i, 0);
-		    }
-		} 
-	}
-	private void setBuffers(int _ySpace){
 		
-		for (int i=0; i<imgHeight; i+= _ySpace){
-			FloatList bufferValues = new FloatList();
-			buffers.add(bufferValues);
-		}
-  
-	}
+	}		
+
 }

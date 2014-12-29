@@ -10,8 +10,6 @@ import webodrome.App;
 import webodrome.Ramp;
 
 public class DrawLineScene extends Scene {
-	
-	private PVector[] pvectors;	
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
@@ -42,14 +40,6 @@ public class DrawLineScene extends Scene {
 		          		"use colors: press c");
 				
 	}
-	private void setVectors(){
-		pvectors = new PVector[imgWidth*imgHeight]; 
-		for (int i=0; i<imgHeight; i++){			
-			for(int j=0; j<imgWidth; j++){
-				pvectors[j+i*imgWidth] = new PVector(j*xRatio, i*yRatio, 0);				
-		    }
-		} 
-	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
@@ -69,7 +59,7 @@ public class DrawLineScene extends Scene {
 		editVectorsPos();
 
 	}
-	protected void editVectorsPos(){
+	private void editVectorsPos(){
 		
 		int lVal = App.lowestValue;
 		int hVal = App.highestValue;
@@ -189,27 +179,5 @@ public class DrawLineScene extends Scene {
 				
 		}
 		
-	}
-	private void checkNumBuffers(int actualNumberOfHLines){
-		
-		while(buffers.size()>actualNumberOfHLines){
-			buffers.remove(0);
-			//PApplet.println("remove buffer "+Math.random());
-		}
-		
-		while(buffers.size()<actualNumberOfHLines){	
-			FloatList actualBufferValues = buffers.get(buffers.size()-1);
-			FloatList bufferValues = actualBufferValues.copy();
-			buffers.add(bufferValues);
-		}
-		
-	}
-	private void setBuffers(int _ySpace){
-		
-		for (int i=0; i<imgHeight; i+= _ySpace){
-			FloatList bufferValues = new FloatList();
-			buffers.add(bufferValues);
-		}
-  
 	}
 }

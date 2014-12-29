@@ -30,6 +30,8 @@ public class Scene {
 	
 	protected ArrayList<FloatList> buffers;
 	
+	protected PVector[] pvectors;	
+	
 	public Scene(PApplet _pApplet, Object[][] objects, int _w, int _h){
 		
 		pApplet = _pApplet;
@@ -45,6 +47,37 @@ public class Scene {
 		yRatio = (float) h/imgHeight;
 		
 		createMenu(objects);
+	}
+	//-------------------- vectors grid --------------------//
+	protected void setVectors(){
+		pvectors = new PVector[imgWidth*imgHeight]; 
+		for (int i=0; i<imgHeight; i++){			
+			for(int j=0; j<imgWidth; j++){
+				pvectors[j+i*imgWidth] = new PVector(j*xRatio, i*yRatio, 0);				
+		    }
+		} 
+	}
+	//-------------------- buffers scenes 0 and 1 --------------------//
+	protected void setBuffers(int _ySpace){
+		
+		for (int i=0; i<imgHeight; i+= _ySpace){
+			FloatList bufferValues = new FloatList();
+			buffers.add(bufferValues);
+		}
+  
+	}
+	protected void checkNumBuffers(int actualNumberOfHLines){
+		
+		while(buffers.size()>actualNumberOfHLines){
+			buffers.remove(0);
+		}
+		
+		while(buffers.size()<actualNumberOfHLines){	
+			FloatList actualBufferValues = buffers.get(buffers.size()-1);
+			FloatList bufferValues = actualBufferValues.copy();
+			buffers.add(bufferValues);
+		}
+		
 	}
 	protected void updateBuffers(){
 
