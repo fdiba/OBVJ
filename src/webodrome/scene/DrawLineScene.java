@@ -177,7 +177,6 @@ public class DrawLineScene extends Scene {
 				
 			}
 				
-		}
-		
+		}		
 	}
 }

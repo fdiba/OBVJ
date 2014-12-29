@@ -116,7 +116,6 @@ public class DrawPointScene extends Scene {
 	public void display(){
 		
 		int c;
-		int blackAndWhiteColor = 255;
 		int alphaTS = params.get("alphaTS");
 		int strokeMax = params.get("strokeWeight");
 		//int maxDist = params.get("maxDist");
@@ -140,10 +139,9 @@ public class DrawPointScene extends Scene {
 			        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, alphaTS);
 			        } else {
 
-			        	if(isInFront)blackAndWhiteColor = 0xFFFFFFFF;
-			        	else blackAndWhiteColor = 0xFF666666;
+			        	if(isInFront) c = 0xFFFFFFFF;
+			        	else c = 0xFF666666;
 			        	
-			        	c = blackAndWhiteColor;
 			        }
 			        
 			        float weight = (float) PApplet.map(v.z, (int)zMin, (int)zMax, 1, strokeMax);

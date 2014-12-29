@@ -95,13 +95,9 @@ public class SecondApplet extends PApplet {
 		} else if(App.getSceneId() == 0){
 		
 			if (key == 'v') {
-				
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
-			
 			} else if (key == 'b') {
-				
 				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
-			
 			}  else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -200,6 +196,96 @@ public class SecondApplet extends PApplet {
 				DrawPointScene.linesVisibility = !DrawPointScene.linesVisibility;
 			} else if (key == 'b') {
 				DrawPointScene.multipleBuffers = !DrawPointScene.multipleBuffers;
+			} else if (key == '0'){
+			
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+									   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45, -90, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+			
+			} else if (key == '1'){
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+						   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, -100, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '2'){
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+						   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250, -150, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = true;
+				
+			} else if (key == '3'){
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+						   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 20, -50, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '4') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, -50, 20, 16, -290, 0, 90, 70, 60, 60, 45, -55, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '5') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, -50, 20, 16, -290, 0, 90, 115, 10, 60, 45, -55, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '6') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, -50, 50, 50, -100, 0, 90, 450, 10, -72, 20, 75, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '7') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 20, -50, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = true;
+				
+			} else if (key == '8') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40, 100, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = false;
+				
+			} else if (key == '9') {
+				
+				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+				int[] values = {0, 0, 50, 8, -360, -180, -360, 500, 10, -200, 250, 100, 10};
+				editParams(0, parameters, values);
+				
+				DrawLineScene.multipleBuffers = true;
+				
 			}
 			
 			
