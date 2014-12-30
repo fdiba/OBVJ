@@ -14,10 +14,17 @@ public class BehringerBCF {
 	
 	public final static int numSliders = 8;
 	
+	public static int[] potValues;
+	
 	public BehringerBCF(MidiBus _midiBus){
 		
 		midiBus = _midiBus;
 	    slidersList = 0; //chan 154 note 0 or 1
+	    
+	    potValues = new int[8];
+	    for(int i=0; i<potValues.length; i++) {
+	    	potValues[i]=0;
+	    }
 		
 	}
 	public void setSliderPosition(int bGrp, int bId, int behValue){
@@ -36,16 +43,16 @@ public class BehringerBCF {
 			slidersList = number;
 			App.actualMenu.resetBSliders();
 	     
-	    } else if(channel == 185){
+	    } else if(channel==185){ //faders
 	        
 	    	if(number==98) chan185num98Value = value;
 	    	if(number==6) chan185num6Value = value;
 	      
 	    	int id=999;	      
 	      
-	    	if(slidersList == 0) { //first sliders grp       
+	    	if(slidersList == 0) { //first faders grp       
 	    		id = chan185num98Value;
-	    	} else if (slidersList == 1){ //second sliders grp
+	    	} else if (slidersList == 1){ //second faders grp
 	    		id = chan185num98Value + numSliders;	    		
 	    	}
 	    		    	
@@ -56,6 +63,19 @@ public class BehringerBCF {
 	    		App.actualMenu.reveal();
 	    	}
 	       
+	    } else if (channel==191) { //pot
+	    	
+	    	potValues[number] = value;
+	    	
+	    } else if (channel==153) { //pot clic
+	    	
+	    	potValues[number] = 0;
+	    	resetPot(number);
+	    	
 	    }
+	}
+	private void resetPot(int number){
+		//reset translation when double clic
+		midiBus.sendMessage(191, number, 0);
 	}
 }

@@ -47,6 +47,9 @@ public class Slider {
 	}
 	public void reinitValueAndPos(){
 		value = App.getActualScene().params.get(param);
+		
+		updateTransValues(param, (int) value);
+		
 		initPos();
 	}
 	private void initPos(){
@@ -105,7 +108,27 @@ public class Slider {
 	private void editValue(){
 	    value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
 	    scene.params.put(param, (int) value);
-	    //PApplet.println(param + ": " + value);
+	    //PApplet.println(param + ": " + value); 
+
+	    updateTransValues(param, (int) value);
+	    
+	}
+	private void updateTransValues(String _param, int _val){
+		
+		switch (_param) {
+	    case "rotateX":
+			App.transValues[3] = _val;
+			break;
+		case "rotateY":
+			App.transValues[4] = _val;
+			break;
+		case "rotateZ":
+			App.transValues[5] = _val;
+			break;
+		default:
+			break;
+		}
+		
 	}
 	public void display(PApplet p) {
 		p.rectMode(PApplet.CORNER);

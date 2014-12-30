@@ -141,7 +141,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 70, 60, 60, 45, -55, 10};
+				int[] values = {0, -50, 20, 16, 70, 0, 90, 70, 60, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -150,7 +150,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 115, 10, 60, 45, -55, 10};
+				int[] values = {0, -50, 20, 16, 70, 0, 90, 115, 10, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -159,7 +159,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 50, 50, -100, 0, 90, 450, 10, -72, 20, 75, 10};
+				int[] values = {0, -50, 50, 50, 260, 0, 90, 450, 10, -72, 20, 75, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -177,7 +177,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40, 100, 10};
+				int[] values = {0, -100, -50, 4, 60, 180, 0, 100, 10, -200, 40, 100, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -186,7 +186,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, 0, 50, 8, -360, -180, -360, 500, 10, -200, 250, 100, 10};
+				int[] values = {0, 0, 50, 8, 0, 180, 0, 500, 10, -200, 250, 100, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;
@@ -239,7 +239,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 70, 60, 60, 45, -55, 10};
+				int[] values = {0, -50, 20, 16, 70, 0, 90, 70, 60, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -248,7 +248,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 20, 16, -290, 0, 90, 115, 10, 60, 45, -55, 10};
+				int[] values = {0, -50, 20, 16, 70, 0, 90, 115, 10, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -257,7 +257,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -50, 50, 50, -100, 0, 90, 450, 10, -72, 20, 75, 10};
+				int[] values = {0, -50, 50, 50, 260, 0, 90, 450, 10, -72, 20, 75, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -275,7 +275,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, -100, -50, 4, -300, -180, 0, 100, 10, -200, 40, 100, 10};
+				int[] values = {0, -100, -50, 4, 60, 180, 0, 100, 10, -200, 40, 100, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
@@ -284,7 +284,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, 0, 50, 8, -360, -180, -360, 500, 10, -200, 250, 100, 10};
+				int[] values = {0, 0, 50, 8, 0, 180, 0, 500, 10, -200, 250, 100, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;

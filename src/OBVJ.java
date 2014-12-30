@@ -121,6 +121,11 @@ public class OBVJ extends PApplet {
 				App.midiBus = new MidiBus(this, "BCF2000", "BCF2000");
 				App.behringer = new BehringerBCF(App.midiBus);
 			}
+			
+			App.transValues = new int[8];
+		    for(int i=0; i<App.transValues.length; i++) {
+		    	App.transValues[i]=0;
+		    }
 			//-------------------------//
 		
 		}
@@ -207,6 +212,8 @@ public class OBVJ extends PApplet {
 			
 			drawLineScene = new DrawLineScene(this, objects, w, h);
 			App.setActualScene(drawLineScene);
+			
+			App.transValues[4] = drawLineScene.params.get("rotateY");
 					
 		}
 		
@@ -216,7 +223,7 @@ public class OBVJ extends PApplet {
 		
 		pushMatrix();
 		  
-		translateAndRotate();
+		translateAndRotateV2();
 		  
 		drawLineScene.display();
 		  
@@ -390,6 +397,40 @@ public class OBVJ extends PApplet {
 		  
 		popMatrix();
 		
+		
+	}
+	private void translateAndRotateV2(){
+		
+		Map<String, Integer> params = App.getActualScene().params;
+		  
+		translate(w/2 + params.get("xTrans"), h/2 + params.get("yTrans"), params.get("zTrans"));
+  
+		rotateX(radians(getRotation(params.get("rotateX"), 3)));
+		rotateY(radians(getRotation(params.get("rotateY"), 4)));
+		rotateZ(radians(getRotation(params.get("rotateZ"), 5)));	
+  
+		translate(-w/2, -h/2, 0);
+ 
+	}
+	private int getRotation(int pValue, int id){
+		
+		int value = App.transValues[id];
+		int bValue = BehringerBCF.potValues[id];
+		
+		if(bValue==0 && value==pValue){
+			return pValue;
+		} else if(bValue==0 && value!=pValue){
+						
+			int sub = pValue - value;
+			value = (int) (value + sub*0.2);
+			App.transValues[id] = value;
+			return value;
+			
+		} else {
+			value = (value+bValue)%360;
+			App.transValues[id] = value;
+			return value;
+		}
 		
 	}
 	private void translateAndRotate(){

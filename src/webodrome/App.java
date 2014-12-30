@@ -43,6 +43,10 @@ public class App {
 	public static MidiBus midiBus;
 	public static BehringerBCF behringer;
 	
+	public static int[] transValues;
+	
+	//-----------------------//
+	
 	public static boolean fscreen = false;
 	
 	private static int sceneId = 0;
