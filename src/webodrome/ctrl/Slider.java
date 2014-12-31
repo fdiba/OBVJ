@@ -48,7 +48,8 @@ public class Slider {
 	public void reinitValueAndPos(){
 		value = App.getActualScene().params.get(param);
 		
-		updateTransValues(param, (int) value);
+		//TODO REMOVE ANIMATION WHEN ACTIVE + BUG KEYPAD 8 et 9 WHEN COMMENTED
+		//updateTransValues(param, (int) value);
 		
 		initPos();
 	}
@@ -116,7 +117,16 @@ public class Slider {
 	private void updateTransValues(String _param, int _val){
 		
 		switch (_param) {
-	    case "rotateX":
+		case "xTrans":
+			App.transValues[0] = _val;
+			break;
+		case "yTrans":
+			App.transValues[1] = _val;
+			break;
+		case "zTrans":
+			App.transValues[2] = _val;
+			break;
+		case "rotateX":
 			App.transValues[3] = _val;
 			break;
 		case "rotateY":

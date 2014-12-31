@@ -212,8 +212,6 @@ public class OBVJ extends PApplet {
 			
 			drawLineScene = new DrawLineScene(this, objects, w, h);
 			App.setActualScene(drawLineScene);
-			
-			App.transValues[4] = drawLineScene.params.get("rotateY");
 					
 		}
 		
@@ -403,7 +401,7 @@ public class OBVJ extends PApplet {
 		
 		Map<String, Integer> params = App.getActualScene().params;
 		  
-		translate(w/2 + params.get("xTrans"), h/2 + params.get("yTrans"), params.get("zTrans"));
+		translate(w/2 + getTrans(params.get("xTrans"), 0), h/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
   
 		rotateX(radians(getRotation(params.get("rotateX"), 3)));
 		rotateY(radians(getRotation(params.get("rotateY"), 4)));
@@ -411,6 +409,37 @@ public class OBVJ extends PApplet {
   
 		translate(-w/2, -h/2, 0);
  
+	}
+	private int getTrans(int pValue, int id){
+		
+		int value = App.transValues[id];
+		int bValue = BehringerBCF.potValues[id];
+		
+		if(bValue==0 && value==pValue){
+			return pValue;
+		} else if(bValue==0 && value!=pValue){
+						
+			int sub = pValue - value;
+			value = (int) (value + sub*0.2);
+			App.transValues[id] = value;
+			return value;
+			
+		} else {
+			
+			bValue-=5;
+			if(bValue<0)bValue=0;
+			
+			value += bValue;		
+			
+			if(id==0 && value>1500)value*=-1;
+			if(id==1 && value>1000)value*=-1;
+			if(id==2 && value>1200)value*=-1;
+			
+			App.transValues[id] = value;
+			
+			return value;
+		}
+		
 	}
 	private int getRotation(int pValue, int id){
 		
@@ -427,6 +456,10 @@ public class OBVJ extends PApplet {
 			return value;
 			
 		} else {
+			
+			bValue-=5;
+			if(bValue<0)bValue=0;
+			
 			value = (value+bValue)%360;
 			App.transValues[id] = value;
 			return value;

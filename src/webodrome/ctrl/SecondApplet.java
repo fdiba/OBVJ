@@ -186,7 +186,7 @@ public class SecondApplet extends PApplet {
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
 			   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-				int[] values = {0, 0, 50, 8, 0, 180, 0, 500, 10, -200, 250, 100, 10};
+				int[] values = {0, 0, 50, 4, 0, 180, 0, 500, 10, -200, 250, 100, 10};
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;

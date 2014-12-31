@@ -39,7 +39,6 @@ public class Menu {
 				color = (int) App.colors[i];
 			}
 			
-			
 			int row = i/numSliders;
 			int sliderId = i%numSliders;
 			int gapBetweenSliders = 15*row;
@@ -47,8 +46,7 @@ public class Menu {
 			yPos = (int) (location.y + 15*i + gapBetweenSliders);
 			
 			sliders[i] = new Slider(scene, new PVector(location.x, yPos), param, lowValue, maxValue, color);
-						
-			
+					
 			if(App.BCF2000) sliders[i].setbehSlider(row, sliderId);
 			
 			int value = (int) objects[i][3];

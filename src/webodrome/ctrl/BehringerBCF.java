@@ -75,7 +75,39 @@ public class BehringerBCF {
 	    }
 	}
 	private void resetPot(int number){
-		//reset translation when double clic
+
 		midiBus.sendMessage(191, number, 0);
+		
+		//reset to 0 when is already still
+		String actualParam;
+		
+		switch (number) {
+		case 0:
+			actualParam = "xTrans";
+			break;
+		case 1:
+			actualParam = "yTrans";
+			break;
+		case 2:
+			actualParam = "zTrans";
+			break;
+		case 3:
+			actualParam = "rotateX";
+			break;
+		case 4:
+			actualParam = "rotateY";
+			break;
+		case 5:
+			actualParam = "rotateZ";
+			break;
+		default:
+			actualParam ="";
+			break;
+		}
+		
+		if(App.transValues[number] == App.getActualScene().params.get(actualParam)){
+			App.getActualScene().params.put(actualParam, 0);
+		}
+		
 	}
 }
