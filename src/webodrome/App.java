@@ -38,6 +38,8 @@ public class App {
 	
 	public static boolean useColors;
 	
+	public static int strokeJoin, strokeCap = 0;
+	
 	//--- behringer ----------//
 	public final static boolean BCF2000 = true;
 	public static MidiBus midiBus;

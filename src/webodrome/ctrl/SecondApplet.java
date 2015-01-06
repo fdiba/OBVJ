@@ -92,7 +92,7 @@ public class SecondApplet extends PApplet {
 			App.useColors = !App.useColors;
 		} else if(key=='s'){
 			savePicture();
-		} else if(App.getSceneId() == 0){
+		} else if(App.getSceneId() == 0){ //---------- scene 0 ---------------//
 		
 			if (key == 'v') {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
@@ -101,6 +101,14 @@ public class SecondApplet extends PApplet {
 			}  else if (key == 'h') {
 				DrawLineScene.mode++;
 				if(DrawLineScene.mode>2)DrawLineScene.mode=0;
+			} else if(key == 'k'){
+				App.strokeCap++;
+				if(App.strokeCap>2)App.strokeCap=0;
+				System.out.println(App.strokeCap+" "+PApplet.ROUND+" "+PApplet.SQUARE+" "+PApplet.PROJECT);
+			} else if(key == 'j'){
+				App.strokeJoin++;
+				if(App.strokeJoin>2)App.strokeJoin=0;
+				System.out.println(App.strokeJoin+" "+PApplet.MITER+" "+PApplet.BEVEL+" "+PApplet.ROUND);
 			} else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",

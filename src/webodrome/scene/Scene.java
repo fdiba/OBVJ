@@ -185,6 +185,36 @@ public class Scene {
 		return editedSkull;
 		
 	}
+	protected void setCap(){
+		switch (App.strokeCap) {
+		case 0:
+			pApplet.strokeCap(PApplet.ROUND);
+			break;
+		case 1:
+			pApplet.strokeCap(PApplet.SQUARE);
+			break;
+		case 2:
+			pApplet.strokeCap(PApplet.PROJECT);
+			break;
+		default:
+			break;
+		}
+	}
+	protected void setJoin(){
+		switch (App.strokeJoin) {
+		case 0:
+			pApplet.strokeJoin(PApplet.MITER);
+			break;
+		case 1:
+			pApplet.strokeJoin(PApplet.BEVEL);
+			break;
+		case 2:
+			pApplet.strokeJoin(PApplet.ROUND);
+			break;
+		default:
+			break;
+		}
+	}
 	protected PVector calculateCentroid(ArrayList<PVector> arrayList){
 		PVector centroid = new PVector();
 		for (PVector v : arrayList) centroid.add(v);

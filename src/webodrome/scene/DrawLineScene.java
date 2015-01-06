@@ -242,6 +242,9 @@ public class DrawLineScene extends Scene {
 	}
 	public void display(){
 		
+		//setCap();
+		//setJoin();
+		
 		switch (mode) {
 		case 0:
 			displayLines();
