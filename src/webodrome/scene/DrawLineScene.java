@@ -13,6 +13,7 @@ public class DrawLineScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
+	public static boolean useFFT = false;
 	public static int mode = 0;
 	
 	private Ramp ramp;
@@ -38,6 +39,8 @@ public class DrawLineScene extends Scene {
 		                "depth limits: press l + UP OR DOWN" + "\n" +
 		                "dark lines visibility: press v" + "\n" +
 		                "use multiple buffers: press b" + "\n" +
+		                "use fourier transform: press f" + "\n" +
+		                "duplicate fourier values: press d" + "\n" +
 		                "use shapes: press h" + "\n" +
 		          		"use colors: press c");
 				
@@ -45,8 +48,10 @@ public class DrawLineScene extends Scene {
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
-				
-		updateBuffers();
+		
+		
+		if(useFFT)updateFTT();
+		else updateBuffers();
 		
 		ySpace = params.get("ySpace");
 		int actualNumberOfHLines=0;
@@ -58,6 +63,7 @@ public class DrawLineScene extends Scene {
 		checkNumBuffers(actualNumberOfHLines);
 		
 		xSpace = params.get("xSpace");
+
 		editVectorsPos();
 
 	}

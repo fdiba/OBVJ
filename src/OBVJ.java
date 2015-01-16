@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.sound.midi.MidiMessage;
 
 import ddf.minim.Minim;
+import ddf.minim.analysis.FFT;
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.*;
 import themidibus.MidiBus;
@@ -111,8 +112,10 @@ public class OBVJ extends PApplet {
 				App.player.play();	
 				//App.player.loop();			
 				App.player.mute();
+				App.fft = new FFT(App.player.bufferSize(), App.player.sampleRate());
 			} else {			
 				App.in = App.minim.getLineIn(Minim.MONO);
+				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
 			}
 			
 			//--- behringer -----------//		  

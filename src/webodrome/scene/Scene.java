@@ -89,7 +89,7 @@ public class Scene {
 			
 			for(int i = 0; i < App.player.bufferSize(); i++) {
 
-				float value = App.player.left.get(i);
+				float value = App.player.left.get(i); //-1 to 1
 				value *= amplitude;
 				bufferValues.append(-value);
 			
@@ -99,11 +99,42 @@ public class Scene {
 			
 			for(int i = 0; i < App.in.bufferSize(); i++) {
 				
-				float value = App.in.left.get(i);
+				float value = App.in.left.get(i); //-1 to 1
 				value *= amplitude;
 				bufferValues.append(-value);
 			
 			}
+		}
+	   
+		if(bSize > 0) buffers.remove(0);
+		buffers.add(bufferValues);
+		
+	}
+	protected void updateFTT(){
+		
+		if(App.useLiveMusic)App.fft.forward(App.in.left);
+		else App.fft.forward(App.player.left);
+		
+		//TODO add new param
+		int amplitude = params.get("amplitude");
+		
+		int bSize = buffers.size();
+		FloatList bufferValues = new FloatList();
+		
+		//TODO add new params start i = 0 and end App.fft.specSize()/2
+		//for(int i = 0; i < App.fft.specSize(); i++) {
+		for(int i = 0; i < App.fft.specSize()/2; i++) {
+
+			float value = App.fft.getBand(i); //-1 to 1 ?
+			value *= amplitude;
+			bufferValues.append(-value);
+		
+		}
+		
+		if(App.duplicateFFT){
+			float[] copy = bufferValues.array();
+			bufferValues.reverse();
+			bufferValues.append(copy);
 		}
 	   
 		if(bSize > 0) buffers.remove(0);

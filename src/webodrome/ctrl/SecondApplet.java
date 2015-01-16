@@ -94,21 +94,25 @@ public class SecondApplet extends PApplet {
 			savePicture();
 		} else if(App.getSceneId() == 0){ //---------- scene 0 ---------------//
 		
-			if (key == 'v') {
-				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
-			} else if (key == 'b') {
+			if (key == 'b') {
 				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
-			}  else if (key == 'h') {
+			} else if (key == 'd') {
+				App.duplicateFFT = !App.duplicateFFT;
+			} else if (key == 'f') {
+				DrawLineScene.useFFT = !DrawLineScene.useFFT;
+			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				if(DrawLineScene.mode>2)DrawLineScene.mode=0;
-			} else if(key == 'k'){
-				App.strokeCap++;
-				if(App.strokeCap>2)App.strokeCap=0;
-				System.out.println(App.strokeCap+" "+PApplet.ROUND+" "+PApplet.SQUARE+" "+PApplet.PROJECT);
 			} else if(key == 'j'){
 				App.strokeJoin++;
 				if(App.strokeJoin>2)App.strokeJoin=0;
 				System.out.println(App.strokeJoin+" "+PApplet.MITER+" "+PApplet.BEVEL+" "+PApplet.ROUND);
+			} else if(key == 'k'){
+				App.strokeCap++;
+				if(App.strokeCap>2)App.strokeCap=0;
+				System.out.println(App.strokeCap+" "+PApplet.ROUND+" "+PApplet.SQUARE+" "+PApplet.PROJECT);
+			} else if (key == 'v') {
+				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -117,6 +121,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 			
 			} else if (key == '1'){
 				
@@ -126,6 +131,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '2'){
 				
@@ -135,6 +141,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '3'){
 				
@@ -144,6 +151,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '4') {
 				
@@ -153,6 +161,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '5') {
 				
@@ -162,6 +171,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '6') {
 				
@@ -171,6 +181,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '7') {
 				
@@ -180,6 +191,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '8') {
 				
@@ -189,6 +201,7 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = false;
+				DrawLineScene.useFFT = false;
 				
 			} else if (key == '9') {
 				
@@ -198,15 +211,20 @@ public class SecondApplet extends PApplet {
 				editParams(0, parameters, values);
 				
 				DrawLineScene.multipleBuffers = true;
+				DrawLineScene.useFFT = false;
 				
 			}
 			
 		} else if(App.getSceneId() == 1){
 			
-			if (key == 'v') {
-				DrawPointScene.linesVisibility = !DrawPointScene.linesVisibility;
-			} else if (key == 'b') {
+			if (key == 'b') {
 				DrawPointScene.multipleBuffers = !DrawPointScene.multipleBuffers;
+			} else if (key == 'd') {
+				App.duplicateFFT = !App.duplicateFFT;
+			} else if (key == 'f') {
+				DrawPointScene.useFFT = !DrawPointScene.useFFT;
+			} else if (key == 'v') {
+				DrawPointScene.linesVisibility = !DrawPointScene.linesVisibility;
 			} else if (key == '0'){
 			
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -214,8 +232,9 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45, -90, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
-			
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
+				
 			} else if (key == '1'){
 				
 				String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
@@ -223,7 +242,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, -100, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '2'){
 				
@@ -232,7 +252,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250, -150, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = true;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '3'){
 				
@@ -241,7 +262,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 20, -50, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '4') {
 				
@@ -250,7 +272,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, -50, 20, 16, 70, 0, 90, 70, 60, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '5') {
 				
@@ -259,7 +282,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, -50, 20, 16, 70, 0, 90, 115, 10, 60, 45, -55, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '6') {
 				
@@ -268,7 +292,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, -50, 50, 50, 260, 0, 90, 450, 10, -72, 20, 75, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '7') {
 				
@@ -277,7 +302,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 20, -50, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = true;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '8') {
 				
@@ -286,7 +312,8 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, -100, -50, 4, 60, 180, 0, 100, 10, -200, 40, 100, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = false;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			} else if (key == '9') {
 				
@@ -295,10 +322,10 @@ public class SecondApplet extends PApplet {
 				int[] values = {0, 0, 50, 8, 0, 180, 0, 500, 10, -200, 250, 100, 10};
 				editParams(0, parameters, values);
 				
-				DrawLineScene.multipleBuffers = true;
+				DrawPointScene.multipleBuffers = false;
+				DrawPointScene.useFFT = false;
 				
 			}
-			
 			
 		} else if(App.getSceneId() == 2){
 			

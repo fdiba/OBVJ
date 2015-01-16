@@ -13,6 +13,7 @@ public class DrawPointScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
+	public static boolean useFFT = false;
 	
 	private Ramp ramp;
 	
@@ -38,7 +39,9 @@ public class DrawPointScene extends Scene {
 		
 		super.update(context);
 						
-		updateBuffers();
+		//TODO param update less often sound
+		if(useFFT)updateFTT();
+		else updateBuffers();
 		
 		ySpace = params.get("ySpace");
 		int actualNumberOfHLines=0;

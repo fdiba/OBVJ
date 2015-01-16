@@ -3,6 +3,7 @@ package webodrome;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
+import ddf.minim.analysis.FFT;
 import themidibus.MidiBus;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.Menu;
@@ -35,6 +36,9 @@ public class App {
 	public static Minim minim;
 	public static AudioPlayer player;
 	public static AudioInput in;
+	public static FFT fft;
+	
+	public static boolean duplicateFFT = true;
 	
 	public static boolean useColors;
 	
