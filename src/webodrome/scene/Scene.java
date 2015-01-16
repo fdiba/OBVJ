@@ -79,6 +79,22 @@ public class Scene {
 		}
 		
 	}
+	protected void updateSound(boolean useFFT){
+		
+		if(App.updateSound){	
+			if(useFFT)updateFTT();
+			else updateBuffers();
+		} else {
+			int bSize = buffers.size();
+			FloatList bufferValues = new FloatList();
+			bufferValues = buffers.get(bSize-1);
+			if(bSize > 0) buffers.remove(0);
+			buffers.add(bufferValues);
+		}
+		
+		App.updateSound = !App.updateSound;
+		
+	}
 	protected void updateBuffers(){
 
 		int amplitude = params.get("amplitude");

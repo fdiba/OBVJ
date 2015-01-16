@@ -38,6 +38,7 @@ public class App {
 	public static AudioInput in;
 	public static FFT fft;
 	
+	public static boolean updateSound = true;
 	public static boolean duplicateFFT = true;
 	
 	public static boolean useColors;

@@ -103,11 +103,11 @@ public class SecondApplet extends PApplet {
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				if(DrawLineScene.mode>2)DrawLineScene.mode=0;
-			} else if(key == 'j'){
+			} else if(key == 'j'){ //unused
 				App.strokeJoin++;
 				if(App.strokeJoin>2)App.strokeJoin=0;
 				System.out.println(App.strokeJoin+" "+PApplet.MITER+" "+PApplet.BEVEL+" "+PApplet.ROUND);
-			} else if(key == 'k'){
+			} else if(key == 'k'){ //unused
 				App.strokeCap++;
 				if(App.strokeCap>2)App.strokeCap=0;
 				System.out.println(App.strokeCap+" "+PApplet.ROUND+" "+PApplet.SQUARE+" "+PApplet.PROJECT);

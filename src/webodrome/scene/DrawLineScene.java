@@ -49,9 +49,7 @@ public class DrawLineScene extends Scene {
 		
 		super.update(context);
 		
-		
-		if(useFFT)updateFTT();
-		else updateBuffers();
+		updateSound(useFFT);
 		
 		ySpace = params.get("ySpace");
 		int actualNumberOfHLines=0;

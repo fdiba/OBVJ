@@ -39,9 +39,7 @@ public class DrawPointScene extends Scene {
 		
 		super.update(context);
 						
-		//TODO param update less often sound
-		if(useFFT)updateFTT();
-		else updateBuffers();
+		updateSound(useFFT);
 		
 		ySpace = params.get("ySpace");
 		int actualNumberOfHLines=0;
