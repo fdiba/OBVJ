@@ -131,15 +131,16 @@ public class Scene {
 		if(App.useLiveMusic)App.fft.forward(App.in.left);
 		else App.fft.forward(App.player.left);
 		
-		//TODO add new param
+		//TODO use another param
 		int amplitude = params.get("amplitude");
+		
+		int fttOffset = params.get("fttOffset");
+		int fttRemoval = App.fft.specSize()/params.get("fttRemoval");
 		
 		int bSize = buffers.size();
 		FloatList bufferValues = new FloatList();
 		
-		//TODO add new params start i = 0 and end App.fft.specSize()/2
-		//for(int i = 0; i < App.fft.specSize(); i++) {
-		for(int i = 0; i < App.fft.specSize()/2; i++) {
+		for(int i=fttOffset; i<fttRemoval; i++) {
 
 			float value = App.fft.getBand(i); //-1 to 1 ?
 			value *= amplitude;

@@ -129,7 +129,7 @@ public class DrawLineScene extends Scene {
 		
 		int c;
 		int blackAndWhiteColor = 255;
-		int alphaTS = params.get("alphaTS");
+		int colorTS = params.get("colorTS");
 		int strokeMax = params.get("strokeWeight");
 		int maxDist = params.get("maxDist");
 		int depthTS = params.get("depthTS");
@@ -160,7 +160,7 @@ public class DrawLineScene extends Scene {
 					if( (distance < maxDist && isInFront) || (distance < maxDist && linesVisibility) ){
 						
 						if(App.useColors){
-				        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, alphaTS);
+				        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, colorTS);
 				        } else {
 
 				        	if(isInFront)blackAndWhiteColor = 0xFFFFFFFF;

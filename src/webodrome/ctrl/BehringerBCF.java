@@ -48,13 +48,8 @@ public class BehringerBCF {
 	    	if(number==98) chan185num98Value = value;
 	    	if(number==6) chan185num6Value = value;
 	      
-	    	int id=999;	      
-	      
-	    	if(slidersList == 0) { //first faders grp       
-	    		id = chan185num98Value;
-	    	} else if (slidersList == 1){ //second faders grp
-	    		id = chan185num98Value + numSliders;	    		
-	    	}
+	    	int id=999;
+	    	id = chan185num98Value + numSliders*slidersList;
 	    		    	
 	    	if(id >= App.actualMenu.getSlidersLength()) return;
 	    	

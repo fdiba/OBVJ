@@ -117,7 +117,7 @@ public class DrawPointScene extends Scene {
 	public void display(){
 		
 		int c;
-		int alphaTS = params.get("alphaTS");
+		int colorTS = params.get("colorTS");
 		int strokeMax = params.get("strokeWeight");
 		//int maxDist = params.get("maxDist");
 		int depthTS = params.get("depthTS");
@@ -137,7 +137,7 @@ public class DrawPointScene extends Scene {
 				if(isInFront || linesVisibility){
 					
 					if(App.useColors){
-			        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, alphaTS);
+			        	c = ramp.pickColor((int) v.z, (int)zMax, (int)zMin, colorTS);
 			        } else {
 
 			        	if(isInFront) c = 0xFFFFFFFF;
