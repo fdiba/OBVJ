@@ -1,5 +1,6 @@
 package webodrome;
 
+import processing.core.PVector;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -40,6 +41,8 @@ public class App {
 	
 	public static boolean updateSound = true;
 	public static boolean duplicateFFT = true;
+	
+	public static PVector[] pvectors;
 	
 	public static boolean useColors;
 	

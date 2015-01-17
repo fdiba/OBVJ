@@ -21,6 +21,7 @@ import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawLineScene;
 import webodrome.scene.DrawPointScene;
 import webodrome.scene.MonitorScene;
+import webodrome.scene.RadarScene;
 import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
@@ -44,9 +45,10 @@ public class OBVJ extends PApplet {
 	
 	private DrawLineScene drawLineScene; //scene 0
 	private DrawPointScene drawPointScene; //scene 1
-	private ShapeScene shapeScene; //scene 2
-	private ChunkyScene chunkyScene; //scene 3
-	private MonitorScene monitorScene; //scene 4
+	private RadarScene radarScene; //scene 2
+	private ShapeScene shapeScene; //scene 3
+	private ChunkyScene chunkyScene; //scene 4
+	private MonitorScene monitorScene; //scene 5
 	
 	//---------------------------//
 
@@ -89,7 +91,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(360+640/2, 400);
+		PFrame pFrame = new PFrame(360+640/2, 410);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -117,6 +119,8 @@ public class OBVJ extends PApplet {
 				App.in = App.minim.getLineIn(Minim.MONO);
 				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
 			}
+			
+			setVectorsGrid();
 			
 			//--- behringer -----------//		  
 			if(App.BCF2000){
@@ -156,6 +160,9 @@ public class OBVJ extends PApplet {
 		case 4:
 			scene4();
 			break;
+		case 5:
+			scene5();
+			break;
 		default:
 			scene0();
 			break;
@@ -166,6 +173,22 @@ public class OBVJ extends PApplet {
 		
 		//drawCuePoints();		
 	
+	}
+	//-------------------- vectors grid --------------------//
+	private void setVectorsGrid(){
+		
+		int imgWidth = 640;
+		int imgHeight = 480;
+			
+		float xRatio = (float) w/imgWidth;
+		float yRatio = (float) h/imgHeight;
+		
+		App.pvectors = new PVector[imgWidth*imgHeight]; 
+		for (int i=0; i<imgHeight; i++){			
+			for(int j=0; j<imgWidth; j++){
+				App.pvectors[j+i*imgWidth] = new PVector(j*xRatio, i*yRatio, 0);				
+		    }
+		} 
 	}
 	@SuppressWarnings("unused")
 	private void drawCuePoints(){
@@ -281,12 +304,54 @@ public class OBVJ extends PApplet {
 		  
 		translateAndRotate();
 		  
-		drawPointScene.display();
+		drawPointScene.display(App.pvectors);
 		  
 		popMatrix();
 		
 	}
 	private void scene2(){
+		
+		background(0);
+		
+		//-------------- init ------------------//
+		
+		int sceneId = App.getSceneId();
+		if (sceneId != App.oldSceneId) {
+			
+			frameRate(sl_frameRate);
+			App.oldSceneId = sceneId;
+			
+			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+	                {"yTrans", -2500, 2500, 0},
+	                {"zTrans", -2500, 2500, 0},                
+	                {"rotateX", -360, 360, 0, App.colors[0]},
+	                {"rotateY", -360, 360, 0, App.colors[1]},
+	                {"rotateZ", -360, 360, 0, App.colors[2]},
+	                {"xSpace", 4, 150, 4, App.colors[4]},
+	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                
+	                {"area", 1, 1000, 260, App.colors[0]},
+	                {"speed", 0, 100, 50, App.colors[1]}};
+			
+			radarScene = new RadarScene(this, objects, w, h);
+			App.setActualScene(radarScene);
+					
+		}
+		
+		//-------------- draw ------------------//
+		
+		radarScene.update(context);
+		
+		pushMatrix();
+		  
+		translateAndRotate();
+		  
+		radarScene.display();
+		  
+		popMatrix();
+		
+	}
+	private void scene3(){
 		
 		background(0);
 				
@@ -331,7 +396,7 @@ public class OBVJ extends PApplet {
 		popMatrix();
 		
 	}
-	private void scene3(){
+	private void scene4(){
 		
 		background(0);
 		
@@ -371,7 +436,7 @@ public class OBVJ extends PApplet {
 		popMatrix();
 	
 	}
-	private void scene4(){
+	private void scene5(){
 		
 		background(0);
 		
@@ -512,7 +577,7 @@ public class OBVJ extends PApplet {
 	   int number = message.getMessage()[1] & 0xFF;
 	   int value = message.getMessage()[2] & 0xFF;
 	   
-	   //PApplet.println("bus " + bus_name + " | channel " + channel + " | num " + number + " | val " + value);
+	   //System.out.println("bus " + bus_name + " | channel " + channel + " | num " + number + " | val " + value);
 	   if(App.BCF2000 && App.getActualScene().menu != null) App.behringer.midiMessage(channel, number, value);
 	   
 	}

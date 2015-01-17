@@ -38,13 +38,13 @@ public class SecondApplet extends PApplet {
 
 		if(App.getActualScene() != null){
 			
-			if(App.getSceneId() == 2) { //scene 2
+			if(App.getSceneId() == 3) { //scene 3
 				
 				if(ShapeScene.userIsPresent)displayCube(colors[0], positions[0]);
 				if(ShapeScene.isTrackingSkeleton)displayCube(colors[1], positions[1]);
 				displayMiniature();
 				
-			} else if (App.getSceneId() == 3){ //scene 3
+			} else if (App.getSceneId() == 4){ //scene 4
 				
 				if(ChunkyScene.userIsPresent)displayCube(colors[0], positions[0]);
 				if(ChunkyScene.isTrackingSkeleton)displayCube(colors[1], positions[1]);	
@@ -327,7 +327,7 @@ public class SecondApplet extends PApplet {
 				
 			}
 			
-		} else if(App.getSceneId() == 2){
+		} else if(App.getSceneId() == 3){
 			
 			if (key == 'f'){		
 				ShapeScene.useStroke = !ShapeScene.useStroke;
@@ -335,7 +335,7 @@ public class SecondApplet extends PApplet {
 				ShapeScene.displayCross = !ShapeScene.displayCross;	
 			}
 			
-		} else if(App.getSceneId() == 3){
+		} else if(App.getSceneId() == 4){
 			
 			if (key == 'o'){		
 				ChunkyScene.displayPoints = !ChunkyScene.displayPoints;
@@ -358,7 +358,7 @@ public class SecondApplet extends PApplet {
 	private void nextScene(){	
 		int id = App.getSceneId();
 		id++;
-		if(id>4)id=0;
+		if(id>5)id=0;
 		App.setSceneId(id);
 	}
 	private void prevScene(){

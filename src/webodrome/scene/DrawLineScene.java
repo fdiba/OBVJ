@@ -26,9 +26,7 @@ public class DrawLineScene extends Scene {
 	public DrawLineScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
-				
-		setVectors();
-		
+
 		ramp = new Ramp(1, true);
 		
 		buffers = new ArrayList<FloatList>();
@@ -62,10 +60,10 @@ public class DrawLineScene extends Scene {
 		
 		xSpace = params.get("xSpace");
 
-		editVectorsPos();
+		editVectorsPos(App.pvectors);
 
 	}
-	private void editVectorsPos(){
+	private void editVectorsPos(PVector[] pvectors){
 		
 		int lVal = App.lowestValue;
 		int hVal = App.highestValue;
@@ -125,7 +123,7 @@ public class DrawLineScene extends Scene {
 		}
 		
 	}
-	private void displayLines(){
+	private void displayLines(PVector[] pvectors){
 		
 		int c;
 		int blackAndWhiteColor = 255;
@@ -186,7 +184,7 @@ public class DrawLineScene extends Scene {
 		}	
 		
 	}
-	private void displayTextures(){
+	private void displayTextures(PVector[] pvectors){
 
 		int alpha = params.get("alpha");
 		pApplet.fill(0xFF666666, alpha);
@@ -222,7 +220,7 @@ public class DrawLineScene extends Scene {
 			pApplet.endShape();	
 		}
 	}
-	private void displayUncutLines(){
+	private void displayUncutLines(PVector[] pvectors){
 		
 		int alpha = params.get("alpha");
 		
@@ -251,16 +249,16 @@ public class DrawLineScene extends Scene {
 		
 		switch (mode) {
 		case 0:
-			displayLines();
+			displayLines(App.pvectors);
 			break;
 		case 1:
-			displayUncutLines();
+			displayUncutLines(App.pvectors);
 			break;
 		case 2:
-			displayTextures();
+			displayTextures(App.pvectors);
 			break;
 		default:
-			displayLines();
+			displayLines(App.pvectors);
 			break;
 		}
 	

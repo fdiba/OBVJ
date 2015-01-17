@@ -25,9 +25,7 @@ public class DrawPointScene extends Scene {
 	public DrawPointScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
-				
-		setVectors();
-		
+						
 		ramp = new Ramp(1, true);
 		
 		buffers = new ArrayList<FloatList>();
@@ -51,10 +49,10 @@ public class DrawPointScene extends Scene {
 		checkNumBuffers(actualNumberOfHLines);
 		
 		xSpace = params.get("xSpace");
-		editVectorsPos();
+		editVectorsPos(App.pvectors);
 		
 	}
-	private void editVectorsPos(){
+	private void editVectorsPos(PVector[] pvectors){
 		
 		int lVal = App.lowestValue;
 		int hVal = App.highestValue;
@@ -114,7 +112,7 @@ public class DrawPointScene extends Scene {
 		}
 		
 	}
-	public void display(){
+	public void display(PVector[] pvectors){
 		
 		int c;
 		int colorTS = params.get("colorTS");
