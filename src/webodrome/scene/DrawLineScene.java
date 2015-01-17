@@ -13,7 +13,7 @@ public class DrawLineScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
-	public static boolean useFFT = false;
+	public static boolean useFFT = true;
 	public static int mode = 0;
 	
 	private Ramp ramp;

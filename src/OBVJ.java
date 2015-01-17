@@ -89,7 +89,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(360+640/2, 380);
+		PFrame pFrame = new PFrame(360+640/2, 400);
 		pFrame.setTitle("ctrl board");
 				
 		context = new SimpleOpenNI(this);
@@ -204,15 +204,16 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
+	                {"fttAmpli", 1, 150, 10, App.colors[4]},
 	                {"fttOffset", 0, 100, 8, App.colors[6]},
-	                {"fttRemoval", 1, 5, 2, App.colors[0]},
+	                {"fttRemoval", 1, 5, 3, App.colors[0]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -1000, 1000, 110, App.colors[6]},
 	                {"amplitude", 1, 500, 390, App.colors[4]},
-	                {"maxDist", 1, 1500, 500, App.colors[7]},
 	                
+	                {"maxDist", 1, 1500, 500, App.colors[7]},
 	                {"colorTS", 0, 254, 38, App.colors[3]},
 	                {"alpha", 0, 255, 127, App.colors[6]}}; //used when texture is displayed
 			
@@ -255,6 +256,7 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
+	                {"fttAmpli", 1, 150, 50, App.colors[4]},
 	                {"fttOffset", 0, 100, 0, App.colors[6]},
 	                {"fttRemoval", 1, 5, 2, App.colors[0]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
@@ -262,8 +264,8 @@ public class OBVJ extends PApplet {
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                {"depth", -1000, 1000, 110, App.colors[6]},
 	                {"amplitude", 1, 500, 390, App.colors[4]},
-	                {"maxDist", 1, 250, 250, App.colors[7]},
 	                
+	                {"maxDist", 1, 250, 250, App.colors[7]},
 	                {"colorTS", 0, 254, 38, App.colors[3]}};
 			
 			drawPointScene = new DrawPointScene(this, objects, w, h);
