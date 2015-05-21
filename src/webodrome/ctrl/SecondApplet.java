@@ -393,11 +393,11 @@ public class SecondApplet extends PApplet {
 		if (App.switchValue) {
 			App.lowestValue += value;
 			App.lowestValue = constrain(App.lowestValue, 50, App.highestValue-10);
-			println(App.lowestValue);
+			println("low:"+ App.lowestValue + " | high:"+ App.highestValue);
 		} else {
 			App.highestValue += value;
 			App.highestValue = constrain(App.highestValue, App.lowestValue+10, 15000);
-			println(App.highestValue);
+			println("high:"+ App.highestValue + " | low:"+ App.lowestValue);
 		}
 	}
 	//--------------- mouse ---------------------//
