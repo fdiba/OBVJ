@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PVector;
 import processing.data.FloatList;
+import processing.opengl.PShader;
 import webodrome.App;
 import webodrome.Ramp;
 
@@ -14,7 +16,10 @@ public class DrawLineScene extends Scene {
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
 	public static boolean useFFT = true;
-	public static int mode = 0;
+	public static int mode = 3;
+	
+	//-------- shaders ----------//
+	private static PShader fshader;
 	
 	private Ramp ramp;
 	
@@ -26,7 +31,13 @@ public class DrawLineScene extends Scene {
 	public DrawLineScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
-
+		
+		//----------- shaders -----------//
+		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
+		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		//fshader.set("tex1", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		//----------- shaders -----------//
+		
 		ramp = new Ramp(1, true);
 		
 		buffers = new ArrayList<FloatList>();
@@ -46,21 +57,31 @@ public class DrawLineScene extends Scene {
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
-		
-		updateSound(useFFT);
-		
-		ySpace = params.get("ySpace");
-		int actualNumberOfHLines=0;
-		
-		for (int i=0; i<imgHeight; i+= ySpace){
-			actualNumberOfHLines++;
-		}
-		
-		checkNumBuffers(actualNumberOfHLines);
-		
-		xSpace = params.get("xSpace");
 
-		editVectorsPos(App.pvectors);
+		//PSHAPE MODE
+		if(mode==3){
+			
+			depthImage = context.depthImage();
+			fshader.set("tex0", depthImage);
+			
+		} else {
+			
+			updateSound(useFFT);
+			
+			ySpace = params.get("ySpace");
+			int actualNumberOfHLines=0;
+			
+			for (int i=0; i<imgHeight; i+= ySpace){
+				actualNumberOfHLines++;
+			}
+			
+			checkNumBuffers(actualNumberOfHLines);
+			
+			xSpace = params.get("xSpace");
+	
+			editVectorsPos(App.pvectors);
+		
+		}
 
 	}
 	private void editVectorsPos(PVector[] pvectors){
@@ -121,6 +142,14 @@ public class DrawLineScene extends Scene {
 			actualHLines++;
 			
 		}
+		
+	}
+	private void displayShape(){
+		
+		//pApplet.shapeMode(pApplet.CENTER);
+		pApplet.shader(fshader);
+		pApplet.shape(App.mainGrid);
+		
 		
 	}
 	private void displayLines(PVector[] pvectors){
@@ -256,6 +285,9 @@ public class DrawLineScene extends Scene {
 			break;
 		case 2:
 			displayTextures(App.pvectors);
+			break;
+		case 3:
+			displayShape();
 			break;
 		default:
 			displayLines(App.pvectors);

@@ -12,6 +12,7 @@ import javax.sound.midi.MidiMessage;
 import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import SimpleOpenNI.SimpleOpenNI;
+import peasy.PeasyCam;
 import processing.core.*;
 import themidibus.MidiBus;
 import webodrome.App;
@@ -29,6 +30,7 @@ public class OBVJ extends PApplet {
 	
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
+	private PeasyCam cam;
 	
 	private int w = 1024;
 	private int h = 768;
@@ -53,7 +55,6 @@ public class OBVJ extends PApplet {
 	//---------------------------//
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		GraphicsEnvironment gEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] graphicsDevices = gEnvironment.getScreenDevices();
@@ -62,8 +63,8 @@ public class OBVJ extends PApplet {
 			GraphicsDevice graphicsDevice = graphicsDevices[1];
 			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
 			monitor = gConfigurations[0].getBounds();
-			PApplet.main( new String[] { "--display=1", OBVJ.class.getSimpleName() });
-			//PApplet.main( new String[] { "--present", KPrez.class.getSimpleName() });
+			//choose your screen: 0, 1, ...
+			PApplet.main( new String[] { "--display=0", OBVJ.class.getSimpleName() });
 		} else {
 			GraphicsDevice graphicsDevice = graphicsDevices[0];
 			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
@@ -85,15 +86,18 @@ public class OBVJ extends PApplet {
 		}		
 		
 		size(w, h, OPENGL);
-		//size(w, h, P3D);
 		smooth(8);
-		frameRate(24); //---------------------------------- param -------//
+		frameRate(24); //TODO PARAM
 		
 		//noCursor();
 		
 		PFrame pFrame = new PFrame(360+640/2, 410);
 		pFrame.setTitle("ctrl board");
 				
+		cam = new PeasyCam(this, 500);
+		cam.setMinimumDistance(50);
+		cam.setMaximumDistance(1500);
+		
 		context = new SimpleOpenNI(this);
 		
 		if (context.isInit() == false) {
@@ -102,6 +106,7 @@ public class OBVJ extends PApplet {
 		    return;
 		} else {
 
+			//TODO DO NOT WORK
 			//context.setMirror(true);
 			
 			context.enableDepth();
@@ -120,9 +125,12 @@ public class OBVJ extends PApplet {
 				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
 			}
 			
+			//TODO ERASE IT WHEN SOFT UPDATED
 			setVectorsGrid();
+			App.mainGrid = createShapeGrid(createImage(App.KWIDTH, App.KHEIGHT, ARGB));
+			App.mainGrid.setStroke(false);
 			
-			//--- behringer -----------//		  
+			//----------- behringer -----------//		  
 			if(App.BCF2000){
 				MidiBus.list();
 				App.midiBus = new MidiBus(this, "BCF2000", "BCF2000");
@@ -174,7 +182,8 @@ public class OBVJ extends PApplet {
 		//drawCuePoints();		
 	
 	}
-	//-------------------- vectors grid --------------------//
+	//-------------------- GRIDS --------------------//
+	//TODO ERASE IT
 	private void setVectorsGrid(){
 		
 		int imgWidth = 640;
@@ -190,6 +199,77 @@ public class OBVJ extends PApplet {
 		    }
 		} 
 	}
+	private PShape createShapeGrid(PImage image){
+		
+		int kwidth = App.KWIDTH;
+		int kheight = App.KHEIGHT;
+		
+		float xRatio = (float) w/kwidth;
+		float yRatio = (float) h/kheight;
+		
+		PShape shape = createShape();
+		
+		//TODO ADD PARAM
+		shape.beginShape(QUADS);
+		shape.textureMode(NORMAL);
+		shape.texture(image);
+
+		//TODO ADD PARAM
+		int borderYSize = 15;
+		int detail = 10;
+		
+		boolean lowRes = false;
+		
+		float ySpace = borderYSize/2;
+		int numberOfRows = 0;
+		
+		for (int y=0; y<height-detail; y+=detail) {
+			
+		    for (int x=0; x<width-detail; x+=detail) {
+
+		    	PVector tl, bl, br, tr;
+
+		    	if (numberOfRows==0) {
+		    		tl = new PVector(x, y+ySpace);
+		    		bl = new PVector(x, y+detail);
+		    		br = new PVector(x+detail, y+detail);
+		    		tr = new PVector(x+detail, y+ySpace);
+		    	} else {
+		    		tl = new PVector(x, y);
+		    		bl = new PVector(x, y+detail-ySpace);
+		    		br = new PVector(x+detail, y+detail-ySpace);
+		        	tr = new PVector(x+detail, y);
+		    	}
+		    	
+		    	//TODO lowRes never used
+		    	//TODO do it in the shader! /LINE BREAKING
+		    	//TODO ADD PARAM
+		    	if (lowRes) {
+		    		
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight);
+		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight);
+		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight);
+		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight);
+		      
+		    	} else {
+
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    	}
+		    	
+		    }
+
+		    numberOfRows++;
+		    if (numberOfRows==2)numberOfRows=0;
+		  
+		}
+
+		shape.endShape(CLOSE);
+		return shape;
+	}
+	//-------------------- GRIDS --------------------//
 	@SuppressWarnings("unused")
 	private void drawCuePoints(){
 		
@@ -331,7 +411,7 @@ public class OBVJ extends PApplet {
 	                {"ySpace", 4, 150, 4, App.colors[5]},
 	                
 	                {"area", 1, 1000, 260, App.colors[0]},
-	                {"speed", 0, 100, 50, App.colors[1]}};
+	                {"speed", 0, 1000, 50, App.colors[1]}};
 			
 			radarScene = new RadarScene(this, objects, w, h);
 			App.setActualScene(radarScene);
@@ -483,7 +563,8 @@ public class OBVJ extends PApplet {
 		rotateY(radians(getRotation(params.get("rotateY"), 4)));
 		rotateZ(radians(getRotation(params.get("rotateZ"), 5)));	
   
-		translate(-w/2, -h/2, 0);
+		//translate(-w/2, -h/2, 0);
+		translate(-w, -h, 0);
  
 	}
 	private int getTrans(int pValue, int id){
@@ -552,7 +633,8 @@ public class OBVJ extends PApplet {
 		rotateY(radians(params.get("rotateY")));
 		rotateZ(radians(params.get("rotateZ")));
   
-		translate(-w/2, -h/2, 0);
+		//translate(-w/2, -h/2, 0);
+		translate(-w, -h, 0);
  
 	}
 	//--------------- keys ---------------------//

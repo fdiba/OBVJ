@@ -1,6 +1,8 @@
 package webodrome;
 
+import processing.core.PShape;
 import processing.core.PVector;
+import processing.opengl.PShader;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -16,6 +18,10 @@ public class App {
 	public static SecondApplet secondApplet;
 	
 	public static boolean useLiveMusic = true;
+	
+	//-------- depthMapControl ----------//
+	public static int KWIDTH = 640;
+	public static int KHEIGHT = 480;
 	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 550;
@@ -42,13 +48,15 @@ public class App {
 	public static boolean updateSound = true;
 	public static boolean duplicateFFT = true;
 	
+	//TODO UPDATE/ERASE IT
 	public static PVector[] pvectors;
+	public static PShape mainGrid;
 	
 	public static boolean useColors;
 	
 	public static int strokeJoin, strokeCap = 0;
 	
-	//--- behringer ----------//
+	//-------- behringer ----------//
 	public final static boolean BCF2000 = true;
 	public static MidiBus midiBus;
 	public static BehringerBCF behringer;

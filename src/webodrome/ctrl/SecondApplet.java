@@ -100,9 +100,11 @@ public class SecondApplet extends PApplet {
 				App.duplicateFFT = !App.duplicateFFT;
 			} else if (key == 'f') {
 				DrawLineScene.useFFT = !DrawLineScene.useFFT;
+				
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
-				if(DrawLineScene.mode>2)DrawLineScene.mode=0;
+				if(DrawLineScene.mode>3)DrawLineScene.mode=0;
+			
 			} else if(key == 'j'){ //unused
 				App.strokeJoin++;
 				if(App.strokeJoin>2)App.strokeJoin=0;

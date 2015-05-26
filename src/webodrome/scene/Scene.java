@@ -6,6 +6,7 @@ import java.util.Map;
 
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PVector;
 import processing.data.FloatList;
 import webodrome.App;
@@ -20,7 +21,10 @@ public class Scene {
 	public Menu menu;
 	
 	protected int w, h;
+	
 	protected int[] depthValues;
+	//only used with shaders
+	protected PImage depthImage;
 	
 	protected int imgWidth;
 	protected int imgHeight;
@@ -38,8 +42,8 @@ public class Scene {
 		w = _w;
 		h = _h;
 		
-		imgWidth = 640;
-		imgHeight = 480;
+		imgWidth = App.KWIDTH;
+		imgHeight = App.KHEIGHT;
 			
 		xRatio = (float) w/imgWidth;
 		yRatio = (float) h/imgHeight;
@@ -267,8 +271,7 @@ public class Scene {
 		if(menu!=null)menu.update(App.secondApplet);
 	}
 	public void update(SimpleOpenNI context){
-		if(menu!=null)menu.update(App.secondApplet);
-		
+		if(menu!=null)menu.update(App.secondApplet);	
 		depthValues = context.depthMap();
 	}
 	public void displayMenu(){
