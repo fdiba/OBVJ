@@ -252,11 +252,22 @@ public class OBVJ extends PApplet {
 		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight);
 		      
 		    	} else {
-
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
-		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-		    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    		
+		    		if (numberOfRows==0) { //use bottom line as texture
+		    					    			
+			    		shape.vertex(tl.x, tl.y, tl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+			    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+			    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+			    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		
+		    		} else { //use top line as texture
+		    			
+		    			shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+			    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+			    		shape.vertex(br.x, br.y, br.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+			    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    			
+		    		}
 		    	}
 		    	
 		    }
@@ -649,7 +660,8 @@ public class OBVJ extends PApplet {
 	
 	public void savePicture() {
 		Date date = new Date();
-		String name = "data/images/objv-"+date.getTime()+".png";
+		//String name = "data/images/objv-"+date.getTime()+".png";
+		String name = "data/images/objv-"+date.getTime()+".jpg";
 		save(name);	
 	}
 	//------------- MIDI ------------------//

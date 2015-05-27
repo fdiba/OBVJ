@@ -19,7 +19,7 @@ public class App {
 	
 	public static boolean useLiveMusic = true;
 	
-	//-------- depthMapControl ----------//
+	//-------- KINECT CONST ----------//
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
