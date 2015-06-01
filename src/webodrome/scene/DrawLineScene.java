@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PImage;
 import processing.core.PVector;
 import processing.data.FloatList;
 import processing.opengl.PShader;
@@ -20,6 +21,7 @@ public class DrawLineScene extends Scene {
 	
 	//-------- shaders ----------//
 	private static PShader fshader;
+	private PImage[] images;
 	
 	private Ramp ramp;
 	
@@ -33,9 +35,13 @@ public class DrawLineScene extends Scene {
 		super(_pApplet, objects, _width, _height);
 		
 		//----------- shaders -----------//
+		
+		images = new PImage[1];
+		images[0] = pApplet.loadImage("colors.jpg");
+		
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
 		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-		//fshader.set("tex1", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		fshader.set("tex1", images[0]);
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -147,6 +153,23 @@ public class DrawLineScene extends Scene {
 	private void displayShape(){
 		
 		//pApplet.shapeMode(pApplet.CENTER);
+		fshader.set("useColors", App.useColors);
+		
+		
+		float colorTS = params.get("colorTS"); 
+		colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
+		fshader.set("colorTS", colorTS);
+		
+		float depth = params.get("depth");
+		depth = PApplet.map(depth, -1000, 1000, -10, 10);
+		fshader.set("depth", depth);
+		
+		float alpha = params.get("alpha");
+		alpha = PApplet.map(alpha, 0, 255, 0, 1);
+		fshader.set("alpha", alpha);
+			
+		
+		
 		pApplet.shader(fshader);
 		pApplet.shape(App.mainGrid);
 		
@@ -215,7 +238,8 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayTextures(PVector[] pvectors){
 
-		int alpha = params.get("alpha");
+		float alpha = params.get("alpha");
+		
 		pApplet.fill(0xFF666666, alpha);
 		pApplet.strokeWeight(1);
 		pApplet.stroke(0xFF999999, 125);
@@ -251,7 +275,9 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayUncutLines(PVector[] pvectors){
 		
-		int alpha = params.get("alpha");
+		float alpha = params.get("alpha");
+		if(alpha<50.0)alpha = (float) 50.0;
+
 		
 		pApplet.noFill();
 		pApplet.strokeWeight(1);

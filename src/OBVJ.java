@@ -324,12 +324,14 @@ public class OBVJ extends PApplet {
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
-	                {"depth", -1000, 1000, 110, App.colors[6]},
+	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis
 	                {"amplitude", 1, 500, 390, App.colors[4]},
 	                
 	                {"maxDist", 1, 1500, 500, App.colors[7]},
-	                {"colorTS", 0, 254, 38, App.colors[3]},
-	                {"alpha", 0, 255, 127, App.colors[6]}}; //used when texture is displayed
+	                //TODO make it FLOAT beetween 0 and 1 
+	                {"colorTS", 0, 254, 0, App.colors[3]}, //offset colors of tex1
+	                //TODO make it FLOAT beetween 0 and 1 
+	                {"alpha", 0, 255, 25, App.colors[6]}}; //only used with textures
 			
 			drawLineScene = new DrawLineScene(this, objects, w, h);
 			App.setActualScene(drawLineScene);
