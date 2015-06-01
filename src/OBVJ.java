@@ -83,12 +83,14 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(360+640/2, 410);
+		PFrame pFrame = new PFrame(360+640/2, 430);
 		pFrame.setTitle("ctrl board");
-				
-		cam = new PeasyCam(this, 500);
-		cam.setMinimumDistance(50);
-		cam.setMaximumDistance(1500);
+		
+		if(App.usePeasyCam){
+			cam = new PeasyCam(this, 500);
+			cam.setMinimumDistance(50);
+			cam.setMaximumDistance(1500);
+		}
 		
 		context = new SimpleOpenNI(this);
 		
@@ -224,7 +226,7 @@ public class OBVJ extends PApplet {
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},                
-	                {"strokeWeight", 1, 100, 4, App.colors[6]},
+	                {"strokeWeight", 1, 100, 4, App.colors[6]}, //TODO remove it //been replaced by borderYSize
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
@@ -234,12 +236,15 @@ public class OBVJ extends PApplet {
 	                {"fttOffset", 0, 100, 8, App.colors[6]},
 	                {"fttRemoval", 1, 5, 3, App.colors[0]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
-	                {"xSpace", 4, 150, 4, App.colors[4]},
+	                {"xSpace", 4, 100, 10, App.colors[4]}, //4 --> 150
 	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
 	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis
 	                {"amplitude", 1, 500, 390, App.colors[4]},
 	                
 	                {"maxDist", 1, 1500, 500, App.colors[7]},
+	                {"borderXSize", 0, 200, 0, App.colors[4]}, //in relation with xSpace
+	                //TODO place below ySpace
+	                {"borderYSize", 0, 200, 15, App.colors[5]}, //borderYSize = ySpace*2 
 	                //TODO make it FLOAT beetween 0 and 1 
 	                {"colorTS", 0, 254, 0, App.colors[3]}, //offset colors of tex1
 	                //TODO make it FLOAT beetween 0 and 1 
@@ -487,9 +492,12 @@ public class OBVJ extends PApplet {
 		rotateX(radians(getRotation(params.get("rotateX"), 3)));
 		rotateY(radians(getRotation(params.get("rotateY"), 4)));
 		rotateZ(radians(getRotation(params.get("rotateZ"), 5)));	
-  
-		//translate(-w/2, -h/2, 0);
-		translate(-App.width, -App.height, 0);
+
+		if(App.usePeasyCam){
+			translate(-App.width, -App.height, 0);
+		} else {
+			translate(-App.width/2, -App.height/2, 0);
+		}
  
 	}
 	private int getTrans(int pValue, int id){
@@ -558,8 +566,11 @@ public class OBVJ extends PApplet {
 		rotateY(radians(params.get("rotateY")));
 		rotateZ(radians(params.get("rotateZ")));
   
-		//translate(-w/2, -h/2, 0);
-		translate(-App.width, -App.height, 0);
+		if(App.usePeasyCam){
+			translate(-App.width, -App.height, 0);
+		} else {
+			translate(-App.width/2, -App.height/2, 0);
+		}
  
 	}
 	//--------------- keys ---------------------//

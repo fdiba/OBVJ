@@ -20,6 +20,8 @@ public class App {
 	public static int width = 1024;
 	public static int height = 768;
 	
+	public static boolean usePeasyCam = true;
+	
 	public static PApplet objv;
 	public static SecondApplet secondApplet;
 	
@@ -60,8 +62,7 @@ public class App {
 	
 	public static boolean useColors;
 	
-	public static int strokeJoin, strokeCap = 0;
-	
+	public static boolean lowResGrid;
 	public static boolean recreateShapeGrid;
 	
 	//-------- behringer ----------//
@@ -100,15 +101,17 @@ public class App {
 		shape.textureMode(PConstants.NORMAL);
 		shape.texture(image);
 
-		//TODO ADD PARAM
-		int borderYSize = 15;
-
-		int xSpace = 10;
+		int xSpace = getActualScene().params.get("xSpace");
 		int ySpace = getActualScene().params.get("ySpace");
 		
-		boolean lowRes = false;
-		
+		//TODO use it
+		float borderXSize = getActualScene().params.get("borderXSize");
+		float borderYSize = getActualScene().params.get("borderYSize");
+				
 		float yInnerSpace = borderYSize/2;
+		
+		if(yInnerSpace>=ySpace)yInnerSpace = ySpace-1;
+		
 		int numberOfRows = 0;
 		
 		for (int y=0; y<height-ySpace; y+=ySpace) {
@@ -129,15 +132,13 @@ public class App {
 		        	tr = new PVector(x+xSpace, y);
 		    	}
 		    	
-		    	//TODO lowRes never used
 		    	//TODO do it in the shader! /LINE BREAKING
-		    	//TODO ADD PARAM
-		    	if (lowRes) {
+		    	if (lowResGrid) { //press 'r' key
 		    		
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight);
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
 		      
 		    	} else {
 		    		

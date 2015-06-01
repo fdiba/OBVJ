@@ -49,7 +49,7 @@ public class DrawLineScene extends Scene {
 		buffers = new ArrayList<FloatList>();
 		
 		setBuffers(params.get("ySpace"));		
-		  
+		
 		PApplet.println("----------------------------------" + "\n" +
 		                "depth limits: press l + UP OR DOWN" + "\n" +
 		                "dark lines visibility: press v" + "\n" +
@@ -57,6 +57,7 @@ public class DrawLineScene extends Scene {
 		                "use fourier transform: press f" + "\n" +
 		                "duplicate fourier values: press d" + "\n" +
 		                "use shapes: press h" + "\n" +
+		                "use lowResGrid: press r" + "\n" +
 		          		"use colors: press c");
 				
 	}
@@ -152,7 +153,12 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayShape(){
 		
-		//pApplet.shapeMode(pApplet.CENTER);
+		
+		if(App.usePeasyCam){
+
+		} else {
+			pApplet.shapeMode(PConstants.CENTER);
+		}
 		
 		if(App.recreateShapeGrid){
 			App.recreateShapeGrid();			
@@ -303,9 +309,6 @@ public class DrawLineScene extends Scene {
 	}
 	public void display(){
 		
-		//setCap();
-		//setJoin();
-		
 		switch (mode) {
 		case 0:
 			displayLines(App.pvectors);
@@ -317,7 +320,14 @@ public class DrawLineScene extends Scene {
 			displayTextures(App.pvectors);
 			break;
 		case 3:
-			displayShape();
+			if(App.usePeasyCam){
+				displayShape();
+			} else {
+				pApplet.pushMatrix();
+				pApplet.translate(w/2, h/2, -200);
+				displayShape();
+				pApplet.popMatrix();
+			}
 			break;
 		default:
 			displayLines(App.pvectors);
