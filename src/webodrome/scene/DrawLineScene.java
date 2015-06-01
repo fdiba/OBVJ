@@ -153,6 +153,12 @@ public class DrawLineScene extends Scene {
 	private void displayShape(){
 		
 		//pApplet.shapeMode(pApplet.CENTER);
+		
+		if(App.recreateShapeGrid){
+			App.recreateShapeGrid();			
+			App.recreateShapeGrid = false;
+		}
+		
 		fshader.set("useColors", App.useColors);
 		
 		
@@ -167,9 +173,7 @@ public class DrawLineScene extends Scene {
 		float alpha = params.get("alpha");
 		alpha = PApplet.map(alpha, 0, 255, 0, 1);
 		fshader.set("alpha", alpha);
-			
-		
-		
+	
 		pApplet.shader(fshader);
 		pApplet.shape(App.mainGrid);
 		

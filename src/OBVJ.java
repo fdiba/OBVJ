@@ -1,5 +1,3 @@
-
-
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -31,13 +29,7 @@ public class OBVJ extends PApplet {
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
 	private PeasyCam cam;
-	
-	private int w = 1024;
-	private int h = 768;
-	
-	/*private int w = 640;
-	private int h = 480;*/
-	
+
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
 	
@@ -81,11 +73,11 @@ public class OBVJ extends PApplet {
 	public void setup(){		
 		
 		if(App.fscreen){
-			w = monitor.width;
-			h = monitor.height;
+			App.width = monitor.width;
+			App.height = monitor.height;
 		}		
 		
-		size(w, h, OPENGL);
+		size(App.width, App.height, OPENGL);
 		smooth(8);
 		frameRate(24); //TODO PARAM
 		
@@ -112,6 +104,8 @@ public class OBVJ extends PApplet {
 			context.enableDepth();
 			context.enableUser();
 			
+			App.objv = this;
+			
 			App.minim = new Minim(this);
 			
 			if(!App.useLiveMusic){
@@ -127,8 +121,7 @@ public class OBVJ extends PApplet {
 			
 			//TODO ERASE IT WHEN SOFT UPDATED
 			setVectorsGrid();
-			App.mainGrid = createShapeGrid(createImage(App.KWIDTH, App.KHEIGHT, ARGB));
-			App.mainGrid.setStroke(false);
+			App.recreateShapeGrid = true;
 			
 			//----------- behringer -----------//		  
 			if(App.BCF2000){
@@ -189,8 +182,8 @@ public class OBVJ extends PApplet {
 		int imgWidth = 640;
 		int imgHeight = 480;
 			
-		float xRatio = (float) w/imgWidth;
-		float yRatio = (float) h/imgHeight;
+		float xRatio = (float) App.width/imgWidth;
+		float yRatio = (float) App.height/imgHeight;
 		
 		App.pvectors = new PVector[imgWidth*imgHeight]; 
 		for (int i=0; i<imgHeight; i++){			
@@ -198,87 +191,6 @@ public class OBVJ extends PApplet {
 				App.pvectors[j+i*imgWidth] = new PVector(j*xRatio, i*yRatio, 0);				
 		    }
 		} 
-	}
-	private PShape createShapeGrid(PImage image){
-		
-		int kwidth = App.KWIDTH;
-		int kheight = App.KHEIGHT;
-		
-		float xRatio = (float) w/kwidth;
-		float yRatio = (float) h/kheight;
-		
-		PShape shape = createShape();
-		
-		//TODO ADD PARAM
-		shape.beginShape(QUADS);
-		shape.textureMode(NORMAL);
-		shape.texture(image);
-
-		//TODO ADD PARAM
-		int borderYSize = 15;
-		int detail = 10;
-		
-		boolean lowRes = false;
-		
-		float ySpace = borderYSize/2;
-		int numberOfRows = 0;
-		
-		for (int y=0; y<height-detail; y+=detail) {
-			
-		    for (int x=0; x<width-detail; x+=detail) {
-
-		    	PVector tl, bl, br, tr;
-
-		    	if (numberOfRows==0) {
-		    		tl = new PVector(x, y+ySpace);
-		    		bl = new PVector(x, y+detail);
-		    		br = new PVector(x+detail, y+detail);
-		    		tr = new PVector(x+detail, y+ySpace);
-		    	} else {
-		    		tl = new PVector(x, y);
-		    		bl = new PVector(x, y+detail-ySpace);
-		    		br = new PVector(x+detail, y+detail-ySpace);
-		        	tr = new PVector(x+detail, y);
-		    	}
-		    	
-		    	//TODO lowRes never used
-		    	//TODO do it in the shader! /LINE BREAKING
-		    	//TODO ADD PARAM
-		    	if (lowRes) {
-		    		
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight);
-		      
-		    	} else {
-		    		
-		    		if (numberOfRows==0) { //use bottom line as texture
-		    					    			
-			    		shape.vertex(tl.x, tl.y, tl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
-			    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
-			    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-			    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-		    		
-		    		} else { //use top line as texture
-		    			
-		    			shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-			    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-			    		shape.vertex(br.x, br.y, br.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
-			    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
-		    			
-		    		}
-		    	}
-		    	
-		    }
-
-		    numberOfRows++;
-		    if (numberOfRows==2)numberOfRows=0;
-		  
-		}
-
-		shape.endShape(CLOSE);
-		return shape;
 	}
 	//-------------------- GRIDS --------------------//
 	@SuppressWarnings("unused")
@@ -323,7 +235,7 @@ public class OBVJ extends PApplet {
 	                {"fttRemoval", 1, 5, 3, App.colors[0]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
-	                {"ySpace", 4, 150, 4, App.colors[5]},
+	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
 	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis
 	                {"amplitude", 1, 500, 390, App.colors[4]},
 	                
@@ -333,7 +245,7 @@ public class OBVJ extends PApplet {
 	                //TODO make it FLOAT beetween 0 and 1 
 	                {"alpha", 0, 255, 25, App.colors[6]}}; //only used with textures
 			
-			drawLineScene = new DrawLineScene(this, objects, w, h);
+			drawLineScene = new DrawLineScene(this, objects, App.width, App.height);
 			App.setActualScene(drawLineScene);
 					
 		}
@@ -384,7 +296,7 @@ public class OBVJ extends PApplet {
 	                {"maxDist", 1, 250, 250, App.colors[7]},
 	                {"colorTS", 0, 254, 38, App.colors[3]}};
 			
-			drawPointScene = new DrawPointScene(this, objects, w, h);
+			drawPointScene = new DrawPointScene(this, objects, App.width, App.height);
 			App.setActualScene(drawPointScene);
 					
 		}
@@ -426,7 +338,7 @@ public class OBVJ extends PApplet {
 	                {"area", 1, 1000, 260, App.colors[0]},
 	                {"speed", 0, 1000, 50, App.colors[1]}};
 			
-			radarScene = new RadarScene(this, objects, w, h);
+			radarScene = new RadarScene(this, objects, App.width, App.height);
 			App.setActualScene(radarScene);
 					
 		}
@@ -471,7 +383,7 @@ public class OBVJ extends PApplet {
 	                {"amplitude", 1, 1000, 10, App.colors[5]},
 	                {"strokeWeight", 1, 100, 1, App.colors[5]} };
 			
-			shapeScene = new ShapeScene(this, objects, w, h);
+			shapeScene = new ShapeScene(this, objects, App.width, App.height);
 			App.setActualScene(shapeScene);
 						
 		}
@@ -512,7 +424,7 @@ public class OBVJ extends PApplet {
 	                {"amplitude", 1, 1000, 300, App.colors[5]},
 	                {"strokeWeight", 1, 100, 3, App.colors[5]} };
 			
-			chunkyScene = new ChunkyScene(this, objects, w, h);
+			chunkyScene = new ChunkyScene(this, objects, App.width, App.height);
 			App.setActualScene(chunkyScene);
 						
 		}
@@ -547,7 +459,7 @@ public class OBVJ extends PApplet {
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]} };
 			
-			monitorScene = new MonitorScene(this, objects, w, h);
+			monitorScene = new MonitorScene(this, objects, App.width, App.height);
 			App.setActualScene(monitorScene);
 						
 		}
@@ -570,14 +482,14 @@ public class OBVJ extends PApplet {
 		
 		Map<String, Integer> params = App.getActualScene().params;
 		  
-		translate(w/2 + getTrans(params.get("xTrans"), 0), h/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
+		translate(App.width/2 + getTrans(params.get("xTrans"), 0), App.height/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
   
 		rotateX(radians(getRotation(params.get("rotateX"), 3)));
 		rotateY(radians(getRotation(params.get("rotateY"), 4)));
 		rotateZ(radians(getRotation(params.get("rotateZ"), 5)));	
   
 		//translate(-w/2, -h/2, 0);
-		translate(-w, -h, 0);
+		translate(-App.width, -App.height, 0);
  
 	}
 	private int getTrans(int pValue, int id){
@@ -640,14 +552,14 @@ public class OBVJ extends PApplet {
 		
 		Map<String, Integer> params = App.getActualScene().params;
 		  
-		translate(w/2 + params.get("xTrans"), h/2 + params.get("yTrans"), params.get("zTrans"));
+		translate(App.width/2 + params.get("xTrans"), App.height/2 + params.get("yTrans"), params.get("zTrans"));
   
 		rotateX(radians(params.get("rotateX")));
 		rotateY(radians(params.get("rotateY")));
 		rotateZ(radians(params.get("rotateZ")));
   
 		//translate(-w/2, -h/2, 0);
-		translate(-w, -h, 0);
+		translate(-App.width, -App.height, 0);
  
 	}
 	//--------------- keys ---------------------//

@@ -2,6 +2,7 @@
 
 uniform mat4 transform;
 uniform mat4 texMatrix;
+//uniform mat3 normalMatrix;
 
 //uniform sampler2D texture; //not used
 uniform sampler2D tex0;
@@ -16,9 +17,11 @@ uniform float alpha; //alpha for line borders
 attribute vec4 vertex;
 attribute vec4 color;
 attribute vec2 texCoord;
+//attribute vec3 normal;
 
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
+//varying vec3 vertNormal;
 
 void main() {
 
@@ -28,13 +31,13 @@ void main() {
   
   vertColor = texture2D(tex0, vertTexCoord.st) * color;
   
-  myVertex.z = vertColor.r * 255.0 * depth;
+  //vertNormal = normalize(normalMatrix * normal);
     
+  myVertex.z = vertColor.r * 255.0 * depth;
+   
   if(useColors){
-  
 	float xMin = vertColor.r + colorTS;
 	xMin = clamp(xMin, 0.0, 1.0);
-  
 	vertColor = texture2D(tex1, vec2(xMin, 0.0)) * color;
   }
     

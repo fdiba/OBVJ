@@ -91,7 +91,7 @@ public class Slider {
 	}
 	protected void followMouse(PApplet p){
 		
-	    if(dragging) {	      
+	    if(dragging) {	//add mouse Y      
 	    	
 	    	sliderCtrl.location.x = p.mouseX;
 	    	
@@ -107,14 +107,22 @@ public class Slider {
 	  
 	}
 	private void editValue(){
-	    value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
-	    scene.params.put(param, (int) value);
-	    //PApplet.println(param + ": " + value); 
-
-	    updateTransValues(param, (int) value);
 	    
+		value = PApplet.map(sliderCtrl.location.x, lowXPos, maxYPos, lowValue, maxValue);
+	    
+	    if(App.getActualScene().params.get(param) != (int) value){
+	    	
+	    	if(param.equals("ySpace"))App.recreateShapeGrid = true;
+	    	
+	    	scene.params.put(param, (int) value);
+	    	
+	    	updateAnimatedValues(param, (int) value);
+	    	
+	    	PApplet.println(param + ": " + value); 
+	    }
+	    	    
 	}
-	private void updateTransValues(String _param, int _val){
+	private void updateAnimatedValues(String _param, int _val){
 		
 		switch (_param) {
 		case "xTrans":
