@@ -5,13 +5,15 @@ uniform mat4 texMatrix;
 //uniform mat3 normalMatrix;
 
 //uniform sampler2D texture; //not used
-uniform sampler2D tex0;
-uniform sampler2D tex1;
+uniform sampler2D tex0; //color image
+uniform sampler2D tex1; //depth image
+uniform sampler2D tex2; //sound image
 
 uniform bool useColors; //use of colors
 uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
 uniform float alpha; //alpha for line borders
+uniform float amplitude; //alpha for line borders
 
 
 attribute vec4 vertex;
@@ -34,6 +36,10 @@ void main() {
   //vertNormal = normalize(normalMatrix * normal);
     
   myVertex.z = vertColor.r * 255.0 * depth;
+  
+  //sound animation
+  vec4 vertSoundColor = texture2D(tex2, vertTexCoord.st) * color;
+  myVertex.z -= (vertSoundColor.r-0.5) * amplitude;
    
   if(useColors){
 	float xMin = vertColor.r + colorTS;

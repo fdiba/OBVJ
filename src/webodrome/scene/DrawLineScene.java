@@ -22,6 +22,7 @@ public class DrawLineScene extends Scene {
 	//-------- shaders ----------//
 	private static PShader fshader;
 	private PImage[] images;
+	private FloatList bufferValues;
 	
 	private Ramp ramp;
 	
@@ -36,12 +37,19 @@ public class DrawLineScene extends Scene {
 		
 		//----------- shaders -----------//
 		
-		App.soundImage = pApplet.createImage(App.imgSoundWidth, 66, PConstants.ARGB);
+		App.soundImage = pApplet.createImage(App.imgSoundWidth, 1, PConstants.ARGB);
 		App.soundImage.loadPixels();
-		for (int i = 0; i < App.soundImage.pixels.length; i++) {
-			App.soundImage.pixels[i] = pApplet.color(255, 255, 255, 255); 
+		for (int i=0; i<App.soundImage.pixels.length; i++) {
+			App.soundImage.pixels[i] = pApplet.color(127, 255); 
 		}
 		App.soundImage.updatePixels();
+		
+		bufferValues = new FloatList();
+		for(int i=0; i<App.imgSoundWidth; i++){
+			bufferValues.append(0);
+		}
+		
+		
 		
 		images = new PImage[1];
 		images[0] = pApplet.loadImage("colors.jpg");
@@ -49,6 +57,7 @@ public class DrawLineScene extends Scene {
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
 		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		fshader.set("tex1", images[0]);
+		fshader.set("tex2", App.soundImage);
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -72,13 +81,37 @@ public class DrawLineScene extends Scene {
 		
 		super.update(context);
 		
-		
-
 		//PSHAPE MODE
 		if(mode==3){
 			
+			updateSoundV2();
+			
+			if(App.recreateShapeGrid){
+				App.recreateShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
 			depthImage = context.depthImage();
 			fshader.set("tex0", depthImage);
+			
+			fshader.set("tex2", App.soundImage);
+			
+			fshader.set("useColors", App.useColors);
+			
+			float amplitude = params.get("amplitude");
+			fshader.set("amplitude", amplitude);
+							
+			float colorTS = params.get("colorTS"); 
+			colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
+			fshader.set("colorTS", colorTS);
+			
+			float depth = params.get("depth");
+			depth = PApplet.map(depth, -1000, 1000, -10, 10);
+			fshader.set("depth", depth);
+			
+			float alpha = params.get("alpha");
+			alpha = PApplet.map(alpha, 0, 255, 0, 1);
+			fshader.set("alpha", alpha);
 			
 		} else {
 			
@@ -99,6 +132,51 @@ public class DrawLineScene extends Scene {
 		
 		}
 
+	}
+	private void updateSoundV2(){
+		
+		if(App.updateSound){ //edit image each two frames
+			updateBuffersV2();
+		} else {
+			
+		}
+		App.updateSound = !App.updateSound;
+		
+	}
+	private void updateBuffersV2(){
+		
+		if(!App.useLiveMusic){
+			
+			
+		} else {
+			
+			App.soundImage.loadPixels();
+			for (int i = 0; i < App.soundImage.width; i++) {
+				
+				float value = App.in.left.get(i); //-1 to 1
+				
+				
+				
+				value = PApplet.map(value, -1, 1, 0, 255);
+				
+				//float lastVal = bufferValues.get(i);
+						
+				//lastVal *= 0.1;
+				//value = PApplet.max(lastVal, value);
+				
+				
+				
+				App.soundImage.pixels[i] = pApplet.color(value);
+				//bufferValues.set(i, value);
+				
+				
+			}
+			App.soundImage.updatePixels();
+			
+		}
+		
+		
+		
 	}
 	private void editVectorsPos(PVector[] pvectors){
 		
@@ -162,35 +240,14 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayShape(){
 		
-		
 		if(App.usePeasyCam){
 
 		} else {
 			pApplet.shapeMode(PConstants.CENTER);
 		}
-		
-		if(App.recreateShapeGrid){
-			App.recreateShapeGrid();			
-			App.recreateShapeGrid = false;
-		}
-		
-		fshader.set("useColors", App.useColors);
-				
-		float colorTS = params.get("colorTS"); 
-		colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
-		fshader.set("colorTS", colorTS);
-		
-		float depth = params.get("depth");
-		depth = PApplet.map(depth, -1000, 1000, -10, 10);
-		fshader.set("depth", depth);
-		
-		float alpha = params.get("alpha");
-		alpha = PApplet.map(alpha, 0, 255, 0, 1);
-		fshader.set("alpha", alpha);
 	
 		pApplet.shader(fshader);
 		pApplet.shape(App.mainGrid);
-		
 		
 	}
 	private void displayLines(PVector[] pvectors){

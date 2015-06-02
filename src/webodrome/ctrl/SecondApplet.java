@@ -34,8 +34,9 @@ public class SecondApplet extends PApplet {
 	}
 	public void draw(){
 		
-		background(0xFF333333);
-
+		//background(0xFF333333);
+		background(255,0,0);
+		
 		if(App.getActualScene() != null){
 			
 			if(App.getSceneId() == 0) { 
