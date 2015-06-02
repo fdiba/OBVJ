@@ -83,7 +83,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(360+640/2, 430);
+		PFrame pFrame = new PFrame(360+640/2 + 1024-200, 445);
 		pFrame.setTitle("ctrl board");
 		
 		if(App.usePeasyCam){
@@ -109,16 +109,18 @@ public class OBVJ extends PApplet {
 			App.objv = this;
 			
 			App.minim = new Minim(this);
-			
+						
 			if(!App.useLiveMusic){
 				App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
 				App.player.play();	
 				//App.player.loop();			
 				App.player.mute();
 				App.fft = new FFT(App.player.bufferSize(), App.player.sampleRate());
+				App.imgSoundWidth = App.player.bufferSize();
 			} else {			
 				App.in = App.minim.getLineIn(Minim.MONO);
 				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
+				App.imgSoundWidth = App.in.bufferSize();
 			}
 			
 			//TODO ERASE IT WHEN SOFT UPDATED

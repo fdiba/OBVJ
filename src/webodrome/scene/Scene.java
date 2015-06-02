@@ -23,7 +23,8 @@ public class Scene {
 	protected int w, h;
 	
 	protected int[] depthValues;
-	//only used with shaders
+	
+	//---- only used with shaders ----//
 	protected PImage depthImage;
 	
 	protected int imgWidth;
@@ -96,6 +97,8 @@ public class Scene {
 		
 		if(!App.useLiveMusic){
 			
+			//PApplet.println(App.player.bufferSize());
+			
 			for(int i = 0; i < App.player.bufferSize(); i++) {
 
 				float value = App.player.left.get(i); //-1 to 1
@@ -105,6 +108,8 @@ public class Scene {
 			}
 		
 		} else {
+			
+			//PApplet.println(App.in.bufferSize());
 			
 			for(int i = 0; i < App.in.bufferSize(); i++) {
 				

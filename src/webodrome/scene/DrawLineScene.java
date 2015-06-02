@@ -36,6 +36,13 @@ public class DrawLineScene extends Scene {
 		
 		//----------- shaders -----------//
 		
+		App.soundImage = pApplet.createImage(App.imgSoundWidth, 66, PConstants.ARGB);
+		App.soundImage.loadPixels();
+		for (int i = 0; i < App.soundImage.pixels.length; i++) {
+			App.soundImage.pixels[i] = pApplet.color(255, 255, 255, 255); 
+		}
+		App.soundImage.updatePixels();
+		
 		images = new PImage[1];
 		images[0] = pApplet.loadImage("colors.jpg");
 		
@@ -64,6 +71,8 @@ public class DrawLineScene extends Scene {
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
+		
+		
 
 		//PSHAPE MODE
 		if(mode==3){
@@ -85,7 +94,7 @@ public class DrawLineScene extends Scene {
 			checkNumBuffers(actualNumberOfHLines);
 			
 			xSpace = params.get("xSpace");
-	
+			
 			editVectorsPos(App.pvectors);
 		
 		}
@@ -166,8 +175,7 @@ public class DrawLineScene extends Scene {
 		}
 		
 		fshader.set("useColors", App.useColors);
-		
-		
+				
 		float colorTS = params.get("colorTS"); 
 		colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
 		fshader.set("colorTS", colorTS);

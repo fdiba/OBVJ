@@ -38,7 +38,13 @@ public class SecondApplet extends PApplet {
 
 		if(App.getActualScene() != null){
 			
-			if(App.getSceneId() == 3) { //scene 3
+			if(App.getSceneId() == 0) { 
+				
+				if(App.soundImage != null){
+					//TODO resize it
+					image(App.soundImage, 360, 20);
+				}
+			} else if(App.getSceneId() == 3) { //scene 3
 				
 				if(ShapeScene.userIsPresent)displayCube(colors[0], positions[0]);
 				if(ShapeScene.isTrackingSkeleton)displayCube(colors[1], positions[1]);
