@@ -165,7 +165,6 @@ public class DrawLineScene extends Scene {
 		} else {
 		
 			if(multipleBuffers){
-				//PApplet.println("woot");
 				updateBasicSoundImage();
 			} else {
 		    	updateLineSoundImage();
@@ -179,13 +178,30 @@ public class DrawLineScene extends Scene {
 		int tmpWidth = App.basicSoundImage.width;
 		int numOfPixels = App.basicSoundImage.pixels.length;
 		
-		
 		App.basicSoundImage.loadPixels();
 
 		//shift all lines except last one
-		for (int j = 0; j < numOfPixels-tmpWidth; j++) {			
-			App.basicSoundImage.pixels[j] = App.basicSoundImage.pixels[j+tmpWidth];
-			//App.basicSoundImage.pixels[i] = pApplet.color(0, 0, 255, 255);
+		for (int j = 0; j < numOfPixels-tmpWidth; j++) {
+			
+			int c = App.basicSoundImage.pixels[j+tmpWidth];
+			
+			//float red = pApplet.red(c);
+			float red = c >> 16 & 0xFF;
+		
+			if(red!=127){
+				//TODO PARAM
+				red = PApplet.lerp(red, 127, .1f);
+				c = (255 << 24) | ((int)red << 16) | ((int)red << 8) | (int)red; //alpha r g b
+				
+				//c = pApplet.lerpColor(c, pApplet.color(127, 255), .5f);
+				
+			} 
+			
+			
+			App.basicSoundImage.pixels[j] = c;
+			
+			//PApplet.println(red);
+			
 		}
 		
 		//edit last line
