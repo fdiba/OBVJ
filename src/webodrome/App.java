@@ -65,8 +65,10 @@ public class App {
 	public static boolean lowResGrid;
 	public static boolean recreateShapeGrid;
 	
-	public static PImage soundImage;
+	public static PImage lineSoundImage;
+	public static PImage basicSoundImage;
 	public static int imgSoundWidth;
+	public static int imgSoundHeight = 40;
 	
 	//-------- behringer ----------//
 	public final static boolean BCF2000 = true;

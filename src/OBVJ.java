@@ -83,7 +83,7 @@ public class OBVJ extends PApplet {
 		
 		//noCursor();
 		
-		PFrame pFrame = new PFrame(360+640/2 + 1024-200, 445);
+		PFrame pFrame = new PFrame(360+640/2 + 1024-200, 480+40*2);
 		pFrame.setTitle("ctrl board");
 		
 		if(App.usePeasyCam){

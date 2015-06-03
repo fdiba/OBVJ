@@ -19,10 +19,12 @@ public class DrawLineScene extends Scene {
 	public static boolean useFFT = true;
 	public static int mode = 3;
 	
+	//TODO PARAM 1 = no jump 
+	private static int bufferJump = 1;
+	
 	//-------- shaders ----------//
 	private static PShader fshader;
 	private PImage[] images;
-	private FloatList bufferValues;
 	
 	private Ramp ramp;
 	
@@ -37,19 +39,22 @@ public class DrawLineScene extends Scene {
 		
 		//----------- shaders -----------//
 		
-		App.soundImage = pApplet.createImage(App.imgSoundWidth, 1, PConstants.ARGB);
-		App.soundImage.loadPixels();
-		for (int i=0; i<App.soundImage.pixels.length; i++) {
-			App.soundImage.pixels[i] = pApplet.color(127, 255); 
+		//create lineSoundImage
+		App.lineSoundImage = pApplet.createImage(App.imgSoundWidth/bufferJump, 1, PConstants.ARGB);
+		App.lineSoundImage.loadPixels();
+		for (int i=0; i<App.lineSoundImage.pixels.length; i++) {
+			App.lineSoundImage.pixels[i] = pApplet.color(127, 255); 
 		}
-		App.soundImage.updatePixels();
+		App.lineSoundImage.updatePixels();
 		
-		bufferValues = new FloatList();
-		for(int i=0; i<App.imgSoundWidth; i++){
-			bufferValues.append(0);
+		//create basicSoundImage
+		App.basicSoundImage = pApplet.createImage(App.imgSoundWidth/bufferJump, App.imgSoundHeight, PConstants.ARGB);
+		App.basicSoundImage.loadPixels();
+		for (int i=0; i<App.basicSoundImage.pixels.length; i++) {
+			App.basicSoundImage.pixels[i] = pApplet.color(127, 255); 
 		}
-		
-		
+		App.basicSoundImage.updatePixels();
+
 		
 		images = new PImage[1];
 		images[0] = pApplet.loadImage("colors.jpg");
@@ -57,7 +62,7 @@ public class DrawLineScene extends Scene {
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
 		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		fshader.set("tex1", images[0]);
-		fshader.set("tex2", App.soundImage);
+		fshader.set("tex2", App.lineSoundImage);
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -94,7 +99,11 @@ public class DrawLineScene extends Scene {
 			depthImage = context.depthImage();
 			fshader.set("tex0", depthImage);
 			
-			fshader.set("tex2", App.soundImage);
+			if(multipleBuffers){
+				fshader.set("tex2", App.basicSoundImage);
+			} else {
+				fshader.set("tex2", App.lineSoundImage);
+			}
 			
 			fshader.set("useColors", App.useColors);
 			
@@ -136,7 +145,12 @@ public class DrawLineScene extends Scene {
 	private void updateSoundV2(){
 		
 		if(App.updateSound){ //edit image each two frames
-			updateBuffersV2();
+			//if(useFFT){
+				
+			//} else {
+				updateBuffersV2();
+			//}
+				
 		} else {
 			
 		}
@@ -149,33 +163,64 @@ public class DrawLineScene extends Scene {
 			
 			
 		} else {
-			
-			App.soundImage.loadPixels();
-			for (int i = 0; i < App.soundImage.width; i++) {
-				
-				float value = App.in.left.get(i); //-1 to 1
-				
-				
-				
-				value = PApplet.map(value, -1, 1, 0, 255);
-				
-				//float lastVal = bufferValues.get(i);
-						
-				//lastVal *= 0.1;
-				//value = PApplet.max(lastVal, value);
-				
-				
-				
-				App.soundImage.pixels[i] = pApplet.color(value);
-				//bufferValues.set(i, value);
-				
-				
+		
+			if(multipleBuffers){
+				//PApplet.println("woot");
+				updateBasicSoundImage();
+			} else {
+		    	updateLineSoundImage();
 			}
-			App.soundImage.updatePixels();
 			
 		}
 		
+	}
+	private void updateBasicSoundImage(){
 		
+		int tmpWidth = App.basicSoundImage.width;
+		int numOfPixels = App.basicSoundImage.pixels.length;
+		
+		
+		App.basicSoundImage.loadPixels();
+
+		//shift all lines except last one
+		for (int j = 0; j < numOfPixels-tmpWidth; j++) {			
+			App.basicSoundImage.pixels[j] = App.basicSoundImage.pixels[j+tmpWidth];
+			//App.basicSoundImage.pixels[i] = pApplet.color(0, 0, 255, 255);
+		}
+		
+		//edit last line
+		int bufferPosition = 0;
+		for (int i = numOfPixels-tmpWidth; i < numOfPixels; i++) {
+			
+			float value = App.in.left.get(bufferPosition); //-1 to 1
+
+			value = PApplet.map(value, -1, 1, 0, 255);
+			
+			App.basicSoundImage.pixels[i] = pApplet.color(value);
+			
+			//App.basicSoundImage.pixels[i] = pApplet.color(0,255,0, 255);
+			
+			bufferPosition++;
+		}
+		
+		App.basicSoundImage.updatePixels();
+		
+	
+		
+	}
+	private void updateLineSoundImage(){
+		
+		App.lineSoundImage.loadPixels();
+		for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
+			
+			float value = App.in.left.get(i); //-1 to 1
+
+			value = PApplet.map(value, -1, 1, 0, 255);
+			
+			App.lineSoundImage.pixels[i] = pApplet.color(value);
+			
+		}
+		App.lineSoundImage.updatePixels();
 		
 	}
 	private void editVectorsPos(PVector[] pvectors){

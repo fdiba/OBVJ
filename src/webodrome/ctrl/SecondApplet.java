@@ -41,10 +41,14 @@ public class SecondApplet extends PApplet {
 			
 			if(App.getSceneId() == 0) { 
 				
-				if(App.soundImage != null){
+				if(App.lineSoundImage != null && DrawLineScene.multipleBuffers == false){
 					//TODO resize it
-					image(App.soundImage, 360, 20);
+					image(App.lineSoundImage, 360, 20);
+				} else if(App.basicSoundImage != null && DrawLineScene.multipleBuffers){
+					//TODO DISPLAY DO NOT WORK
+					image(App.basicSoundImage, 360, 20);
 				}
+				
 			} else if(App.getSceneId() == 3) { //scene 3
 				
 				if(ShapeScene.userIsPresent)displayCube(colors[0], positions[0]);
