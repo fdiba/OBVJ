@@ -24,6 +24,7 @@ public class DrawLineScene extends Scene {
 	
 	//-------- shaders ----------//
 	private static PShader fshader;
+	private static PShader basicShader;
 	private PImage[] images;
 	
 	private Ramp ramp;
@@ -63,6 +64,9 @@ public class DrawLineScene extends Scene {
 		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		fshader.set("tex1", images[0]);
 		fshader.set("tex2", App.lineSoundImage);
+		
+		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
+		basicShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -121,6 +125,16 @@ public class DrawLineScene extends Scene {
 			float alpha = params.get("alpha");
 			alpha = PApplet.map(alpha, 0, 255, 0, 1);
 			fshader.set("alpha", alpha);
+			
+		} else if(mode==4){
+			
+			if(App.recreateShapeGrid){
+				App.recreateBasicShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
+			depthImage = context.depthImage();
+			basicShader.set("tex0", depthImage);
 			
 		} else {
 			
@@ -220,9 +234,7 @@ public class DrawLineScene extends Scene {
 		}
 		
 		App.basicSoundImage.updatePixels();
-		
-	
-		
+
 	}
 	private void updateLineSoundImage(){
 		
@@ -306,8 +318,13 @@ public class DrawLineScene extends Scene {
 		} else {
 			pApplet.shapeMode(PConstants.CENTER);
 		}
-	
-		pApplet.shader(fshader);
+		
+		if(mode==3){
+			pApplet.shader(fshader);
+		} else if (mode==4){
+			pApplet.shader(basicShader);
+		}
+		
 		pApplet.shape(App.mainGrid);
 		
 	}
@@ -446,6 +463,16 @@ public class DrawLineScene extends Scene {
 			displayTextures(App.pvectors);
 			break;
 		case 3:
+			if(App.usePeasyCam){
+				displayShape();
+			} else {
+				pApplet.pushMatrix();
+				pApplet.translate(w/2, h/2, -200);
+				displayShape();
+				pApplet.popMatrix();
+			}
+			break;
+		case 4:
 			if(App.usePeasyCam){
 				displayShape();
 			} else {

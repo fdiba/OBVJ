@@ -91,7 +91,64 @@ public class App {
 		mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		mainGrid.setStroke(false);
 	}
-	public static PShape createShapeGrid(PImage image){
+	public static void recreateBasicShapeGrid(){
+		mainGrid = createBasicShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		mainGrid.setStroke(false);
+	}
+	private static PShape createBasicShapeGrid(PImage image){
+		
+		int kwidth = App.KWIDTH;
+		int kheight = App.KHEIGHT;
+		
+		float xRatio = (float) width/kwidth;
+		float yRatio = (float) height/kheight;
+		
+		PShape shape = objv.createShape();
+		
+		//TODO ADD PARAM
+		shape.beginShape(PConstants.QUADS);
+		shape.textureMode(PConstants.NORMAL);
+		shape.texture(image);
+
+		int xSpace = getActualScene().params.get("xSpace");
+		int ySpace = getActualScene().params.get("ySpace");
+				
+		for (int y=0; y<height-ySpace; y+=ySpace) {
+			
+		    for (int x=0; x<width-xSpace; x+=xSpace) {
+
+		    	PVector tl, bl, br, tr;
+		    	tl = new PVector(x, y);
+		    	bl = new PVector(x, y+ySpace);
+		    	br = new PVector(x+xSpace, y+ySpace);
+		    	tr = new PVector(x+xSpace, y);
+		    	
+		    	//TODO do it in the shader! /LINE BREAKER
+		    	if (lowResGrid) { //press 'r' key
+		    		
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		      
+		    	} else {
+		    					    			
+		    		shape.vertex(tl.x, tl.y, tl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+			    	shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+			    	shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		
+		    	}
+		    	
+		    }
+
+		}
+
+		shape.endShape(PApplet.CLOSE);
+		return shape;
+		
+	}
+	private static PShape createShapeGrid(PImage image){
 				
 		int kwidth = App.KWIDTH;
 		int kheight = App.KHEIGHT;
@@ -137,7 +194,7 @@ public class App {
 		        	tr = new PVector(x+xSpace, y);
 		    	}
 		    	
-		    	//TODO do it in the shader! /LINE BREAKING
+		    	//TODO do it in the shader! /LINE BREAKER
 		    	if (lowResGrid) { //press 'r' key
 		    		
 		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);

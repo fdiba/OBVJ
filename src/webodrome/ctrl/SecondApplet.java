@@ -115,7 +115,8 @@ public class SecondApplet extends PApplet {
 				DrawLineScene.useFFT = !DrawLineScene.useFFT;
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
-				if(DrawLineScene.mode>3)DrawLineScene.mode=0;		
+				if(DrawLineScene.mode>2)App.recreateShapeGrid = true;
+				if(DrawLineScene.mode>4)DrawLineScene.mode=0;		
 			} else if (key == 'v') {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == '0'){
