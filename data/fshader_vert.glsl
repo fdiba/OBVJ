@@ -31,20 +31,25 @@ void main() {
   
   vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
   
-  vertColor = texture2D(tex0, vertTexCoord.st) * color;
+  //vertColor = texture2D(tex0, vertTexCoord.st) * color;
+  vertColor = texture2D(tex0, vertTexCoord.st);
   
   //vertNormal = normalize(normalMatrix * normal);
     
   myVertex.z = vertColor.r * 255.0 * depth;
   
   //sound animation
-  vec4 vertSoundColor = texture2D(tex2, vertTexCoord.st) * color;
-  myVertex.z -= (vertSoundColor.r-0.5) * amplitude;
-   
+  vec4 vertSoundColor = texture2D(tex2, vertTexCoord.st);
+  float test = vertSoundColor.r - 0.5;
+  //TODO ADD PARAM max 0 to 1 and texCoord[1]
+  test *= texCoord[1];
+  myVertex.z += test*amplitude;
+  
+  
   if(useColors){
 	float xMin = vertColor.r + colorTS;
 	xMin = clamp(xMin, 0.0, 1.0);
-	vertColor = texture2D(tex1, vec2(xMin, 0.0)) * color;
+	vertColor = texture2D(tex1, vec2(xMin, 0.0));
   }
     
   gl_Position = transform * myVertex;

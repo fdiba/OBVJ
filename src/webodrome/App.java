@@ -68,7 +68,7 @@ public class App {
 	public static PImage lineSoundImage;
 	public static PImage basicSoundImage;
 	public static int imgSoundWidth;
-	public static int imgSoundHeight = 40;
+	public static int imgSoundHeight = 20;
 	
 	//-------- behringer ----------//
 	public final static boolean BCF2000 = true;
@@ -126,17 +126,17 @@ public class App {
 		    	//TODO do it in the shader! /LINE BREAKER
 		    	if (lowResGrid) { //press 'r' key
 		    		
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
 		      
 		    	} else {
 		    					    			
-		    		shape.vertex(tl.x, tl.y, tl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
 		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
 			    	shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-			    	shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+			    	shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
 		    		
 		    	}
 		    	
@@ -197,10 +197,10 @@ public class App {
 		    	//TODO do it in the shader! /LINE BREAKER
 		    	if (lowResGrid) { //press 'r' key
 		    		
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(br.x, br.y, br.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(tr.x, tr.y, tr.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
 		      
 		    	} else {
 		    		

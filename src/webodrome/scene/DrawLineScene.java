@@ -136,6 +136,10 @@ public class DrawLineScene extends Scene {
 			depthImage = context.depthImage();
 			basicShader.set("tex0", depthImage);
 			
+			float depth = params.get("depth");
+			depth = PApplet.map(depth, -1000, 1000, -10, 10);
+			basicShader.set("depth", depth);
+			
 		} else {
 			
 			updateSound(useFFT);
@@ -200,20 +204,18 @@ public class DrawLineScene extends Scene {
 			int c = App.basicSoundImage.pixels[j+tmpWidth];
 			
 			//float red = pApplet.red(c);
-			float red = c >> 16 & 0xFF;
+			//float red = c >> 16 & 0xFF;
 		
-			if(red!=127){
+			//if(red!=127){
 				//TODO PARAM
-				red = PApplet.lerp(red, 127, .1f);
-				c = (255 << 24) | ((int)red << 16) | ((int)red << 8) | (int)red; //alpha r g b
+				//red = PApplet.lerp(red, 127, 0.2f);
+				//c = (255 << 24) | ((int)red << 16) | ((int)red << 8) | (int)red; //alpha r g b
 				
 				//c = pApplet.lerpColor(c, pApplet.color(127, 255), .5f);
 				
-			} 
-			
-			
-			App.basicSoundImage.pixels[j] = c;
-			
+			//} 
+
+			App.basicSoundImage.pixels[j] = c;	
 			//PApplet.println(red);
 			
 		}

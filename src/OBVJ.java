@@ -241,7 +241,7 @@ public class OBVJ extends PApplet {
 	                {"xSpace", 4, 100, 10, App.colors[4]}, //4 --> 150
 	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
 	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis 100=10
-	                {"amplitude", 1, 20000, 2000, App.colors[4]}, //before 390 max 500
+	                {"amplitude", 1, 20000, 10000, App.colors[4]}, //before 390 max 500
 	                
 	                {"maxDist", 1, 1500, 500, App.colors[7]},
 	                {"borderXSize", 0, 200, 0, App.colors[4]}, //in relation with xSpace

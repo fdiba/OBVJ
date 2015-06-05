@@ -113,6 +113,10 @@ public class SecondApplet extends PApplet {
 				App.duplicateFFT = !App.duplicateFFT;
 			} else if (key == 'f') {
 				DrawLineScene.useFFT = !DrawLineScene.useFFT;
+			} else if (key == 'g') {
+				DrawLineScene.mode--;
+				if(DrawLineScene.mode>2)App.recreateShapeGrid = true;
+				if(DrawLineScene.mode<0)DrawLineScene.mode=4;		
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				if(DrawLineScene.mode>2)App.recreateShapeGrid = true;
