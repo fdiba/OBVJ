@@ -90,6 +90,8 @@ public class DrawLineScene extends Scene {
 		
 		super.update(context);
 		
+		//PApplet.println(params.get("damper"));
+		
 		//PSHAPE MODE
 		if(mode==3){
 			
@@ -125,6 +127,10 @@ public class DrawLineScene extends Scene {
 			float alpha = params.get("alpha");
 			alpha = PApplet.map(alpha, 0, 255, 0, 1);
 			fshader.set("alpha", alpha);
+			
+			float damper = params.get("damper");
+			damper = PApplet.map(damper, 0f, 10f, 0f, 1f);
+			fshader.set("damper", damper);
 			
 		} else if(mode==4){
 			
@@ -202,21 +208,7 @@ public class DrawLineScene extends Scene {
 		for (int j = 0; j < numOfPixels-tmpWidth; j++) {
 			
 			int c = App.basicSoundImage.pixels[j+tmpWidth];
-			
-			//float red = pApplet.red(c);
-			//float red = c >> 16 & 0xFF;
-		
-			//if(red!=127){
-				//TODO PARAM
-				//red = PApplet.lerp(red, 127, 0.2f);
-				//c = (255 << 24) | ((int)red << 16) | ((int)red << 8) | (int)red; //alpha r g b
-				
-				//c = pApplet.lerpColor(c, pApplet.color(127, 255), .5f);
-				
-			//} 
-
 			App.basicSoundImage.pixels[j] = c;	
-			//PApplet.println(red);
 			
 		}
 		
@@ -229,9 +221,7 @@ public class DrawLineScene extends Scene {
 			value = PApplet.map(value, -1, 1, 0, 255);
 			
 			App.basicSoundImage.pixels[i] = pApplet.color(value);
-			
-			//App.basicSoundImage.pixels[i] = pApplet.color(0,255,0, 255);
-			
+						
 			bufferPosition++;
 		}
 		

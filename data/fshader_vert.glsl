@@ -14,6 +14,7 @@ uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
 uniform float alpha; //alpha for line borders
 uniform float amplitude; //alpha for line borders
+uniform float damper; //damp sound height in time 0 to 1
 
 
 attribute vec4 vertex;
@@ -40,10 +41,12 @@ void main() {
   
   //sound animation
   vec4 vertSoundColor = texture2D(tex2, vertTexCoord.st);
-  float test = vertSoundColor.r - 0.5;
+  float soundZOffet = vertSoundColor.r - 0.5;
   //TODO ADD PARAM max 0 to 1 and texCoord[1]
-  test *= texCoord[1];
-  myVertex.z += test*amplitude;
+  
+  float minHeight = max(texCoord[1], damper); 
+  soundZOffet *= minHeight;
+  myVertex.z += soundZOffet*amplitude;
   
   
   if(useColors){

@@ -15,7 +15,7 @@ public class Menu {
 	private int showTime;
 	private final int SHOWTIME_MAX = 23;
 	
-	private int yPos;
+	private float yPos;
 	
 	public Menu(Scene _scene, PVector _loc, Object[][] objects){
 		
@@ -43,7 +43,7 @@ public class Menu {
 			int sliderId = i%numSliders;
 			int gapBetweenSliders = 15*row;
 			
-			yPos = (int) (location.y + 15*i + gapBetweenSliders);
+			yPos = (float) (location.y + 15*i + gapBetweenSliders);
 			
 			sliders[i] = new Slider(scene, new PVector(location.x, yPos), param, lowValue, maxValue, color);
 					
