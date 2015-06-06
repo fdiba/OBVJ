@@ -127,6 +127,8 @@ public class OBVJ extends PApplet {
 			setVectorsGrid();
 			App.recreateShapeGrid = true;
 			
+			App.defaultShader = loadShader("defaultShader_frag.glsl", "defaultShader_vert.glsl");
+			
 			//----------- behringer -----------//		  
 			if(App.BCF2000){
 				MidiBus.list();
@@ -141,6 +143,8 @@ public class OBVJ extends PApplet {
 			//-------------------------//
 		
 		}
+		  
+		//hint(DISABLE_DEPTH_MASK);
 
 	}
 	public void draw(){	
@@ -283,6 +287,8 @@ public class OBVJ extends PApplet {
 			frameRate(sl_frameRate);
 			App.oldSceneId = sceneId;
 			
+			shader(App.defaultShader);
+			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},                
@@ -334,6 +340,8 @@ public class OBVJ extends PApplet {
 			frameRate(sl_frameRate);
 			App.oldSceneId = sceneId;
 			
+			shader(App.defaultShader);
+			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},                
@@ -374,6 +382,8 @@ public class OBVJ extends PApplet {
 		if (sceneId != App.oldSceneId) {
 			
 			App.oldSceneId = sceneId;
+			
+			shader(App.defaultShader);
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
@@ -420,6 +430,8 @@ public class OBVJ extends PApplet {
 			
 			App.oldSceneId = sceneId;
 			
+			shader(App.defaultShader);
+			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},
@@ -459,6 +471,8 @@ public class OBVJ extends PApplet {
 		if (sceneId != App.oldSceneId) {
 			
 			App.oldSceneId = sceneId;
+			
+			shader(App.defaultShader);
 			
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},

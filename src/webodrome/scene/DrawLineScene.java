@@ -25,6 +25,7 @@ public class DrawLineScene extends Scene {
 	//-------- shaders ----------//
 	private static PShader fshader;
 	private static PShader basicShader;
+	private static PShader lineShader;
 	private PImage[] images;
 	
 	private Ramp ramp;
@@ -67,6 +68,12 @@ public class DrawLineScene extends Scene {
 		
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
 		basicShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		
+		lineShader = pApplet.loadShader("lshader_frag.glsl", "lshader_vert.glsl");
+		lineShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		
+		lineShader.set("gWidth", (float) App.width);
+		lineShader.set("gHeight", (float) App.height);
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -145,7 +152,21 @@ public class DrawLineScene extends Scene {
 			float depth = params.get("depth");
 			depth = PApplet.map(depth, -1000, 1000, -10, 10);
 			basicShader.set("depth", depth);
+						
+		} else if(mode==5){
 			
+			if(App.recreateShapeGrid){
+				App.recreateLineShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
+			depthImage = context.depthImage();
+			lineShader.set("tex0", depthImage);
+			
+			float depth = params.get("depth");
+			depth = PApplet.map(depth, -1000, 1000, -10, 10);
+			lineShader.set("depth", depth);
+						
 		} else {
 			
 			updateSound(useFFT);
@@ -222,6 +243,7 @@ public class DrawLineScene extends Scene {
 			
 			App.basicSoundImage.pixels[i] = pApplet.color(value);
 						
+			//TODO not directly linked to buffer size !
 			bufferPosition++;
 		}
 		
@@ -315,6 +337,8 @@ public class DrawLineScene extends Scene {
 			pApplet.shader(fshader);
 		} else if (mode==4){
 			pApplet.shader(basicShader);
+		} else if(mode==5){
+			pApplet.shader(lineShader);
 		}
 		
 		pApplet.shape(App.mainGrid);
@@ -442,37 +466,39 @@ public class DrawLineScene extends Scene {
 		}	
 		
 	}
+	private void translateAndDisplayShape(){
+		if(App.usePeasyCam){
+			displayShape();
+		} else {
+			pApplet.pushMatrix();
+			pApplet.translate(w/2, h/2, -200);
+			displayShape();
+			pApplet.popMatrix();
+		}
+	}
 	public void display(){
-		
+						
 		switch (mode) {
 		case 0:
+			pApplet.shader(App.defaultShader);
 			displayLines(App.pvectors);
 			break;
 		case 1:
+			pApplet.shader(App.defaultShader);
 			displayUncutLines(App.pvectors);
 			break;
 		case 2:
+			pApplet.shader(App.defaultShader);
 			displayTextures(App.pvectors);
 			break;
 		case 3:
-			if(App.usePeasyCam){
-				displayShape();
-			} else {
-				pApplet.pushMatrix();
-				pApplet.translate(w/2, h/2, -200);
-				displayShape();
-				pApplet.popMatrix();
-			}
+			translateAndDisplayShape();
 			break;
 		case 4:
-			if(App.usePeasyCam){
-				displayShape();
-			} else {
-				pApplet.pushMatrix();
-				pApplet.translate(w/2, h/2, -200);
-				displayShape();
-				pApplet.popMatrix();
-			}
+			translateAndDisplayShape();
+			break;
+		case 5:
+			translateAndDisplayShape();
 			break;
 		default:
 			displayLines(App.pvectors);

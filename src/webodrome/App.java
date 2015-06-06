@@ -5,6 +5,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PShape;
 import processing.core.PVector;
+import processing.opengl.PShader;
 import ddf.minim.AudioInput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -26,6 +27,10 @@ public class App {
 	public static SecondApplet secondApplet;
 	
 	public static boolean useLiveMusic = true;
+	
+	//-------- SHADER ---------------//
+	
+	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
 	public static int KWIDTH = 640;
@@ -68,7 +73,7 @@ public class App {
 	public static PImage lineSoundImage;
 	public static PImage basicSoundImage;
 	public static int imgSoundWidth;
-	public static int imgSoundHeight = 20;
+	public static int imgSoundHeight = 40;
 	
 	//-------- behringer ----------//
 	public final static boolean BCF2000 = true;
@@ -89,11 +94,52 @@ public class App {
 	}
 	public static void recreateShapeGrid(){
 		mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-		mainGrid.setStroke(false);
 	}
 	public static void recreateBasicShapeGrid(){
 		mainGrid = createBasicShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-		mainGrid.setStroke(false);
+	}
+	public static void recreateLineShapeGrid(){
+		mainGrid = createLineShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+	}
+	private static PShape createLineShapeGrid(PImage image){
+		
+		PShape shape = objv.createShape();
+		shape.setStroke(true);
+		//TODO ADD PARAM ?
+		shape.setStrokeWeight(10);
+		shape.setStroke(objv.color(255, 0, 0));
+		
+		//TODO ADD PARAM
+		shape.beginShape(PConstants.LINES);
+		shape.textureMode(PConstants.NORMAL);
+		//shape.texture(image);
+
+		int xSpace = getActualScene().params.get("xSpace");
+		int ySpace = getActualScene().params.get("ySpace");
+		
+		//xSpace = 10;
+		//ySpace = 10;
+				
+		for (int y=0; y<height-ySpace; y+=ySpace) {
+			
+		    for (int x=0; x<width-xSpace; x+=xSpace) {
+
+		    	PVector tl, tr;
+		    	
+		    	tl = new PVector(x, y);
+		    	tr = new PVector(x+xSpace, y);
+		    	
+		    					    			
+		    	shape.vertex(tl.x, tl.y, 0);
+		    	shape.vertex(tr.x, tr.y, 0);
+
+		    }
+
+		}
+
+		shape.endShape(PApplet.CLOSE);
+		return shape;
+		
 	}
 	private static PShape createBasicShapeGrid(PImage image){
 		
@@ -104,6 +150,8 @@ public class App {
 		float yRatio = (float) height/kheight;
 		
 		PShape shape = objv.createShape();
+		shape.setStroke(false);
+		//shape.setStroke(objv.color(255, 0, 0));
 		
 		//TODO ADD PARAM
 		shape.beginShape(PConstants.QUADS);
@@ -157,6 +205,7 @@ public class App {
 		float yRatio = (float) height/kheight;
 		
 		PShape shape = objv.createShape();
+		shape.setStroke(false);
 		
 		//TODO ADD PARAM
 		shape.beginShape(PConstants.QUADS);

@@ -21,9 +21,23 @@ void main() {
   
   //color
   vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
-  vertColor = texture2D(tex0, vertTexCoord.st) * color;
+  vertColor = texture2D(tex0, vertTexCoord.st);
   
   myVertex.z = vertColor.r * 255.0 * depth;
+  
+  /*
+  //TODO AS PARAM
+  //xVal AND yVal CAN NOT BE TOO SMALL
+  float yVal = 40.0;
+  float xVal = 40.0;
+  
+  if (mod(vertex.x, xVal)==0){
+	vertColor = vec4(0, 1.0, 0.0, 1.0); //green
+  } else if(mod(vertex.y, yVal)==0.0){
+	vertColor = vec4(0, 1.0, 0.0, 1.0); //green
+  } else {
+	//vertColor = vec4(1.0, 0.0, 0.0, 1.0); //red
+  }*/
    
   //position
   gl_Position = transform * myVertex;
