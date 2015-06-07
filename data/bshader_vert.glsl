@@ -4,7 +4,9 @@ uniform mat4 transform;
 uniform mat4 texMatrix;
 
 //uniform sampler2D texture; //not used
-uniform sampler2D tex0; //color image
+uniform sampler2D tex0; //depth image
+uniform sampler2D tex1; //color image
+uniform sampler2D tex2; //sound image
 
 uniform float depth; //create space between points z axis
 

@@ -5,8 +5,7 @@ uniform vec4 viewport;
 
 uniform mat4 texMatrix; //ADDED
 
-uniform sampler2D tex0; //depth image
-uniform sampler2D tex1; //color image
+uniform sampler2D tex0; //ADDED
 uniform sampler2D tex2; //sound image
 uniform float gWidth;
 uniform float gHeight;
@@ -21,7 +20,6 @@ attribute vec4 vertex;
 attribute vec4 color;
 attribute vec4 direction;
 
-
 varying vec4 vertColor;
 
 vec3 clipToWindow(vec4 clip, vec4 viewport) {
@@ -32,27 +30,12 @@ vec3 clipToWindow(vec4 clip, vec4 viewport) {
   
 void main() {
 
-  //pos = vertTexCoord
+  //ADDED
   vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight);
   vertColor = texture2D(tex0, pos);
-
+  
   vec4 myVertex = vertex;
   myVertex.z = vertColor.r * 255.0 * depth;
-  
-  //TODO ANIMATE ONLY IF VERTEX Z < VALUE
-  //sound animation
-  vec4 vertSoundColor = texture2D(tex2, pos);
-  float soundZOffet = vertSoundColor.r - 0.5;  
-  float minHeight = max(pos[1], damper); 
-  soundZOffet *= minHeight;
-  myVertex.z += soundZOffet*amplitude;
-  
-  //DO IT AT THE END
-  if(useColors){
-	float xMin = vertColor.r + colorTS;
-	xMin = clamp(xMin, 0.0, 1.0);
-	vertColor = texture2D(tex1, vec2(xMin, 0.0));
-  }
 
   vec4 clip0 = transform * myVertex;
   //vec4 clip0 = transform * vertex;
@@ -70,5 +53,7 @@ void main() {
     
   gl_Position.xy = clip0.xy + offset.xy;
   gl_Position.zw = clip0.zw;
+  
+  vertColor = vec4(0.0,1.0,0.5,1.0);
   
 }

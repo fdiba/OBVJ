@@ -105,9 +105,8 @@ public class App {
 		
 		PShape shape = objv.createShape();
 		shape.setStroke(true);
-		//TODO ADD PARAM ?
-		shape.setStrokeWeight(10);
-		shape.setStroke(objv.color(255, 0, 0));
+		shape.setStrokeWeight(getActualScene().params.get("strokeWeight"));
+		//shape.setStroke(objv.color(255, 0, 0));
 		
 		//TODO ADD PARAM
 		shape.beginShape(PConstants.LINES);
@@ -150,7 +149,8 @@ public class App {
 		float yRatio = (float) height/kheight;
 		
 		PShape shape = objv.createShape();
-		shape.setStroke(false);
+		shape.setStroke(true);
+		shape.setStrokeWeight(getActualScene().params.get("strokeWeight"));
 		//shape.setStroke(objv.color(255, 0, 0));
 		
 		//TODO ADD PARAM
