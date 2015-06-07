@@ -223,19 +223,36 @@ public class DrawLineScene extends Scene {
 	private void updateSoundV2(){
 		
 		if(App.updateSound){ //edit image each two frames
-			//if(useFFT){
-				
-			//} else {
-				updateBuffersV2();
-			//}
-				
-		} else {
-			
+			if(useFFT){
+				updateFTTV2();
+			} else {
+				updateVolume();
+			}	
 		}
+		
 		App.updateSound = !App.updateSound;
 		
 	}
-	private void updateBuffersV2(){
+	private void updateFTTV2(){
+		
+		if(!App.useLiveMusic){
+			
+			
+		} else {
+			
+			if(App.useLiveMusic)App.fft.forward(App.in.left);
+			else App.fft.forward(App.player.left);
+		
+			if(multipleBuffers){
+				updateBasicSoundImageWithFFT();
+			} else {
+		    	updateLineSoundImageWithFTT();
+			}
+			
+		}
+		
+	}
+	private void updateVolume(){
 		
 		if(!App.useLiveMusic){
 			
@@ -249,6 +266,39 @@ public class DrawLineScene extends Scene {
 			}
 			
 		}
+		
+	}
+	private void updateBasicSoundImageWithFFT(){
+		
+		int tmpWidth = App.basicSoundImage.width;
+		int numOfPixels = App.basicSoundImage.pixels.length;
+		
+		App.basicSoundImage.loadPixels();
+
+		//shift all lines except last one
+		for (int j = 0; j < numOfPixels-tmpWidth; j++) {
+			
+			int c = App.basicSoundImage.pixels[j+tmpWidth];
+			App.basicSoundImage.pixels[j] = c;	
+			
+		}
+		
+		//edit last line
+		int bufferPosition = 0;
+		for (int i = numOfPixels-tmpWidth; i < numOfPixels; i++) {
+			
+			//float value = App.in.left.get(bufferPosition); //-1 to 1
+			float value = App.fft.getBand(bufferPosition); 
+
+			value = PApplet.map(value, -1, 1, 0, 255);
+			
+			App.basicSoundImage.pixels[i] = pApplet.color(value);
+						
+			//TODO not directly linked to buffer size !
+			bufferPosition++;
+		}
+		
+		App.basicSoundImage.updatePixels();
 		
 	}
 	private void updateBasicSoundImage(){
@@ -282,6 +332,21 @@ public class DrawLineScene extends Scene {
 		
 		App.basicSoundImage.updatePixels();
 
+	}
+	private void updateLineSoundImageWithFTT(){
+		
+		App.lineSoundImage.loadPixels();
+		for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
+			
+			float value = App.fft.getBand(i); //-1 to 1
+
+			value = PApplet.map(value, -1, 1, 0, 255);
+			
+			App.lineSoundImage.pixels[i] = pApplet.color(value);
+			
+		}
+		App.lineSoundImage.updatePixels();
+		
 	}
 	private void updateLineSoundImage(){
 		
