@@ -12,6 +12,7 @@ uniform float gWidth;
 uniform float gHeight;
 
 uniform bool useFFT; //use fft
+uniform bool texCutStraight; //change how texFftEnd is used
 uniform float texFftStart; //0 1
 uniform float texFftEnd; //0 1
 
@@ -40,13 +41,22 @@ void main() {
   vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
   vec2 tex2Pos; //sound
   
+  //------ fft ------/
   if(useFFT){
-	tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 y >> 0 1
-	//tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 y >> 0 1
-	//TODO SMOOTH VALUES DO NOT CUT
+	
+	//TODO create variable
+
+	if(texCutStraight){
+		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+	} else {
+		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+	}
+	
 	tex2Pos[0] += texFftStart;
-	//tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle
+	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle	
+
 	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
+	
   } else {
 	tex2Pos = pos;
   }

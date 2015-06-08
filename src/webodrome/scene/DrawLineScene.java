@@ -17,6 +17,7 @@ public class DrawLineScene extends Scene {
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
 	public static boolean useFFT = true;
+	public static boolean texCutStraight = true;
 	public static int mode = 2;
 	
 	//TODO PARAM 1 = no jump 
@@ -62,6 +63,9 @@ public class DrawLineScene extends Scene {
 		fshader.set("tex1", images[0]); //color
 		fshader.set("tex2", App.lineSoundImage);
 		
+		fshader.set("gWidth", (float) App.width);
+		fshader.set("gHeight", (float) App.height);
+		
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
 		basicShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 		
@@ -96,13 +100,45 @@ public class DrawLineScene extends Scene {
 		          		"use colors: press c");
 				
 	}
+	private void setUniformVariables(PShader shader){
+		
+		shader.set("useColors", App.useColors);
+		
+		float amplitude = params.get("amplitude");
+		shader.set("amplitude", amplitude);
+						
+		float colorTS = params.get("colorTS"); 
+		colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
+		shader.set("colorTS", colorTS);
+		
+		float damper = params.get("damper");
+		damper = PApplet.map(damper, 0f, 10f, 1f, 0f);
+		shader.set("damper", damper);
+		
+		float depth = params.get("depth");
+		depth = PApplet.map(depth, -1000, 1000, -10, 10);
+		shader.set("depth", depth);
+		
+		//------------ new ones ------------//
+		
+		shader.set("useFFT", useFFT);
+		shader.set("texCutStraight", texCutStraight);
+		
+		float texFftStart = params.get("texFftStart");
+		texFftStart = PApplet.map(texFftStart, 0f, 10f, 0f, 1f);
+		shader.set("texFftStart", texFftStart);
+		
+		float texFftEnd = params.get("texFftEnd");
+		texFftEnd = PApplet.map(texFftEnd, 0f, 10f, 0f, 1f);
+		shader.set("texFftEnd", texFftEnd);
+
+	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
 		
 		//PApplet.println(params.get("damper"));
-		
-		//PSHAPE MODE
+
 		if(mode==2){
 			
 			updateSoundV2();
@@ -111,7 +147,7 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid();			
 				App.recreateShapeGrid = false;
 			}
-			
+						
 			depthImage = context.depthImage();
 			fshader.set("tex0", depthImage);
 			
@@ -121,26 +157,12 @@ public class DrawLineScene extends Scene {
 				fshader.set("tex2", App.lineSoundImage);
 			}
 			
-			fshader.set("useColors", App.useColors);
+			setUniformVariables(fshader);
 			
-			float amplitude = params.get("amplitude");
-			fshader.set("amplitude", amplitude);
-							
-			float colorTS = params.get("colorTS"); 
-			colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
-			fshader.set("colorTS", colorTS);
-			
-			float depth = params.get("depth");
-			depth = PApplet.map(depth, -1000, 1000, -10, 10);
-			fshader.set("depth", depth);
-			
+			//only used in this shader for the moment
 			float alpha = params.get("alpha");
 			alpha = PApplet.map(alpha, 0, 255, 0, 1);
 			fshader.set("alpha", alpha);
-			
-			float damper = params.get("damper");
-			damper = PApplet.map(damper, 0f, 10f, 0f, 1f);
-			fshader.set("damper", damper);
 			
 		} else if(mode==3){
 			
@@ -172,40 +194,13 @@ public class DrawLineScene extends Scene {
 			depthImage = context.depthImage();
 			lineShader.set("tex0", depthImage);
 			
-			float depth = params.get("depth");
-			depth = PApplet.map(depth, -1000, 1000, -10, 10);
-			lineShader.set("depth", depth);
-			
 			if(multipleBuffers){
 				lineShader.set("tex2", App.basicSoundImage);
 			} else {
 				lineShader.set("tex2", App.lineSoundImage);
 			}
 			
-			lineShader.set("useColors", App.useColors);
-			
-			float amplitude = params.get("amplitude");
-			lineShader.set("amplitude", amplitude);
-							
-			float colorTS = params.get("colorTS"); 
-			colorTS = PApplet.map(colorTS, 0, 254, 0, 1);
-			lineShader.set("colorTS", colorTS);
-			
-			float damper = params.get("damper");
-			damper = PApplet.map(damper, 0f, 10f, 0f, 1f);
-			lineShader.set("damper", damper);
-			
-			lineShader.set("useFFT", useFFT);
-			
-			float texFftStart = params.get("texFftStart");
-			texFftStart = PApplet.map(texFftStart, 0f, 10f, 0f, 1f);
-			lineShader.set("texFftStart", texFftStart);
-			
-			float texFftEnd = params.get("texFftEnd");
-			texFftEnd = PApplet.map(texFftEnd, 0f, 10f, 0f, 1f);
-			lineShader.set("texFftEnd", texFftEnd);
-			
-			//PApplet.println(texFftEnd);
+			setUniformVariables(lineShader);
 						
 		} else {
 			
@@ -547,30 +542,6 @@ public class DrawLineScene extends Scene {
 			}
 			pApplet.endShape();	
 		}
-	}
-	private void displayUncutLines(PVector[] pvectors){
-		
-		float alpha = params.get("alpha");
-		if(alpha<50.0)alpha = (float) 50.0;
-
-		
-		pApplet.noFill();
-		pApplet.strokeWeight(1);
-		pApplet.stroke(0xFFFFFFFF, alpha);
-		
-		for (int i=0; i<imgHeight; i+= ySpace){
-			
-			pApplet.beginShape();
-			
-			for(int j=0; j<imgWidth; j+=xSpace){
-				
-				PVector v = pvectors[j+i*imgWidth];
-				pApplet.vertex(v.x, v.y, v.z);
-				
-			}
-			pApplet.endShape();	
-		}	
-		
 	}
 	private void translateAndDisplayShape(){
 		if(App.usePeasyCam){
