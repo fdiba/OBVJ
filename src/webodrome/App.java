@@ -92,6 +92,15 @@ public class App {
 	public App() {
 		// TODO Auto-generated constructor stub
 	}
+	public static void resetBasicSoundImage(){
+		
+		App.basicSoundImage.loadPixels();
+		for (int i=0; i<App.basicSoundImage.pixels.length; i++) {
+			App.basicSoundImage.pixels[i] = objv.color(127, 255); 
+		}
+		App.basicSoundImage.updatePixels();
+		
+	}
 	public static void recreateShapeGrid(){
 		mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 	}

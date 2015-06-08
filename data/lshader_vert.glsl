@@ -11,6 +11,10 @@ uniform sampler2D tex2; //sound image
 uniform float gWidth;
 uniform float gHeight;
 
+uniform bool useFFT; //use fft
+uniform float texFftStart; //0 1
+uniform float texFftEnd; //0 1
+
 uniform bool useColors; //use of colors
 uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
@@ -33,7 +37,19 @@ vec3 clipToWindow(vec4 clip, vec4 viewport) {
 void main() {
 
   //pos = vertTexCoord
-  vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight);
+  vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
+  vec2 tex2Pos; //sound
+  
+  if(useFFT){
+	tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 y >> 0 1
+	//TODO SMOOTH VALUES DO NOT CUT
+	tex2Pos[0] += texFftStart;
+	tex2Pos[0] -= texFftEnd;
+	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
+  } else {
+	tex2Pos = pos;
+  }
+
   vertColor = texture2D(tex0, pos);
 
   vec4 myVertex = vertex;
@@ -41,7 +57,7 @@ void main() {
   
   //TODO ANIMATE ONLY IF VERTEX Z < VALUE
   //sound animation
-  vec4 vertSoundColor = texture2D(tex2, pos);
+  vec4 vertSoundColor = texture2D(tex2, tex2Pos);
   float soundZOffet = vertSoundColor.r - 0.5;  
   float minHeight = max(pos[1], damper); 
   soundZOffet *= minHeight;

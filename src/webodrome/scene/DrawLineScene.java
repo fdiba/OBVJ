@@ -17,7 +17,7 @@ public class DrawLineScene extends Scene {
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
 	public static boolean useFFT = true;
-	public static int mode = 3;
+	public static int mode = 2;
 	
 	//TODO PARAM 1 = no jump 
 	private static int bufferJump = 1;
@@ -52,12 +52,7 @@ public class DrawLineScene extends Scene {
 		
 		//create basicSoundImage
 		App.basicSoundImage = pApplet.createImage(App.imgSoundWidth/bufferJump, App.imgSoundHeight, PConstants.ARGB);
-		App.basicSoundImage.loadPixels();
-		for (int i=0; i<App.basicSoundImage.pixels.length; i++) {
-			App.basicSoundImage.pixels[i] = pApplet.color(127, 255); 
-		}
-		App.basicSoundImage.updatePixels();
-
+		App.resetBasicSoundImage();
 		
 		images = new PImage[1];
 		images[0] = pApplet.loadImage("colors.jpg");
@@ -108,7 +103,7 @@ public class DrawLineScene extends Scene {
 		//PApplet.println(params.get("damper"));
 		
 		//PSHAPE MODE
-		if(mode==3){
+		if(mode==2){
 			
 			updateSoundV2();
 			
@@ -147,7 +142,7 @@ public class DrawLineScene extends Scene {
 			damper = PApplet.map(damper, 0f, 10f, 0f, 1f);
 			fshader.set("damper", damper);
 			
-		} else if(mode==4){
+		} else if(mode==3){
 			
 			if(App.recreateShapeGrid){
 				App.recreateBasicShapeGrid();			
@@ -165,7 +160,7 @@ public class DrawLineScene extends Scene {
 			basicShader.set("depth", depth);
 			bLineShader.set("depth", depth);
 						
-		} else if(mode==5){
+		} else if(mode==4){
 			
 			updateSoundV2();
 			
@@ -199,6 +194,18 @@ public class DrawLineScene extends Scene {
 			float damper = params.get("damper");
 			damper = PApplet.map(damper, 0f, 10f, 0f, 1f);
 			lineShader.set("damper", damper);
+			
+			lineShader.set("useFFT", useFFT);
+			
+			float texFftStart = params.get("texFftStart");
+			texFftStart = PApplet.map(texFftStart, 0f, 10f, 0f, 1f);
+			lineShader.set("texFftStart", texFftStart);
+			
+			float texFftEnd = params.get("texFftEnd");
+			texFftEnd = PApplet.map(texFftEnd, 0f, 10f, 0f, 1f);
+			lineShader.set("texFftEnd", texFftEnd);
+			
+			//PApplet.println(texFftEnd);
 						
 		} else {
 			
@@ -224,7 +231,7 @@ public class DrawLineScene extends Scene {
 		
 		if(App.updateSound){ //edit image each two frames
 			if(useFFT){
-				updateFTTV2();
+				updateFFTV2();
 			} else {
 				updateVolume();
 			}	
@@ -233,7 +240,7 @@ public class DrawLineScene extends Scene {
 		App.updateSound = !App.updateSound;
 		
 	}
-	private void updateFTTV2(){
+	private void updateFFTV2(){
 		
 		if(!App.useLiveMusic){
 			
@@ -431,12 +438,12 @@ public class DrawLineScene extends Scene {
 			pApplet.shapeMode(PConstants.CENTER);
 		}
 		
-		if(mode==3){
+		if(mode==2){
 			pApplet.shader(fshader);
-		} else if (mode==4){
+		} else if (mode==3){
 			pApplet.shader(basicShader);
 			pApplet.shader(bLineShader);
-		} else if(mode==5){
+		} else if(mode==4){
 			pApplet.shader(lineShader);
 		}
 		
@@ -584,11 +591,10 @@ public class DrawLineScene extends Scene {
 			break;
 		case 1:
 			pApplet.shader(App.defaultShader);
-			displayUncutLines(App.pvectors);
+			displayTextures(App.pvectors);
 			break;
 		case 2:
-			pApplet.shader(App.defaultShader);
-			displayTextures(App.pvectors);
+			translateAndDisplayShape();
 			break;
 		case 3:
 			translateAndDisplayShape();
@@ -596,10 +602,8 @@ public class DrawLineScene extends Scene {
 		case 4:
 			translateAndDisplayShape();
 			break;
-		case 5:
-			translateAndDisplayShape();
-			break;
 		default:
+			pApplet.shader(App.defaultShader);
 			displayLines(App.pvectors);
 			break;
 		}

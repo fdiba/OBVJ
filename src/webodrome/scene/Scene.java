@@ -76,7 +76,7 @@ public class Scene {
 	protected void updateSound(boolean useFFT){
 		
 		if(App.updateSound){	
-			if(useFFT)updateFTT();
+			if(useFFT)updateFFT();
 			else updateBuffers();
 		} else {
 			int bSize = buffers.size();
@@ -124,19 +124,21 @@ public class Scene {
 		buffers.add(bufferValues);
 		
 	}
-	protected void updateFTT(){
+	protected void updateFFT(){
 		
 		if(App.useLiveMusic)App.fft.forward(App.in.left);
 		else App.fft.forward(App.player.left);
 		
 		int fttAmpli = params.get("fttAmpli");		
-		int fttOffset = params.get("fttOffset");
-		int fttRemoval = App.fft.specSize()/params.get("fttRemoval");
+		int texFftStart = params.get("texFftStart");
+		int pvalue = params.get("texFftEnd");
+		if(pvalue<1)pvalue=1;
+		int texFftEnd = App.fft.specSize()/pvalue;
 		
 		int bSize = buffers.size();
 		FloatList bufferValues = new FloatList();
 		
-		for(int i=fttOffset; i<fttRemoval; i++) {
+		for(int i=texFftStart; i<texFftEnd; i++) {
 
 			float value = App.fft.getBand(i); //-1 to 1 ?
 			value *= fttAmpli;

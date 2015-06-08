@@ -109,6 +109,10 @@ public class SecondApplet extends PApplet {
 		} else if(App.getSceneId() == 0){ //---------- scene 0 ---------------//
 			if (key == 'b') {
 				DrawLineScene.multipleBuffers = !DrawLineScene.multipleBuffers;
+				if(DrawLineScene.multipleBuffers==false){
+					//make possible the reconstruction of the basicSoundImage when multipleBuffers became true 
+					App.resetBasicSoundImage();
+				}
 			} else if (key == 'd') {
 				App.duplicateFFT = !App.duplicateFFT;
 			} else if (key == 'f') {
@@ -116,13 +120,13 @@ public class SecondApplet extends PApplet {
 			} else if (key == 'g') {
 				DrawLineScene.mode--;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode<0)DrawLineScene.mode=5;
-				if(DrawLineScene.mode>2)App.recreateShapeGrid = true;
+				if(DrawLineScene.mode<0)DrawLineScene.mode=4;
+				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode>5)DrawLineScene.mode=0;
-				if(DrawLineScene.mode>2)App.recreateShapeGrid = true;
+				if(DrawLineScene.mode>4)DrawLineScene.mode=0;
+				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'v') {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == '0'){

@@ -238,9 +238,9 @@ public class OBVJ extends PApplet {
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
-	                {"fttAmpli", 1, 150, 10, App.colors[4]},
-	                {"fttOffset", 0, 100, 8, App.colors[6]},
-	                {"fttRemoval", 1, 5, 3, App.colors[0]},
+	                {"fttAmpli", 1, 150, 100, App.colors[4]},
+	                {"texFftStart", 0, 10, 0, App.colors[6]}, // 0 100 8
+	                {"texFftEnd", 0, 10, 0, App.colors[0]}, // 1 5 3
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"xSpace", 4, 100, 10, App.colors[4]}, //4 --> 150
 	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
@@ -299,8 +299,8 @@ public class OBVJ extends PApplet {
 	                {"rawData", 1, 10, 5, App.colors[6]},
 	                
 	                {"fttAmpli", 1, 150, 50, App.colors[4]},
-	                {"fttOffset", 0, 100, 0, App.colors[6]},
-	                {"fttRemoval", 1, 5, 2, App.colors[0]},
+	                {"texFftStart", 0, 100, 0, App.colors[6]},
+	                {"texFftEnd", 1, 5, 2, App.colors[0]},
 	                {"depthTS", -200, 200, -74, App.colors[6]},
 	                {"xSpace", 4, 150, 4, App.colors[4]},
 	                {"ySpace", 4, 150, 4, App.colors[5]},
