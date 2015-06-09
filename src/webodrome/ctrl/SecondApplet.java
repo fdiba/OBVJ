@@ -3,6 +3,7 @@ package webodrome.ctrl;
 import java.util.Date;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;
@@ -369,9 +370,24 @@ public class SecondApplet extends PApplet {
 		}
 	}
 	public void savePicture() {
+		
 		Date date = new Date();
 		String name = "data/images/objv-"+date.getTime()+".png";
-		save(name);	
+		save(name);
+		
+		if(App.getSceneId() == 0){
+			
+			String imgName;
+			
+			if(DrawLineScene.multipleBuffers){
+				imgName = "data/images/basicSoundImage-"+date.getTime()+".png";
+				App.basicSoundImage.save(imgName);
+			} else {
+				imgName = "data/images/lineSoundImage-"+date.getTime()+".png";
+				App.lineSoundImage.save(imgName);				
+			}
+		}
+		
 	}
 	private void nextScene(){	
 		int id = App.getSceneId();
