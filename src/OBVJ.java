@@ -255,7 +255,8 @@ public class OBVJ extends PApplet {
 	                //TODO make it FLOAT beetween 0 and 1 
 	                {"colorTS", 0, 254, 0, App.colors[3]}, //offset colors of tex1
 	                //TODO make it FLOAT beetween 0 and 1 
-	                {"alpha", 0, 255, 25, App.colors[6]}}; //only used with textures
+	                {"fillAlpha", 0, 255, 25, App.colors[6]}, //only used with textures
+					{"strokeAlpha", 0, 255, 45, App.colors[7]}}; //only used with textures
 			
 			drawLineScene = new DrawLineScene(this, objects, App.width, App.height);
 			App.setActualScene(drawLineScene);

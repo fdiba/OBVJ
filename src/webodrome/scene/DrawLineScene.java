@@ -160,9 +160,9 @@ public class DrawLineScene extends Scene {
 			
 			setUniformVariables(fshader);
 			
-			float alpha = params.get("alpha");
-			alpha = PApplet.map(alpha, 0, 255, 0, 1);
-			fshader.set("alpha", alpha);
+			float fillAlpha = params.get("fillAlpha");
+			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
+			fshader.set("alpha", fillAlpha);
 			
 		} else if(mode==3){
 			
@@ -189,9 +189,13 @@ public class DrawLineScene extends Scene {
 			setUniformVariables(basicShader);
 			setUniformVariables(bLineShader);
 			
-			float alpha = params.get("alpha");
-			alpha = PApplet.map(alpha, 0, 255, 0, 1);
-			basicShader.set("alpha", alpha);
+			float fillAlpha = params.get("fillAlpha");
+			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
+			basicShader.set("alpha", fillAlpha);
+			
+			float strokeAlpha = params.get("strokeAlpha");
+			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
+			bLineShader.set("alpha", strokeAlpha);
 						
 		} else if(mode==4){
 			
@@ -516,7 +520,7 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayTextures(PVector[] pvectors){
 
-		float alpha = params.get("alpha");
+		float alpha = params.get("fillAlpha");
 		
 		pApplet.fill(0xFF666666, alpha);
 		pApplet.strokeWeight(1);

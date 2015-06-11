@@ -19,6 +19,7 @@ uniform float texFftEnd; //0 1
 uniform bool useColors; //use of colors
 uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
+uniform float alpha; //alpha for line borders
 uniform float amplitude; //alpha for line borders
 uniform float damper; //damp sound height in time 0 to 1
 
@@ -97,6 +98,7 @@ void main() {
   gl_Position.xy = clip0.xy + offset.xy;
   gl_Position.zw = clip0.zw;
   
+  vertColor.a = alpha;
   //vertColor = vec4(0.0,1.0,0.5,1.0);
   
 }
