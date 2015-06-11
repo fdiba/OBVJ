@@ -3,7 +3,6 @@ package webodrome.ctrl;
 import java.util.Date;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;

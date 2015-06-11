@@ -61,16 +61,21 @@ public class DrawLineScene extends Scene {
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
 		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB)); //depth
 		fshader.set("tex1", images[0]); //color
-		fshader.set("tex2", App.lineSoundImage);
-		
+		fshader.set("tex2", App.lineSoundImage);	
 		fshader.set("gWidth", (float) App.width);
 		fshader.set("gHeight", (float) App.height);
 		
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
 		basicShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		basicShader.set("tex1", images[0]); //color
+		basicShader.set("tex2", App.lineSoundImage);
+		basicShader.set("gWidth", (float) App.width);
+		basicShader.set("gHeight", (float) App.height);
 		
 		bLineShader = pApplet.loadShader("bLShader_frag.glsl", "bLShader_vert.glsl");
 		bLineShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+		bLineShader.set("tex1", images[0]); //color
+		bLineShader.set("tex2", App.lineSoundImage);
 		bLineShader.set("gWidth", (float) App.width);
 		bLineShader.set("gHeight", (float) App.height);
 		
@@ -78,7 +83,6 @@ public class DrawLineScene extends Scene {
 		lineShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB)); //depth
 		lineShader.set("tex1", images[0]); //color
 		lineShader.set("tex2", App.lineSoundImage);
-		
 		lineShader.set("gWidth", (float) App.width);
 		lineShader.set("gHeight", (float) App.height);
 		//----------- shaders -----------//
@@ -151,20 +155,18 @@ public class DrawLineScene extends Scene {
 			depthImage = context.depthImage();
 			fshader.set("tex0", depthImage);
 			
-			if(multipleBuffers){
-				fshader.set("tex2", App.basicSoundImage);
-			} else {
-				fshader.set("tex2", App.lineSoundImage);
-			}
+			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
+			else fshader.set("tex2", App.lineSoundImage);
 			
 			setUniformVariables(fshader);
 			
-			//only used in this shader for the moment
 			float alpha = params.get("alpha");
 			alpha = PApplet.map(alpha, 0, 255, 0, 1);
 			fshader.set("alpha", alpha);
 			
 		} else if(mode==3){
+			
+			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
 				App.recreateBasicShapeGrid();			
@@ -176,11 +178,20 @@ public class DrawLineScene extends Scene {
 			basicShader.set("tex0", depthImage);
 			bLineShader.set("tex0", depthImage);
 			
-			float depth = params.get("depth");
-			depth = PApplet.map(depth, -1000, 1000, -10, 10);
+			if(multipleBuffers) {
+				basicShader.set("tex2", App.basicSoundImage);
+				bLineShader.set("tex2", App.basicSoundImage);
+			} else {
+				basicShader.set("tex2", App.lineSoundImage);
+				bLineShader.set("tex2", App.lineSoundImage);
+			}
 			
-			basicShader.set("depth", depth);
-			bLineShader.set("depth", depth);
+			setUniformVariables(basicShader);
+			setUniformVariables(bLineShader);
+			
+			float alpha = params.get("alpha");
+			alpha = PApplet.map(alpha, 0, 255, 0, 1);
+			basicShader.set("alpha", alpha);
 						
 		} else if(mode==4){
 			
@@ -194,11 +205,8 @@ public class DrawLineScene extends Scene {
 			depthImage = context.depthImage();
 			lineShader.set("tex0", depthImage);
 			
-			if(multipleBuffers){
-				lineShader.set("tex2", App.basicSoundImage);
-			} else {
-				lineShader.set("tex2", App.lineSoundImage);
-			}
+			if(multipleBuffers) lineShader.set("tex2", App.basicSoundImage);
+			else lineShader.set("tex2", App.lineSoundImage);
 			
 			setUniformVariables(lineShader);
 						

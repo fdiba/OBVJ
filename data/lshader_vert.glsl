@@ -26,7 +26,6 @@ attribute vec4 vertex;
 attribute vec4 color;
 attribute vec4 direction;
 
-
 varying vec4 vertColor;
 
 vec3 clipToWindow(vec4 clip, vec4 viewport) {
