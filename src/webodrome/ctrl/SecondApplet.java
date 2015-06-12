@@ -120,12 +120,12 @@ public class SecondApplet extends PApplet {
 			} else if (key == 'g') {
 				DrawLineScene.mode--;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode<0)DrawLineScene.mode=4;
+				if(DrawLineScene.mode<0)DrawLineScene.mode=5;
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode>4)DrawLineScene.mode=0;
+				if(DrawLineScene.mode>5)DrawLineScene.mode=0;
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'o') { //change how texFftEnd is used in the shaders
 				DrawLineScene.texCutStraight = !DrawLineScene.texCutStraight;

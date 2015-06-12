@@ -110,6 +110,48 @@ public class App {
 	public static void recreateLineShapeGrid(){
 		mainGrid = createLineShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 	}
+	public static void recreatePointShapeGrid(){
+		mainGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+	}
+private static PShape createPointShapeGrid(PImage image){
+		
+		int kwidth = App.KWIDTH;
+		int kheight = App.KHEIGHT;
+		
+		float xRatio = (float) width/kwidth;
+		float yRatio = (float) height/kheight;
+		
+		PShape shape = objv.createShape();
+		shape.setStroke(true);
+		shape.setStrokeWeight(4);
+		//shape.setStrokeWeight(getActualScene().params.get("strokeWeight"));
+		shape.setStroke(objv.color(255, 0, 0));
+		
+		//TODO ADD PARAM
+		shape.beginShape(PConstants.POINTS);
+		shape.textureMode(PConstants.NORMAL);
+		shape.texture(image);
+
+		int xSpace = getActualScene().params.get("xSpace");
+		int ySpace = getActualScene().params.get("ySpace");
+				
+		for (int y=0; y<height-ySpace; y+=ySpace) {
+			
+		    for (int x=0; x<width-xSpace; x+=xSpace) {
+		    	
+		    	PVector tl;
+		    	tl = new PVector(x, y);
+	    			
+		    	shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    	
+		    }
+
+		}
+
+		shape.endShape(PApplet.CLOSE);
+		return shape;
+		
+	}
 	private static PShape createLineShapeGrid(PImage image){
 		
 		PShape shape = objv.createShape();

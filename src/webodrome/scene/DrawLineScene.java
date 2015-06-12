@@ -28,6 +28,7 @@ public class DrawLineScene extends Scene {
 	private static PShader basicShader;
 	private static PShader bLineShader;
 	private static PShader lineShader;
+	private static PShader pointShader;
 	private PImage[] images;
 	
 	private Ramp ramp;
@@ -55,36 +56,46 @@ public class DrawLineScene extends Scene {
 		App.basicSoundImage = pApplet.createImage(App.imgSoundWidth/bufferJump, App.imgSoundHeight, PConstants.ARGB);
 		App.resetBasicSoundImage();
 		
-		images = new PImage[1];
-		images[0] = pApplet.loadImage("colors.jpg");
+		images = new PImage[2];
+		images[0] = pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB); //depth
+		images[1] = pApplet.loadImage("colors.jpg");
+		
 		
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
-		fshader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB)); //depth
-		fshader.set("tex1", images[0]); //color
+		fshader.set("tex0", images[0]); //depth
+		fshader.set("tex1", images[1]); //color
 		fshader.set("tex2", App.lineSoundImage);	
 		fshader.set("gWidth", (float) App.width);
 		fshader.set("gHeight", (float) App.height);
 		
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
-		basicShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-		basicShader.set("tex1", images[0]); //color
+		basicShader.set("tex0", images[0]);
+		basicShader.set("tex1", images[1]); //color
 		basicShader.set("tex2", App.lineSoundImage);
 		basicShader.set("gWidth", (float) App.width);
 		basicShader.set("gHeight", (float) App.height);
 		
 		bLineShader = pApplet.loadShader("bLShader_frag.glsl", "bLShader_vert.glsl");
-		bLineShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-		bLineShader.set("tex1", images[0]); //color
+		bLineShader.set("tex0", images[0]);
+		bLineShader.set("tex1", images[1]); //color
 		bLineShader.set("tex2", App.lineSoundImage);
 		bLineShader.set("gWidth", (float) App.width);
 		bLineShader.set("gHeight", (float) App.height);
 		
 		lineShader = pApplet.loadShader("lshader_frag.glsl", "lshader_vert.glsl");
-		lineShader.set("tex0", pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB)); //depth
-		lineShader.set("tex1", images[0]); //color
+		lineShader.set("tex0", images[0]); //depth
+		lineShader.set("tex1", images[1]); //color
 		lineShader.set("tex2", App.lineSoundImage);
 		lineShader.set("gWidth", (float) App.width);
 		lineShader.set("gHeight", (float) App.height);
+		
+		pointShader = pApplet.loadShader("pointShader_frag.glsl", "pointShader_vert.glsl");
+		pointShader.set("tex0", images[0]); //depth
+		pointShader.set("tex1", images[1]); //color
+		pointShader.set("tex2", App.lineSoundImage);
+		pointShader.set("gWidth", (float) App.width);
+		pointShader.set("gHeight", (float) App.height);
+		
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -214,6 +225,23 @@ public class DrawLineScene extends Scene {
 			
 			setUniformVariables(lineShader);
 						
+		} else if(mode==5){
+			
+			updateSoundV2();
+			
+			if(App.recreateShapeGrid){
+				App.recreatePointShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
+			depthImage = context.depthImage();
+			pointShader.set("tex0", depthImage);
+			
+			if(multipleBuffers) pointShader.set("tex2", App.basicSoundImage);
+			else pointShader.set("tex2", App.lineSoundImage);
+			
+			setUniformVariables(pointShader);
+			
 		} else {
 			
 			updateSound(useFFT);
@@ -452,6 +480,8 @@ public class DrawLineScene extends Scene {
 			pApplet.shader(bLineShader);
 		} else if(mode==4){
 			pApplet.shader(lineShader);
+		} else if(mode==5){
+			pApplet.shader(pointShader);
 		}
 		
 		pApplet.shape(App.mainGrid);
@@ -583,6 +613,9 @@ public class DrawLineScene extends Scene {
 			translateAndDisplayShape();
 			break;
 		case 4:
+			translateAndDisplayShape();
+			break;
+		case 5:
 			translateAndDisplayShape();
 			break;
 		default:
