@@ -41,10 +41,9 @@ void main() {
   vec2 tex2Pos; //sound
   
   //------ fft ------/
+  //set tex2Pos
   if(useFFT){
 	
-	//TODO create variable
-
 	if(texCutStraight){
 		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
 	} else {
@@ -66,7 +65,7 @@ void main() {
   myVertex.z = vertColor.r * 255.0 * depth;
   
   //TODO ANIMATE ONLY IF VERTEX Z < VALUE
-  //sound animation
+  //sound animation | use tex2Pos
   vec4 vertSoundColor = texture2D(tex2, tex2Pos);
   float soundZOffet = vertSoundColor.r - 0.5;  
   float minHeight = max(pos[1], damper); 
