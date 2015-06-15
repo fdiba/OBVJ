@@ -337,7 +337,7 @@ public class DrawLineScene extends Scene {
 			App.basicSoundImage.pixels[i] = pApplet.color(value);
 						
 			//TODO not directly linked to buffer size !
-			bufferPosition++;
+			bufferPosition+=bufferJump;
 		}
 		
 		App.basicSoundImage.updatePixels();
@@ -369,7 +369,7 @@ public class DrawLineScene extends Scene {
 			App.basicSoundImage.pixels[i] = pApplet.color(value);
 						
 			//TODO not directly linked to buffer size !
-			bufferPosition++;
+			bufferPosition+=bufferJump;
 		}
 		
 		App.basicSoundImage.updatePixels();
@@ -467,11 +467,7 @@ public class DrawLineScene extends Scene {
 	}
 	private void displayShape(){
 		
-		if(App.usePeasyCam){
-
-		} else {
-			pApplet.shapeMode(PConstants.CENTER);
-		}
+		pApplet.shapeMode(PConstants.CENTER);
 		
 		if(mode==2){
 			pApplet.shader(fshader);
@@ -596,7 +592,7 @@ public class DrawLineScene extends Scene {
 		}
 	}
 	public void display(){
-						
+								
 		switch (mode) {
 		case 0:
 			pApplet.shader(App.defaultShader);

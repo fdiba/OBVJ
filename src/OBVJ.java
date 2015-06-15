@@ -121,6 +121,7 @@ public class OBVJ extends PApplet {
 				App.in = App.minim.getLineIn(Minim.MONO);
 				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
 				App.imgSoundWidth = App.in.bufferSize();
+				//println("App.imgSoundWidth: " + App.imgSoundWidth);
 			}
 			
 			//TODO ERASE IT WHEN SOFT UPDATED
@@ -501,20 +502,29 @@ public class OBVJ extends PApplet {
 		
 		
 	}
-	private void translateAndRotateV2(){
+	private void translateAndRotateV2(){ //only for DrawLineScene for the moment
 		
 		Map<String, Integer> params = App.getActualScene().params;
-		  
-		translate(App.width/2 + getTrans(params.get("xTrans"), 0), App.height/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
-  
+		
+		if(App.usePeasyCam){
+			translate(getTrans(params.get("xTrans"), 0), getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
+		} else {
+			translate(App.width/2 + getTrans(params.get("xTrans"), 0), App.height/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
+		}
+		
 		rotateX(radians(getRotation(params.get("rotateX"), 3)));
 		rotateY(radians(getRotation(params.get("rotateY"), 4)));
 		rotateZ(radians(getRotation(params.get("rotateZ"), 5)));	
+		
+		if(DrawLineScene.mode<=1){ //old mode
+			translate(-App.width/2, -App.height/2, 0);
+		}
 
 		if(App.usePeasyCam){
-			translate(-App.width, -App.height, 0);
 		} else {
-			translate(-App.width/2, -App.height/2, 0);
+			if(DrawLineScene.mode>1){ 
+				translate(-App.width/2, -App.height/2, 0);
+			}
 		}
  
 	}
