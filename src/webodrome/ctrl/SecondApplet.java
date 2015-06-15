@@ -129,6 +129,8 @@ public class SecondApplet extends PApplet {
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'o') { //change how texFftEnd is used in the shaders
 				DrawLineScene.texCutStraight = !DrawLineScene.texCutStraight;
+			} else if (key == 't') { //change how texFftEnd is used in the shaders
+				DrawLineScene.sameSize = !DrawLineScene.sameSize;
 			} else if (key == 'v') {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;
 			} else if (key == '0'){

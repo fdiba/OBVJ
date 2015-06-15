@@ -113,8 +113,9 @@ public class Slider {
 	    if(App.getActualScene().params.get(param) != (int) value){
 	    	
 	    	if(param.equals("xSpace") || param.equals("ySpace") ||
-	    	   param.equals("borderYSize") || param.equals("borderXSize") ||
-	    	   param.equals("strokeWeight")){
+	    	   param.equals("borderYSize") || param.equals("borderXSize")
+	    	   || param.equals("strokeWeight")
+	    	   ){
 	    		App.recreateShapeGrid = true;
 	    	}
 	    	

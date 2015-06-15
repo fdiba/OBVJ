@@ -19,6 +19,7 @@ uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
 uniform float amplitude; //alpha for line borders
 uniform float damper; //damp sound height in time 0 to 1
+uniform bool sameSize;
 
 attribute vec4 vertex;
 attribute vec4 color;
@@ -27,6 +28,8 @@ attribute vec2 offset;
 varying vec4 vertColor;
 
 void main() {
+
+  vec2 mOffset = offset; //to edit strokeWeight
 
   vec2 mpos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
   vec2 tex2Pos; //sound
@@ -52,6 +55,8 @@ void main() {
  
   vertColor = texture2D(tex0, mpos);
   
+  if(!sameSize)mOffset *= 1+5*vertColor.r;
+  
   //depthmap
   vec4 myVertex = vertex;
   myVertex.z = vertColor.r * 255.0 * depth;
@@ -64,10 +69,14 @@ void main() {
   soundZOffet *= minHeight;
   myVertex.z += soundZOffet*amplitude; 
   
+  //TODO map color after music
+  //TODO map mOffset after music
+  //TODO make it round
+  
   vec4 pos = modelview * myVertex;
   vec4 clip = projection * pos;
   
-  gl_Position = clip + projection * vec4(offset, 0, 0);
+  gl_Position = clip + projection * vec4(mOffset, 0, 0);
    
   //----------- COLOR -----------//  
   

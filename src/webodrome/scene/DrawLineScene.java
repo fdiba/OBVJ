@@ -18,6 +18,7 @@ public class DrawLineScene extends Scene {
 	public static boolean multipleBuffers = false;
 	public static boolean useFFT = true;
 	public static boolean texCutStraight = true;
+	public static boolean sameSize = false;
 	public static int mode = 2;
 	
 	//TODO PARAM 1 = no jump 
@@ -241,6 +242,8 @@ public class DrawLineScene extends Scene {
 			else pointShader.set("tex2", App.lineSoundImage);
 			
 			setUniformVariables(pointShader);
+			
+			pointShader.set("sameSize", sameSize);
 			
 		} else {
 			
