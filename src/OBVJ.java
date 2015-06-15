@@ -528,6 +528,25 @@ public class OBVJ extends PApplet {
 		}
  
 	}
+	private void translateAndRotate(){
+		
+		Map<String, Integer> params = App.getActualScene().params;
+		
+		if(App.usePeasyCam){
+			//translate(params.get("xTrans"), params.get("yTrans"), params.get("zTrans"));
+			translate(getTrans(params.get("xTrans"), 0), getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
+		} else {
+			//translate(App.width/2 + params.get("xTrans"), App.height/2 + params.get("yTrans"), params.get("zTrans"));
+			translate(App.width/2 + getTrans(params.get("xTrans"), 0), App.height/2 + getTrans(params.get("yTrans"), 1), getTrans(params.get("zTrans"), 2));
+		}
+  
+		rotateX(radians(params.get("rotateX")));
+		rotateY(radians(params.get("rotateY")));
+		rotateZ(radians(params.get("rotateZ")));
+		
+		translate(-App.width/2, -App.height/2, 0);
+ 
+	}
 	private int getTrans(int pValue, int id){
 		
 		int value = App.transValues[id];
@@ -583,23 +602,6 @@ public class OBVJ extends PApplet {
 			return value;
 		}
 		
-	}
-	private void translateAndRotate(){
-		
-		Map<String, Integer> params = App.getActualScene().params;
-		  
-		translate(App.width/2 + params.get("xTrans"), App.height/2 + params.get("yTrans"), params.get("zTrans"));
-  
-		rotateX(radians(params.get("rotateX")));
-		rotateY(radians(params.get("rotateY")));
-		rotateZ(radians(params.get("rotateZ")));
-  
-		if(App.usePeasyCam){
-			translate(-App.width, -App.height, 0);
-		} else {
-			translate(-App.width/2, -App.height/2, 0);
-		}
- 
 	}
 	//--------------- keys ---------------------//
 	public void keyPressed() {
