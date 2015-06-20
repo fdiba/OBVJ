@@ -127,9 +127,11 @@ public class SecondApplet extends PApplet {
 				//App.objv.resetShader(LINE);
 				if(DrawLineScene.mode>5)DrawLineScene.mode=0;
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
+			} else if (key == 'k') { //draw rect or circle when using points shader
+				DrawLineScene.drawRoundRect = !DrawLineScene.drawRoundRect;
 			} else if (key == 'o') { //change how texFftEnd is used in the shaders
 				DrawLineScene.texCutStraight = !DrawLineScene.texCutStraight;
-			} else if (key == 't') { //change how texFftEnd is used in the shaders
+			} else if (key == 't') { //change the size of the points with z
 				DrawLineScene.sameSize = !DrawLineScene.sameSize;
 			} else if (key == 'v') {
 				DrawLineScene.linesVisibility = !DrawLineScene.linesVisibility;

@@ -124,7 +124,7 @@ public class App {
 		PShape shape = objv.createShape();
 		shape.setStroke(true);
 		shape.setStrokeWeight(getActualScene().params.get("strokeWeight"));
-		shape.setStrokeCap(PConstants.SQUARE);
+		//shape.setStrokeCap(PConstants.SQUARE);
 		shape.setStroke(objv.color(255, 0, 0));
 		
 		//TODO ADD PARAM

@@ -1,7 +1,8 @@
 #define PROCESSING_POINT_SHADER
 
 uniform mat4 projection;
-uniform mat4 modelview;
+//uniform mat4 modelview;
+uniform mat4 transform;
 
 uniform sampler2D tex0; //depth image
 uniform sampler2D tex1; //color image
@@ -19,13 +20,15 @@ uniform float colorTS; //offset colors tex1 x axis
 uniform float depth; //create space between points z axis
 uniform float amplitude; //alpha for line borders
 uniform float damper; //damp sound height in time 0 to 1
-uniform bool sameSize;
+uniform bool sameSize; //not used
 
 attribute vec4 vertex;
 attribute vec4 color;
 attribute vec2 offset;
 
 varying vec4 vertColor;
+varying vec2 center;
+varying vec2 pos;
 
 void main() {
 
@@ -55,7 +58,7 @@ void main() {
  
   vertColor = texture2D(tex0, mpos);
   
-  if(!sameSize)mOffset *= 1+5*vertColor.r;
+  //if(!sameSize)mOffset *= 1+5*vertColor.r;
   
   //depthmap
   vec4 myVertex = vertex;
@@ -73,10 +76,13 @@ void main() {
   //TODO map mOffset after music
   //TODO make it round
   
-  vec4 pos = modelview * myVertex;
-  vec4 clip = projection * pos;
+  vec4 clip = transform * myVertex;
+  //vec4 pos = modelview * myVertex;
+  //vec4 clip = projection * pos;
   
-  gl_Position = clip + projection * vec4(mOffset, 0, 0);
+  gl_Position = clip + projection * vec4(offset, 0, 0);
+  center = clip.xy;
+  pos = mOffset;
    
   //----------- COLOR -----------//  
   
