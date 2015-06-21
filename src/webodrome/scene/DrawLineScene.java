@@ -106,15 +106,7 @@ public class DrawLineScene extends Scene {
 		
 		setBuffers(params.get("ySpace"));		
 		
-		PApplet.println("----------------------------------" + "\n" +
-		                "depth limits: press l + UP OR DOWN" + "\n" +
-		                "dark lines visibility: press v" + "\n" +
-		                "use multiple buffers: press b" + "\n" +
-		                "use fourier transform: press f" + "\n" +
-		                "duplicate fourier values: press d" + "\n" +
-		                "use shapes: press h" + "\n" +
-		                "use lowResGrid: press r" + "\n" +
-		          		"use colors: press c");
+		PApplet.println("make it count");
 				
 	}
 	private void setUniformVariables(PShader shader){

@@ -32,6 +32,38 @@ public class SecondApplet extends PApplet {
 		frameRate(24);
 		
 	}
+	private void drawVariablesStatus(int xPos){
+		
+		String str = "toggle and edit depth limits: press l AND UP OR DOWN\n";
+		str += "App.lowestValue | " + App.lowestValue + "\n";
+		str += "App.highestValue | " + App.highestValue + "\n";
+		str += "\n";
+		
+		str += "change scene | n & p | " + App.getSceneId() + "\n";
+		str += "\n";
+		
+		str += "change mode | g & h | " + DrawLineScene.mode + "\n";
+		str += "\n";
+		
+		str += "App.useColors | c | " + App.useColors + "\n";
+		str += "\n";
+		
+		str += "App.lowResGrid  | r | " + App.lowResGrid + "\n";
+		str += "\n";
+		
+		str += "multipleBuffers | b | " + DrawLineScene.multipleBuffers + "\n";
+		str += "\n";
+		
+		str += "useFFT | f | " + DrawLineScene.useFFT + "\n";
+        str += "\n";
+        
+		str += "OLD ONES\n\n";
+		str += "duplicate fourier values | d | mode 0 | " + App.duplicateFFT + "\n";
+		str += "linesVisibility | v | mode 0 | " + DrawLineScene.linesVisibility + "\n";
+		
+		text(str, xPos, 100);
+		
+	}
 	public void draw(){
 		
 		background(0xFF333333);
@@ -48,6 +80,7 @@ public class SecondApplet extends PApplet {
 					//TODO DISPLAY DO NOT WORK
 					image(App.basicSoundImage, 360, 20);
 				}
+				drawVariablesStatus(360);
 				
 			} else if(App.getSceneId() == 3) { //scene 3
 				
@@ -430,11 +463,9 @@ public class SecondApplet extends PApplet {
 		if (App.switchValue) {
 			App.lowestValue += value;
 			App.lowestValue = constrain(App.lowestValue, 50, App.highestValue-10);
-			println("low:"+ App.lowestValue + " | high:"+ App.highestValue);
 		} else {
 			App.highestValue += value;
 			App.highestValue = constrain(App.highestValue, App.lowestValue+10, 15000);
-			println("high:"+ App.highestValue + " | low:"+ App.lowestValue);
 		}
 	}
 	//--------------- mouse ---------------------//
