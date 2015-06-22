@@ -28,9 +28,7 @@ public class SecondApplet extends PApplet {
 	}
 	
 	public void setup(){
-		
-		frameRate(24);
-		
+		noLoop();
 	}
 	private void drawVariablesStatus(int xPos){
 		
@@ -55,6 +53,15 @@ public class SecondApplet extends PApplet {
 		str += "\n";
 		
 		str += "useFFT | f | " + DrawLineScene.useFFT + "\n";
+        str += "\n";
+        
+        str += "texCutStraight | o | " + DrawLineScene.texCutStraight + "\n";
+        str += "\n";
+        
+        str += "sameSize | o | mode 5 | not used | " + DrawLineScene.sameSize + "\n";
+        str += "\n";
+                
+        str += "drawRoundRect | k | mode 5 | " + DrawLineScene.drawRoundRect + "\n";
         str += "\n";
         
 		str += "OLD ONES\n\n";

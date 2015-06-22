@@ -1,5 +1,6 @@
 package webodrome.scene;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import SimpleOpenNI.SimpleOpenNI;
@@ -376,14 +377,22 @@ public class DrawLineScene extends Scene {
 	private void updateLineSoundImageWithFTT(){
 		
 		App.lineSoundImage.loadPixels();
-		for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
+		for (int i = App.lineSoundImage.width-1; i>=0; i-=bufferJump) {
+		//for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
 			
 			float value = App.fft.getBand(i); //-1 to 1
 
 			value = PApplet.map(value, -1, 1, 0, 255);
 			
-			App.lineSoundImage.pixels[i] = pApplet.color(value);
-			
+			//TODO use a smaller image and shift values...
+			/*if(i>0){
+				int pCOlor = App.lineSoundImage.pixels[i-1];
+				float red = pCOlor >> 16 & 0xFF;
+				if(red>127 && value>127)value += (red-127)*0.99;
+				value = Math.max(0, Math.min(255, value));//clamp 0 255
+			}*/
+				
+			App.lineSoundImage.pixels[i] = pApplet.color(value); //noJump!
 		}
 		App.lineSoundImage.updatePixels();
 		

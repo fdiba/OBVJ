@@ -149,6 +149,8 @@ public class OBVJ extends PApplet {
 
 	}
 	public void draw(){	
+		
+		App.secondApplet.redraw();
 				
 		context.update();
 		
