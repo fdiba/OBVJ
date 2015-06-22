@@ -1,6 +1,5 @@
 package webodrome.scene;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import SimpleOpenNI.SimpleOpenNI;
@@ -24,7 +23,8 @@ public class DrawLineScene extends Scene {
 	public static int mode = 2;
 	
 	//TODO PARAM 1 = no jump 
-	private static int bufferJump = 1;
+	private static int bufferJump = 2;
+	private static int lineBufferJump = 2;
 	
 	//-------- shaders ----------//
 	private static PShader fshader;
@@ -48,7 +48,7 @@ public class DrawLineScene extends Scene {
 		//----------- shaders -----------//
 		
 		//create lineSoundImage
-		App.lineSoundImage = pApplet.createImage(App.imgSoundWidth/bufferJump, 1, PConstants.ARGB);
+		App.lineSoundImage = pApplet.createImage(App.imgSoundWidth/lineBufferJump, 1, PConstants.ARGB);
 		App.lineSoundImage.loadPixels();
 		for (int i=0; i<App.lineSoundImage.pixels.length; i++) {
 			App.lineSoundImage.pixels[i] = pApplet.color(127, 255); 
@@ -241,6 +241,27 @@ public class DrawLineScene extends Scene {
 			pointShader.set("weight", (float) params.get("strokeWeight"));
 			pointShader.set("drawRoundRect", drawRoundRect);
 			
+		} else if(mode==6){
+			
+			updateSoundV2();
+			
+			if(App.recreateShapeGrid){
+				App.recreatePointShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
+			depthImage = context.depthImage();
+			pointShader.set("tex0", depthImage);
+			
+			if(multipleBuffers) pointShader.set("tex2", App.basicSoundImage);
+			else pointShader.set("tex2", App.lineSoundImage);
+			
+			setUniformVariables(pointShader);
+			
+			pointShader.set("sameSize", sameSize); //change the size of the points with z
+			pointShader.set("weight", (float) params.get("strokeWeight"));
+			pointShader.set("drawRoundRect", drawRoundRect);
+		
 		} else {
 			
 			updateSound(useFFT);
@@ -284,11 +305,7 @@ public class DrawLineScene extends Scene {
 			if(App.useLiveMusic)App.fft.forward(App.in.left);
 			else App.fft.forward(App.player.left);
 		
-			if(multipleBuffers){
-				updateBasicSoundImageWithFFT();
-			} else {
-		    	updateLineSoundImageWithFTT();
-			}
+			updateSoundTexture();
 			
 		}
 		
@@ -297,50 +314,14 @@ public class DrawLineScene extends Scene {
 		
 		if(!App.useLiveMusic){
 			
-			
 		} else {
-		
-			if(multipleBuffers){
-				updateBasicSoundImage();
-			} else {
-		    	updateLineSoundImage();
-			}
-			
+			updateSoundTexture();
 		}
 		
 	}
-	private void updateBasicSoundImageWithFFT(){
-		
-		int tmpWidth = App.basicSoundImage.width;
-		int numOfPixels = App.basicSoundImage.pixels.length;
-		
-		App.basicSoundImage.loadPixels();
-
-		//shift all lines except last one
-		for (int j = 0; j < numOfPixels-tmpWidth; j++) {
-			
-			int c = App.basicSoundImage.pixels[j+tmpWidth];
-			App.basicSoundImage.pixels[j] = c;	
-			
-		}
-		
-		//edit last line
-		int bufferPosition = 0;
-		for (int i = numOfPixels-tmpWidth; i < numOfPixels; i++) {
-			
-			//float value = App.in.left.get(bufferPosition); //-1 to 1
-			float value = App.fft.getBand(bufferPosition); 
-
-			value = PApplet.map(value, -1, 1, 0, 255);
-			
-			App.basicSoundImage.pixels[i] = pApplet.color(value);
-						
-			//TODO not directly linked to buffer size !
-			bufferPosition+=bufferJump;
-		}
-		
-		App.basicSoundImage.updatePixels();
-		
+	private void updateSoundTexture(){
+		if(multipleBuffers)updateBasicSoundImage();
+		else updateLineSoundImage();
 	}
 	private void updateBasicSoundImage(){
 		
@@ -351,64 +332,63 @@ public class DrawLineScene extends Scene {
 
 		//shift all lines except last one
 		for (int j = 0; j < numOfPixels-tmpWidth; j++) {
-			
 			int c = App.basicSoundImage.pixels[j+tmpWidth];
-			App.basicSoundImage.pixels[j] = c;	
-			
+			App.basicSoundImage.pixels[j] = c;
 		}
 		
 		//edit last line
-		int bufferPosition = 0;
-		for (int i = numOfPixels-tmpWidth; i < numOfPixels; i++) {
+		int firstId = numOfPixels-tmpWidth;
+		for (int i = firstId; i < numOfPixels; i++) {
 			
-			float value = App.in.left.get(bufferPosition); //-1 to 1
+			int pointer = i-firstId;
+			float value;
+			
+			if(useFFT){
+				value = App.fft.getBand(pointer*bufferJump);
+			} else {
+				value = App.in.left.get(pointer*bufferJump); //-1 to 1
+			}
 
 			value = PApplet.map(value, -1, 1, 0, 255);
 			
 			App.basicSoundImage.pixels[i] = pApplet.color(value);
 						
-			//TODO not directly linked to buffer size !
-			bufferPosition+=bufferJump;
 		}
 		
 		App.basicSoundImage.updatePixels();
 
 	}
-	private void updateLineSoundImageWithFTT(){
-		
-		App.lineSoundImage.loadPixels();
-		for (int i = App.lineSoundImage.width-1; i>=0; i-=bufferJump) {
-		//for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
-			
-			float value = App.fft.getBand(i); //-1 to 1
-
-			value = PApplet.map(value, -1, 1, 0, 255);
-			
-			//TODO use a smaller image and shift values...
-			/*if(i>0){
-				int pCOlor = App.lineSoundImage.pixels[i-1];
-				float red = pCOlor >> 16 & 0xFF;
-				if(red>127 && value>127)value += (red-127)*0.99;
-				value = Math.max(0, Math.min(255, value));//clamp 0 255
-			}*/
-				
-			App.lineSoundImage.pixels[i] = pApplet.color(value); //noJump!
-		}
-		App.lineSoundImage.updatePixels();
-		
-	}
 	private void updateLineSoundImage(){
 		
 		App.lineSoundImage.loadPixels();
-		for (int i = 0; i < App.lineSoundImage.width; i+=bufferJump) {
+		for (int i = App.lineSoundImage.width-1; i>=0; i--) {
 			
-			float value = App.in.left.get(i); //-1 to 1
-
+			float value;
+			
+			if(useFFT){
+				value = App.fft.getBand(i*lineBufferJump); //-1 to 1
+			} else {
+				value = App.in.left.get(i*lineBufferJump); //-1 to 1
+			}
+			
 			value = PApplet.map(value, -1, 1, 0, 255);
+			
+			if(!useFFT){
+				//TODO use param
+				int shiftX = 15;
+				if(i>shiftX){
+					int pCOlor = App.lineSoundImage.pixels[i-shiftX];
+					float red = pCOlor >> 16 & 0xFF;
+					if(red>127 && value>127)value += (red-127)*0.7;
+					if(red<127 && value<127)value -= (127-red)*0.7;
+					value = Math.max(0, Math.min(255, value));//clamp 0 255
+				}
+			}
 			
 			App.lineSoundImage.pixels[i] = pApplet.color(value);
 			
 		}
+		
 		App.lineSoundImage.updatePixels();
 		
 	}
@@ -484,6 +464,8 @@ public class DrawLineScene extends Scene {
 		} else if(mode==4){
 			pApplet.shader(lineShader);
 		} else if(mode==5){
+			pApplet.shader(pointShader);
+		} else if(mode==6){
 			pApplet.shader(pointShader);
 		}
 		
@@ -599,33 +581,16 @@ public class DrawLineScene extends Scene {
 		}
 	}
 	public void display(){
-								
-		switch (mode) {
-		case 0:
+		
+		if(mode==0){
 			pApplet.shader(App.defaultShader);
 			displayLines(App.pvectors);
-			break;
-		case 1:
+		} else if (mode==1){
 			pApplet.shader(App.defaultShader);
-			displayTextures(App.pvectors);
-			break;
-		case 2:
+			displayTextures(App.pvectors);	
+		} else {
 			translateAndDisplayShape();
-			break;
-		case 3:
-			translateAndDisplayShape();
-			break;
-		case 4:
-			translateAndDisplayShape();
-			break;
-		case 5:
-			translateAndDisplayShape();
-			break;
-		default:
-			pApplet.shader(App.defaultShader);
-			displayLines(App.pvectors);
-			break;
 		}
-	
+		
 	}
 }

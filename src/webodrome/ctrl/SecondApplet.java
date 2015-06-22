@@ -160,12 +160,12 @@ public class SecondApplet extends PApplet {
 			} else if (key == 'g') {
 				DrawLineScene.mode--;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode<0)DrawLineScene.mode=5;
+				if(DrawLineScene.mode<0)DrawLineScene.mode=6;
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'h') {
 				DrawLineScene.mode++;
 				//App.objv.resetShader(LINE);
-				if(DrawLineScene.mode>5)DrawLineScene.mode=0;
+				if(DrawLineScene.mode>6)DrawLineScene.mode=0;
 				if(DrawLineScene.mode>1)App.recreateShapeGrid = true;
 			} else if (key == 'k') { //draw rect or circle when using points shader
 				DrawLineScene.drawRoundRect = !DrawLineScene.drawRoundRect;
