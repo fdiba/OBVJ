@@ -113,6 +113,97 @@ public class App {
 	public static void recreatePointShapeGrid(){
 		mainGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 	}
+	public static void recreateQuadGroupShapeGrid(){
+		mainGrid = createQuadGroupShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+	}
+	private static PShape createQuadGroupShapeGrid(PImage image){ //show DynamicParticlesRetained
+		
+		int kwidth = App.KWIDTH;
+		int kheight = App.KHEIGHT;
+		
+		float xRatio = (float) width/kwidth;
+		float yRatio = (float) height/kheight;
+		
+		PShape shape = objv.createShape(PShape.GROUP);
+
+		int xSpace = getActualScene().params.get("xSpace");
+		int ySpace = getActualScene().params.get("ySpace");
+		
+		//TODO use it
+		float borderXSize = getActualScene().params.get("borderXSize");
+		float borderYSize = getActualScene().params.get("borderYSize");
+				
+		float yInnerSpace = borderYSize/2;
+		
+		if(yInnerSpace>=ySpace)yInnerSpace = ySpace-1;
+		
+		int numberOfRows = 0;
+		
+		for (int y=0; y<height-ySpace; y+=ySpace) {
+			
+		    for (int x=0; x<width-xSpace; x+=xSpace) {
+
+		    	PShape part = objv.createShape();
+		    	part.beginShape(PConstants.QUAD);
+		    	//TODO use stroke ?
+		    	part.noStroke();
+		    	part.textureMode(PConstants.NORMAL);
+		    	part.texture(image);
+		    	part.normal(0, 0, 1);
+		    	
+		    	PVector tl, bl, br, tr;
+
+		    	if (numberOfRows==0) {
+		    		tl = new PVector(x, y+yInnerSpace);
+		    		bl = new PVector(x, y+ySpace);
+		    		br = new PVector(x+xSpace, y+ySpace);
+		    		tr = new PVector(x+xSpace, y+yInnerSpace);
+		    	} else {
+		    		tl = new PVector(x, y);
+		    		bl = new PVector(x, y+ySpace-yInnerSpace);
+		    		br = new PVector(x+xSpace, y+ySpace-yInnerSpace);
+		        	tr = new PVector(x+xSpace, y);
+		    	}
+		    	
+		    	//TODO do it in the shader! /LINE BREAKER
+		    	if (lowResGrid) { //press 'r' key
+		    		
+		    		part.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		part.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		part.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		part.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		      
+		    	} else {
+		    		
+		    		if (numberOfRows==0) { //use bottom line as texture
+		    					    			
+		    			part.vertex(tl.x, tl.y, tl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    			part.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    			part.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    			part.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		
+		    		} else { //use top line as texture
+		    			
+		    			part.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    			part.vertex(bl.x, bl.y, bl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    			part.vertex(br.x, br.y, br.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    			part.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    			
+		    		}
+		    	}
+		    	
+		    	part.endShape(PApplet.CLOSE);
+		    	shape.addChild(part);
+		    }
+
+		    numberOfRows++;
+		    if (numberOfRows==2)numberOfRows=0;
+		  
+		}
+
+		return shape;
+		
+	}
 	private static PShape createPointShapeGrid(PImage image){
 		
 		int kwidth = App.KWIDTH;

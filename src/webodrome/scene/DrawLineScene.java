@@ -246,21 +246,21 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreatePointShapeGrid();			
+				App.recreateQuadGroupShapeGrid();			
 				App.recreateShapeGrid = false;
 			}
-			
+						
 			depthImage = context.depthImage();
-			pointShader.set("tex0", depthImage);
+			fshader.set("tex0", depthImage);
 			
-			if(multipleBuffers) pointShader.set("tex2", App.basicSoundImage);
-			else pointShader.set("tex2", App.lineSoundImage);
+			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
+			else fshader.set("tex2", App.lineSoundImage);
 			
-			setUniformVariables(pointShader);
+			setUniformVariables(fshader);
 			
-			pointShader.set("sameSize", sameSize); //change the size of the points with z
-			pointShader.set("weight", (float) params.get("strokeWeight"));
-			pointShader.set("drawRoundRect", drawRoundRect);
+			float fillAlpha = params.get("fillAlpha");
+			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
+			fshader.set("alpha", fillAlpha);
 		
 		} else {
 			
@@ -298,8 +298,7 @@ public class DrawLineScene extends Scene {
 	private void updateFFTV2(){
 		
 		if(!App.useLiveMusic){
-			
-			
+			//TODO
 		} else {
 			
 			if(App.useLiveMusic)App.fft.forward(App.in.left);
@@ -313,7 +312,7 @@ public class DrawLineScene extends Scene {
 	private void updateVolume(){
 		
 		if(!App.useLiveMusic){
-			
+			//TODO
 		} else {
 			updateSoundTexture();
 		}
@@ -466,7 +465,7 @@ public class DrawLineScene extends Scene {
 		} else if(mode==5){
 			pApplet.shader(pointShader);
 		} else if(mode==6){
-			pApplet.shader(pointShader);
+			pApplet.shader(fshader);
 		}
 		
 		pApplet.shape(App.mainGrid);
