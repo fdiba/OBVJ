@@ -61,13 +61,17 @@ void main() {
   myVertex.z = vertColor.r * 255.0 * depth;
   
   //TODO ANIMATE ONLY IF VERTEX Z < VALUE
-  //sound animation
+  //------------ sound animation -------------//
   vec4 vertSoundColor = texture2D(tex2, tex2Pos);
-  float soundZOffet = vertSoundColor.r - 0.5;  
+  float soundZOffet = vertSoundColor.r - 0.5;
+
   float minHeight = max(texCoord[1], damper); 
   soundZOffet *= minHeight;
+  
   myVertex.z += soundZOffet*amplitude;
   
+  //------------ end sound animation -------------//
+
   //DO IT AT THE END
   if(useColors){
 	float xMin = vertColor.r + colorTS;

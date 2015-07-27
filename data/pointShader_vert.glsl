@@ -80,7 +80,7 @@ void main() {
   //vec4 pos = modelview * myVertex;
   //vec4 clip = projection * pos;
   
-  gl_Position = clip + projection * vec4(offset, 0, 0);
+  gl_Position = clip + projection * vec4(mOffset, 0, 0);
   center = clip.xy;
   pos = mOffset;
    

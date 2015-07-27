@@ -149,7 +149,7 @@ public class DrawLineScene extends Scene {
 		
 		//PApplet.println(params.get("damper"));
 
-		if(mode==2){
+		if(mode==2){ // shape composed of multiples quads + only fill
 			
 			updateSoundV2();
 			
@@ -170,7 +170,7 @@ public class DrawLineScene extends Scene {
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
 			fshader.set("alpha", fillAlpha);
 			
-		} else if(mode==3){
+		} else if(mode==3){ // shape composed of multiples quads + stroke and fill
 			
 			updateSoundV2();
 			
@@ -203,7 +203,7 @@ public class DrawLineScene extends Scene {
 			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
 			bLineShader.set("alpha", strokeAlpha);
 						
-		} else if(mode==4){
+		} else if(mode==4){ //shape created with lines (two vertices)
 			
 			updateSoundV2();
 			
@@ -220,7 +220,7 @@ public class DrawLineScene extends Scene {
 			
 			setUniformVariables(lineShader);
 						
-		} else if(mode==5){
+		} else if(mode==5){ //shape created with single vertices display as square
 			
 			updateSoundV2();
 			
@@ -241,7 +241,7 @@ public class DrawLineScene extends Scene {
 			pointShader.set("weight", (float) params.get("strokeWeight"));
 			pointShader.set("drawRoundRect", drawRoundRect);
 			
-		} else if(mode==6){
+		} else if(mode==6){ // shape group composed of multiples quads
 			
 			updateSoundV2();
 			
@@ -262,6 +262,39 @@ public class DrawLineScene extends Scene {
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
 			fshader.set("alpha", fillAlpha);
 		
+		} else if(mode==7){ // shape composed of multiples quads + stroke and fill
+			
+			updateSoundV2();
+			
+			if(App.recreateShapeGrid){
+				App.recreateTriangleShapeGrid();			
+				App.recreateShapeGrid = false;
+			}
+			
+			//USE OF TWO SHADERS
+			depthImage = context.depthImage();
+			basicShader.set("tex0", depthImage);
+			bLineShader.set("tex0", depthImage);
+			
+			if(multipleBuffers) {
+				basicShader.set("tex2", App.basicSoundImage);
+				bLineShader.set("tex2", App.basicSoundImage);
+			} else {
+				basicShader.set("tex2", App.lineSoundImage);
+				bLineShader.set("tex2", App.lineSoundImage);
+			}
+			
+			setUniformVariables(basicShader);
+			setUniformVariables(bLineShader);
+			
+			float fillAlpha = params.get("fillAlpha");
+			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
+			basicShader.set("alpha", fillAlpha);
+			
+			float strokeAlpha = params.get("strokeAlpha");
+			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
+			bLineShader.set("alpha", strokeAlpha);
+			
 		} else {
 			
 			updateSound(useFFT);
@@ -346,6 +379,7 @@ public class DrawLineScene extends Scene {
 				value = App.fft.getBand(pointer*bufferJump);
 			} else {
 				value = App.in.left.get(pointer*bufferJump); //-1 to 1
+				value *= 10;
 			}
 
 			value = PApplet.map(value, -1, 1, 0, 255);
@@ -368,18 +402,26 @@ public class DrawLineScene extends Scene {
 				value = App.fft.getBand(i*lineBufferJump); //-1 to 1
 			} else {
 				value = App.in.left.get(i*lineBufferJump); //-1 to 1
+				value *= 10;
 			}
-			
+						
 			value = PApplet.map(value, -1, 1, 0, 255);
 			
+			//move slowly values from left to right
 			if(!useFFT){
-				//TODO use param
-				int shiftX = 15;
+
+				int shiftX = 5;
+				
 				if(i>shiftX){
 					int pCOlor = App.lineSoundImage.pixels[i-shiftX];
 					float red = pCOlor >> 16 & 0xFF;
-					if(red>127 && value>127)value += (red-127)*0.7;
-					if(red<127 && value<127)value -= (127-red)*0.7;
+					
+					if(red>value){
+						value += Math.abs(red-value)*.8;
+					} else if(red<value){
+						value -= Math.abs(red-value)*.8;
+					}
+					
 					value = Math.max(0, Math.min(255, value));//clamp 0 255
 				}
 			}
@@ -457,7 +499,7 @@ public class DrawLineScene extends Scene {
 		
 		if(mode==2){
 			pApplet.shader(fshader);
-		} else if (mode==3){
+		} else if(mode==3){
 			pApplet.shader(basicShader);
 			pApplet.shader(bLineShader);
 		} else if(mode==4){
@@ -466,6 +508,9 @@ public class DrawLineScene extends Scene {
 			pApplet.shader(pointShader);
 		} else if(mode==6){
 			pApplet.shader(fshader);
+		} else if(mode==7){
+			pApplet.shader(basicShader);
+			pApplet.shader(bLineShader);
 		}
 		
 		pApplet.shape(App.mainGrid);

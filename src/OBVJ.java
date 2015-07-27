@@ -56,7 +56,7 @@ public class OBVJ extends PApplet {
 			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
 			monitor = gConfigurations[0].getBounds();
 			//choose your screen: 0, 1, ...
-			PApplet.main( new String[] { "--display=0", OBVJ.class.getSimpleName() });
+			PApplet.main( new String[] { "--display=1", OBVJ.class.getSimpleName() });
 		} else {
 			GraphicsDevice graphicsDevice = graphicsDevices[0];
 			GraphicsConfiguration[] gConfigurations = graphicsDevice.getConfigurations();
@@ -67,7 +67,7 @@ public class OBVJ extends PApplet {
 	}
 	public void init() {
 		frame.removeNotify();
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		super.init();
 	}
 	public void setup(){		
@@ -248,7 +248,7 @@ public class OBVJ extends PApplet {
 	                {"xSpace", 4, 100, 10, App.colors[4]}, //4 --> 150
 	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
 	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis 100=10
-	                {"amplitude", 1, 20000, 10000, App.colors[4]}, //before 390 max 500
+	                {"amplitude", 1, 3000, 300, App.colors[4]}, //before 390 max 500
 	                
 	                {"damper", 0, 10, 9, App.colors[6]},
 	                {"maxDist", 1, 1500, 500, App.colors[7]},
