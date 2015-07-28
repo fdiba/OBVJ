@@ -22,10 +22,7 @@ public class Scene {
 	
 	protected int w, h;
 	
-	protected int[] depthValues;
-	
-	//---- only used with shaders ----//
-	protected PImage depthImage;
+	protected int[] depthValues;	
 	
 	protected int imgWidth;
 	protected int imgHeight;

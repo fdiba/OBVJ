@@ -38,7 +38,7 @@ public class App {
 	
 	//-------- depthMapControl ----------//
 	public static int lowestValue = 550;
-	public static int highestValue = 2350;
+	public static int highestValue = 5100;
 	public static boolean switchValue;
 	
 	//colors : red, green, blue green, orange, dark blue

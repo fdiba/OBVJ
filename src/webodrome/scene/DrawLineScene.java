@@ -35,6 +35,8 @@ public class DrawLineScene extends Scene {
 	private static PShader trgFillShader;
 	private static PShader trgStrokeShader;
 	
+	private PImage depthImage;
+	
 	private PImage[] images;
 	
 	private Ramp ramp;
@@ -47,6 +49,8 @@ public class DrawLineScene extends Scene {
 	public DrawLineScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
 		super(_pApplet, objects, _width, _height);
+		
+		depthImage = pApplet.createImage(App.KWIDTH, App.KHEIGHT, pApplet.RGB);
 		
 		//----------- shaders -----------//
 		
@@ -164,6 +168,55 @@ public class DrawLineScene extends Scene {
 		shader.set("texFftEnd", texFftEnd);
 
 	}
+	private PImage createDepthTexture(SimpleOpenNI context){
+		
+		depthImage.loadPixels();
+		for(int i=0; i<depthValues.length; i++){
+			
+			int value = depthValues[i];
+			
+			//---------- remove black zones --------------//
+			if(value==0){
+				
+				int pv = 0;
+				int nv = 0;
+				
+				if(i>0){	
+					int j = i-1;
+					pv = depthValues[j];
+					while(pv==0 && j>0){
+						j--;
+						pv = depthValues[j];
+					}
+				}
+				
+				if(i<depthValues.length-1){	
+					int k = i+1;
+					nv = depthValues[k];
+					while(nv==0 && k<depthValues.length-2){
+						k++;
+						nv = depthValues[k];
+					}
+				}
+				
+				value = Math.max(pv, nv);
+				
+			}
+
+			//TODO ADD PARAM
+			value = (int) PApplet.map(value, 1, App.highestValue, 255, 0);
+			value = Math.max(0, Math.min(255, value));//clamp 0 255
+			
+			depthImage.pixels[i] = (value << 16) | (value << 8) | value;
+			
+			//float red = pCOlor >> 16 & 0xFF;
+			
+		}
+		depthImage.updatePixels();
+		
+		return depthImage;
+		
+	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
@@ -179,7 +232,7 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 						
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			fshader.set("tex0", depthImage);
 			
 			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
@@ -201,7 +254,7 @@ public class DrawLineScene extends Scene {
 			}
 			
 			//USE OF TWO SHADERS
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			basicShader.set("tex0", depthImage);
 			bLineShader.set("tex0", depthImage);
 			
@@ -233,7 +286,7 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 			
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			lineShader.set("tex0", depthImage);
 			
 			if(multipleBuffers) lineShader.set("tex2", App.basicSoundImage);
@@ -250,7 +303,7 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 			
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			pointShader.set("tex0", depthImage);
 			
 			if(multipleBuffers) pointShader.set("tex2", App.basicSoundImage);
@@ -271,7 +324,7 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 						
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			fshader.set("tex0", depthImage);
 			
 			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
@@ -293,7 +346,7 @@ public class DrawLineScene extends Scene {
 			}
 			
 			//USE OF TWO SHADERS
-			depthImage = context.depthImage();
+			depthImage = createDepthTexture(context);
 			trgFillShader.set("tex0", depthImage);
 			trgStrokeShader.set("tex0", depthImage);
 			
