@@ -298,7 +298,8 @@ private static PShape createTriangleShapeGrid(PImage image){
 		//shape.setStroke(objv.color(255, 0, 0));
 		
 		//TODO ADD PARAM
-		shape.beginShape(PConstants.QUADS);
+		//shape.beginShape(PConstants.TRIANGLE_STRIP);
+		shape.beginShape(PConstants.TRIANGLE);
 		shape.textureMode(PConstants.NORMAL);
 		shape.texture(image);
 
@@ -318,18 +319,33 @@ private static PShape createTriangleShapeGrid(PImage image){
 		    	//TODO do it in the shader! /LINE BREAKER
 		    	if (lowResGrid) { //press 'r' key
 		    		
-		    		shape.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-		    		shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-		    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		//shape.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		//shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		//shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		//shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
 		      
+		    		shape.vertex(tl.x, tl.y, tl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		
+		    		shape.vertex(bl.x, bl.y, bl.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+		    		
 		    	} else {
 		    					    			
-		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
-		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
-			    	shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
-			    	shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    		//shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		//shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+			    	//shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
+			    	//shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
 		    		
+		    		shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    		
+		    		shape.vertex(bl.x, bl.y, bl.z, bl.x/kwidth/xRatio, bl.y/kheight/yRatio);
+		    		shape.vertex(tr.x, tr.y, tr.z, tr.x/kwidth/xRatio, tr.y/kheight/yRatio);
+		    		shape.vertex(br.x, br.y, br.z, br.x/kwidth/xRatio, br.y/kheight/yRatio);
 		    	}
 		    	
 		    }

@@ -235,7 +235,7 @@ public class OBVJ extends PApplet {
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},                
-	                {"strokeWeight", 1, 100, 5, App.colors[6]}, //4 before
+	                {"strokeWeight", 1, 100, 1, App.colors[6]}, //4 before
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},

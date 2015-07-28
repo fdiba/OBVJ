@@ -20,7 +20,7 @@ public class DrawLineScene extends Scene {
 	public static boolean texCutStraight = true;
 	public static boolean sameSize = false; //points with different sizes
 	public static boolean drawRoundRect = true;
-	public static int mode = 2;
+	public static int mode = 7;
 	
 	//TODO PARAM 1 = no jump 
 	private static int bufferJump = 2;
@@ -32,6 +32,9 @@ public class DrawLineScene extends Scene {
 	private static PShader bLineShader;
 	private static PShader lineShader;
 	private static PShader pointShader;
+	private static PShader trgFillShader;
+	private static PShader trgStrokeShader;
+	
 	private PImage[] images;
 	
 	private Ramp ramp;
@@ -98,6 +101,24 @@ public class DrawLineScene extends Scene {
 		pointShader.set("tex2", App.lineSoundImage);
 		pointShader.set("gWidth", (float) App.width);
 		pointShader.set("gHeight", (float) App.height);
+		
+		
+		//--- triangles -----//
+		
+		//trgFillShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
+		trgFillShader = pApplet.loadShader("trgFill_frag.glsl", "trgFill_vert.glsl");
+		trgFillShader.set("tex0", images[0]);
+		trgFillShader.set("tex1", images[1]); //color
+		trgFillShader.set("tex2", App.lineSoundImage);
+		trgFillShader.set("gWidth", (float) App.width);
+		trgFillShader.set("gHeight", (float) App.height);
+		
+		trgStrokeShader = pApplet.loadShader("trgStroke_frag.glsl", "trgStroke_vert.glsl");
+		trgStrokeShader.set("tex0", images[0]);
+		trgStrokeShader.set("tex1", images[1]); //color
+		trgStrokeShader.set("tex2", App.lineSoundImage);
+		trgStrokeShader.set("gWidth", (float) App.width);
+		trgStrokeShader.set("gHeight", (float) App.height);
 		
 		//----------- shaders -----------//
 		
@@ -273,27 +294,27 @@ public class DrawLineScene extends Scene {
 			
 			//USE OF TWO SHADERS
 			depthImage = context.depthImage();
-			basicShader.set("tex0", depthImage);
-			bLineShader.set("tex0", depthImage);
+			trgFillShader.set("tex0", depthImage);
+			trgStrokeShader.set("tex0", depthImage);
 			
 			if(multipleBuffers) {
-				basicShader.set("tex2", App.basicSoundImage);
-				bLineShader.set("tex2", App.basicSoundImage);
+				trgFillShader.set("tex2", App.basicSoundImage);
+				trgStrokeShader.set("tex2", App.basicSoundImage);
 			} else {
-				basicShader.set("tex2", App.lineSoundImage);
-				bLineShader.set("tex2", App.lineSoundImage);
+				trgFillShader.set("tex2", App.lineSoundImage);
+				trgStrokeShader.set("tex2", App.lineSoundImage);
 			}
 			
-			setUniformVariables(basicShader);
-			setUniformVariables(bLineShader);
+			setUniformVariables(trgFillShader);
+			setUniformVariables(trgStrokeShader);
 			
 			float fillAlpha = params.get("fillAlpha");
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
-			basicShader.set("alpha", fillAlpha);
+			trgFillShader.set("alpha", fillAlpha);
 			
 			float strokeAlpha = params.get("strokeAlpha");
 			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
-			bLineShader.set("alpha", strokeAlpha);
+			trgStrokeShader.set("alpha", strokeAlpha);
 			
 		} else {
 			
@@ -509,8 +530,8 @@ public class DrawLineScene extends Scene {
 		} else if(mode==6){
 			pApplet.shader(fshader);
 		} else if(mode==7){
-			pApplet.shader(basicShader);
-			pApplet.shader(bLineShader);
+			pApplet.shader(trgFillShader);
+			pApplet.shader(trgStrokeShader);
 		}
 		
 		pApplet.shape(App.mainGrid);
