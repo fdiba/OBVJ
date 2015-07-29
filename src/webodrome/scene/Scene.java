@@ -22,7 +22,8 @@ public class Scene {
 	
 	protected int w, h;
 	
-	protected int[] depthValues;	
+	protected int[] depthValues;
+	protected int[] oldDepthValues;
 	
 	protected int imgWidth;
 	protected int imgHeight;

@@ -170,12 +170,17 @@ public class DrawLineScene extends Scene {
 	}
 	private PImage createDepthTexture(SimpleOpenNI context){
 		
+		if(oldDepthValues==null){
+			oldDepthValues = depthValues.clone();
+			PApplet.println("ZERO");
+		}
+		
 		depthImage.loadPixels();
 		for(int i=0; i<depthValues.length; i++){
+						
+			float value = depthValues[i];
 			
-			int value = depthValues[i];
-			
-			//---------- remove black zones --------------//
+			//------------- remove black zones --------------//
 			if(value==0){
 				
 				int pv = 0;
@@ -184,7 +189,7 @@ public class DrawLineScene extends Scene {
 				if(i>0){	
 					int j = i-1;
 					pv = depthValues[j];
-					while(pv==0 && j>0){
+					while(pv<=0 && j>0){
 						j--;
 						pv = depthValues[j];
 					}
@@ -193,7 +198,7 @@ public class DrawLineScene extends Scene {
 				if(i<depthValues.length-1){	
 					int k = i+1;
 					nv = depthValues[k];
-					while(nv==0 && k<depthValues.length-2){
+					while(nv<=0 && k<depthValues.length-2){
 						k++;
 						nv = depthValues[k];
 					}
@@ -201,19 +206,27 @@ public class DrawLineScene extends Scene {
 				
 				value = Math.max(pv, nv);
 				
+				
 			}
-
+			//------------ end remove black zones --------------//
+			
+			//-- smooth values --//
+			if(value < oldDepthValues[i]) value = (float) (oldDepthValues[i] - (oldDepthValues[i]-value)*.2);
+			else if(value > oldDepthValues[i]) value = (float) (oldDepthValues[i] + (value-oldDepthValues[i])*.2);
+						
+			oldDepthValues[i] = (int) value;
+			
 			//TODO ADD PARAM
-			value = (int) PApplet.map(value, 1, App.highestValue, 255, 0);
+			value = PApplet.map(value, 1, App.highestValue, 255, 0);
 			value = Math.max(0, Math.min(255, value));//clamp 0 255
 			
-			depthImage.pixels[i] = (value << 16) | (value << 8) | value;
-			
-			//float red = pCOlor >> 16 & 0xFF;
-			
+			depthImage.pixels[i] = ((int)value << 16) | ((int)value << 8) | (int)value;
+
 		}
-		depthImage.updatePixels();
 		
+		//oldDepthValues = depthValues.clone();
+		
+		depthImage.updatePixels();
 		return depthImage;
 		
 	}
