@@ -170,6 +170,9 @@ public class DrawLineScene extends Scene {
 	}
 	private PImage createDepthTexture(SimpleOpenNI context){
 		
+		float rawData = params.get("rawData")/10f;
+		//pApplet.println(rawData);
+		
 		if(oldDepthValues==null){
 			oldDepthValues = depthValues.clone();
 			PApplet.println("ZERO");
@@ -210,14 +213,17 @@ public class DrawLineScene extends Scene {
 			}
 			//------------ end remove black zones --------------//
 			
+			//TODO ADD PARAM .2
 			//-- smooth values --//
-			if(value < oldDepthValues[i]) value = (float) (oldDepthValues[i] - (oldDepthValues[i]-value)*.2);
-			else if(value > oldDepthValues[i]) value = (float) (oldDepthValues[i] + (value-oldDepthValues[i])*.2);
+			
+			//rawData = (float) .2;
+			if(value < oldDepthValues[i]) value = (float) (oldDepthValues[i] - (oldDepthValues[i]-value)*rawData);
+			else if(value > oldDepthValues[i]) value = (float) (oldDepthValues[i] + (value-oldDepthValues[i])*rawData);
 						
 			oldDepthValues[i] = (int) value;
 			
 			//TODO ADD PARAM
-			value = PApplet.map(value, 1, App.highestValue, 255, 0);
+			value = PApplet.map(value, App.lowestValue, App.highestValue, 255, 0);
 			value = Math.max(0, Math.min(255, value));//clamp 0 255
 			
 			depthImage.pixels[i] = ((int)value << 16) | ((int)value << 8) | (int)value;

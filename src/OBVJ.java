@@ -239,7 +239,7 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 45, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"rawData", 1, 10, 5, App.colors[6]},
+	                {"rawData", 0, 10, 2, App.colors[6]}, //when zero freeze depthvalues
 	                
 	                {"fttAmpli", 1, 150, 100, App.colors[4]},
 	                {"texFftStart", 0, 10, 0, App.colors[6]}, // 0 100 8
