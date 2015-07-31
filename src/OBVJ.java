@@ -222,7 +222,8 @@ public class OBVJ extends PApplet {
 	//---------- scenes ----------------//
 	private void scene0(){
 		
-		background(0);
+		//background(0xFFFFFF);
+		background(0x000000);
 		
 		//-------------- init ------------------//
 		

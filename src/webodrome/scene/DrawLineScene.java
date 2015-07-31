@@ -16,12 +16,13 @@ public class DrawLineScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
-	public static int mode = 7;
+	public static int mode = 2;
 	
 	private static boolean useFFT = true;
 	private static boolean texCutStraight = true;
 	private static boolean sameSize = false; //TODO not used points with different sizes
 	private static boolean drawRoundRect = true;
+	private static boolean psRunning = false;
 	
 	//TODO PARAM 1 = no jump 
 	private static int bufferJump = 2;
@@ -35,6 +36,7 @@ public class DrawLineScene extends Scene {
 	private static PShader pointShader;
 	private static PShader trgFillShader;
 	private static PShader trgStrokeShader;
+	private static PShader testFillShader;
 	
 	private PImage depthImage;
 	
@@ -110,7 +112,6 @@ public class DrawLineScene extends Scene {
 		
 		//--- triangles -----//
 		
-		//trgFillShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
 		trgFillShader = pApplet.loadShader("trgFill_frag.glsl", "trgFill_vert.glsl");
 		trgFillShader.set("tex0", images[0]);
 		trgFillShader.set("tex1", images[1]); //color
@@ -125,6 +126,8 @@ public class DrawLineScene extends Scene {
 		trgStrokeShader.set("gWidth", (float) App.width);
 		trgStrokeShader.set("gHeight", (float) App.height);
 		
+		testFillShader = pApplet.loadShader("testFill_frag.glsl", "testFill_vert.glsl");
+		
 		//----------- shaders -----------//
 		
 		ramp = new Ramp(1, true);
@@ -132,9 +135,7 @@ public class DrawLineScene extends Scene {
 		buffers = new ArrayList<FloatList>();
 		
 		setBuffers(params.get("ySpace"));		
-		
-		PApplet.println("make it count");
-				
+						
 	}
 	private void setUniformVariables(PShader shader){
 		
@@ -174,10 +175,7 @@ public class DrawLineScene extends Scene {
 		float rawData = params.get("rawData")/10f;
 		//pApplet.println(rawData);
 		
-		if(oldDepthValues==null){
-			oldDepthValues = depthValues.clone();
-			PApplet.println("ZERO");
-		}
+		if(oldDepthValues==null) oldDepthValues = depthValues.clone();
 		
 		depthImage.loadPixels();
 		for(int i=0; i<depthValues.length; i++){
@@ -214,16 +212,13 @@ public class DrawLineScene extends Scene {
 			}
 			//------------ end remove black zones --------------//
 			
-			//TODO ADD PARAM .2
-			//-- smooth values --//
-			
-			//rawData = (float) .2;
+			//---------- smooth values ----------//
 			if(value < oldDepthValues[i]) value = (float) (oldDepthValues[i] - (oldDepthValues[i]-value)*rawData);
 			else if(value > oldDepthValues[i]) value = (float) (oldDepthValues[i] + (value-oldDepthValues[i])*rawData);
 						
 			oldDepthValues[i] = (int) value;
 			
-			//TODO ADD PARAM
+			//TODO ADD PARAM ?
 			value = PApplet.map(value, App.lowestValue, App.highestValue, 255, 0);
 			value = Math.max(0, Math.min(255, value));//clamp 0 255
 			
@@ -243,12 +238,19 @@ public class DrawLineScene extends Scene {
 		
 		//PApplet.println(params.get("damper"));
 
-		if(mode==2){ // shape composed of multiples quads + only fill
+		if(psRunning){
+			
+			if(App.recreateShapeGrid){
+				App.recreateShapeGrid(5);			
+				App.recreateShapeGrid = false;
+			}
+			
+		} else if(mode==2){ // shape composed of multiples quads + only fill
 			
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreateShapeGrid();			
+				App.recreateShapeGrid(mode);			
 				App.recreateShapeGrid = false;
 			}
 						
@@ -269,7 +271,7 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreateBasicShapeGrid();			
+				App.recreateShapeGrid(mode);
 				App.recreateShapeGrid = false;
 			}
 			
@@ -302,7 +304,7 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreateLineShapeGrid();			
+				App.recreateShapeGrid(mode);
 				App.recreateShapeGrid = false;
 			}
 			
@@ -319,7 +321,7 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreatePointShapeGrid();			
+				App.recreateShapeGrid(mode);
 				App.recreateShapeGrid = false;
 			}
 			
@@ -340,7 +342,7 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreateQuadGroupShapeGrid();			
+				App.recreateShapeGrid(mode);
 				App.recreateShapeGrid = false;
 			}
 						
@@ -361,7 +363,7 @@ public class DrawLineScene extends Scene {
 			updateSoundV2();
 			
 			if(App.recreateShapeGrid){
-				App.recreateTriangleShapeGrid();			
+				App.recreateShapeGrid(mode);
 				App.recreateShapeGrid = false;
 			}
 			
@@ -591,20 +593,26 @@ public class DrawLineScene extends Scene {
 		
 		pApplet.shapeMode(PConstants.CENTER);
 		
-		if(mode==2){
-			pApplet.shader(fshader);
-		} else if(mode==3){
-			pApplet.shader(basicShader);
-			pApplet.shader(bLineShader);
-		} else if(mode==4){
-			pApplet.shader(lineShader);
-		} else if(mode==5){
-			pApplet.shader(pointShader);
-		} else if(mode==6){
-			pApplet.shader(fshader);
-		} else if(mode==7){
-			pApplet.shader(trgFillShader);
-			pApplet.shader(trgStrokeShader);
+		if(!psRunning){
+		
+			if(mode==2){
+				pApplet.shader(fshader);
+			} else if(mode==3){
+				pApplet.shader(basicShader);
+				pApplet.shader(bLineShader);
+			} else if(mode==4){
+				pApplet.shader(lineShader);
+			} else if(mode==5){
+				pApplet.shader(pointShader);
+			} else if(mode==6){
+				pApplet.shader(fshader);
+			} else if(mode==7){
+				pApplet.shader(trgFillShader);
+				pApplet.shader(trgStrokeShader);
+			}
+		
+		} else {
+			pApplet.shader(testFillShader);
 		}
 		
 		pApplet.shape(App.mainGrid);
@@ -796,10 +804,13 @@ public class DrawLineScene extends Scene {
 			drawRoundRect = !drawRoundRect;
 		} else if (key == 'o') { //change how texFftEnd is used in the shaders
 			texCutStraight = !texCutStraight;
-		} else if (key == 't') { //TODO not used change the size of the points with z 
+		}  else if (key == 't') { //TODO not used change the size of the points with z 
 			sameSize = !sameSize;
 		} else if (key == 'v') {
 			linesVisibility = !linesVisibility;
+		} else if (key == 'x') {
+			App.recreateShapeGrid = true;
+			psRunning = !psRunning;
 		} else if (key == '0'){
 			
 			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",

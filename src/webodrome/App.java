@@ -105,23 +105,30 @@ public class App {
 		App.basicSoundImage.updatePixels();
 		
 	}
-	public static void recreateShapeGrid(){
-		mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-	}
-	public static void recreateBasicShapeGrid(){
-		mainGrid = createBasicShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-	}
-	public static void recreateTriangleShapeGrid(){
-		mainGrid = createTriangleShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-	}
-	public static void recreateLineShapeGrid(){
-		mainGrid = createLineShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-	}
-	public static void recreatePointShapeGrid(){
-		mainGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
-	}
-	public static void recreateQuadGroupShapeGrid(){
-		mainGrid = createQuadGroupShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+	public static void recreateShapeGrid(int mode){
+		switch(mode){
+			case 2:
+				mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 3:
+				mainGrid = createBasicShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 4:
+				mainGrid = createLineShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 5:
+				mainGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 6:
+				mainGrid = createQuadGroupShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 7:
+				mainGrid = createTriangleShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			default:
+				mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+		}	
 	}
 	private static PShape createQuadGroupShapeGrid(PImage image){ //show DynamicParticlesRetained
 		
@@ -532,7 +539,7 @@ private static PShape createTriangleShapeGrid(PImage image){
 		
 		if (key=='l') {
 			toggleValue();
-		} else if(key=='m'){ //TODO update it not used in objv class keypressed function
+		} else if(key=='m'){ //TODO update it
 			
 			if(useLiveMusic){
 				if(in.isMonitoring())in.disableMonitoring();
@@ -540,13 +547,13 @@ private static PShape createTriangleShapeGrid(PImage image){
 			}
 			
 		} else if(key=='n'){
-			App.nextScene();
+			nextScene();
 		} else if(key =='p'){
-			App.prevScene();
+			prevScene();
 		} else if (key=='c') {
-			App.toogleColors();
+			toogleColors();
 		} else if (key=='r') {
-			App.editUVPos();
+			editUVPos();
 		} else if(App.getSceneId() == 0){ //------- scenes -------//
 			DrawLineScene.keyPressed(key);
 		} else if(App.getSceneId() == 1){
@@ -558,7 +565,7 @@ private static PShape createTriangleShapeGrid(PImage image){
 		}
 		
 	}
-	public static void toggleValue() {
+	private static void toggleValue() {
 		  switchValue = !switchValue;
 	}
 	public static void setSelectedValue(int value) {    
@@ -571,22 +578,22 @@ private static PShape createTriangleShapeGrid(PImage image){
 			highestValue = Math.max(lowestValue+10, Math.min(15000, highestValue));
 		}
 	}
-	public static void nextScene(){	
+	private static void nextScene(){	
 		int id = getSceneId();
 		id++;
 		if(id>5)id=0;
 		setSceneId(id);
 	}
-	public static void prevScene(){
+	private static void prevScene(){
 		int id = getSceneId();
 		id--;
 		if(id<0)id=4;
 		setSceneId(id);
 	}
-	public static void toogleColors(){
+	private static void toogleColors(){
 		useColors = !useColors;
 	}
-	public static void editUVPos(){
+	private static void editUVPos(){
 		lowResGrid = !lowResGrid;
 		recreateShapeGrid = true;
 	}
