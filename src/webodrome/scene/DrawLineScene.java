@@ -16,11 +16,12 @@ public class DrawLineScene extends Scene {
 		
 	public static boolean linesVisibility = true;
 	public static boolean multipleBuffers = false;
-	public static boolean useFFT = true;
-	public static boolean texCutStraight = true;
-	public static boolean sameSize = false; //points with different sizes
-	public static boolean drawRoundRect = true;
 	public static int mode = 7;
+	
+	private static boolean useFFT = true;
+	private static boolean texCutStraight = true;
+	private static boolean sameSize = false; //TODO not used points with different sizes
+	private static boolean drawRoundRect = true;
 	
 	//TODO PARAM 1 = no jump 
 	private static int bufferJump = 2;
@@ -50,7 +51,7 @@ public class DrawLineScene extends Scene {
 		
 		super(_pApplet, objects, _width, _height);
 		
-		depthImage = pApplet.createImage(App.KWIDTH, App.KHEIGHT, pApplet.RGB);
+		depthImage = pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.RGB);
 		
 		//----------- shaders -----------//
 		
@@ -330,7 +331,7 @@ public class DrawLineScene extends Scene {
 			
 			setUniformVariables(pointShader);
 			
-			pointShader.set("sameSize", sameSize); //change the size of the points with z
+			//pointShader.set("sameSize", sameSize); //change the size of the points with z
 			pointShader.set("weight", (float) params.get("strokeWeight"));
 			pointShader.set("drawRoundRect", drawRoundRect);
 			
@@ -729,5 +730,176 @@ public class DrawLineScene extends Scene {
 			translateAndDisplayShape();
 		}
 		
+	}
+	public static String variablesStatus(){
+		
+		String str = "toggle and edit depth limits: press l AND UP OR DOWN\n";
+		str += "App.lowestValue | " + App.lowestValue + "\n";
+		str += "App.highestValue | " + App.highestValue + "\n";
+		str += "\n";
+		
+		str += "change scene | n & p | " + App.getSceneId() + "\n";
+		str += "\n";
+		
+		str += "change mode | g & h | " + mode + "\n";
+		str += "\n";
+		
+		str += "App.useColors | c | " + App.useColors + "\n";
+		str += "\n";
+		
+		str += "App.lowResGrid  | r | " + App.lowResGrid + "\n";
+		str += "\n";
+		
+		str += "multipleBuffers | b | " + multipleBuffers + "\n";
+		str += "\n";
+		
+		str += "useFFT | f | " + useFFT + "\n";
+        str += "\n";
+        
+        str += "texCutStraight | o | " + texCutStraight + "\n";
+        str += "\n";
+        
+        str += "sameSize | o | mode 5 | not used | " + sameSize + "\n";
+        str += "\n";
+                
+        str += "drawRoundRect | k | mode 5 | " + drawRoundRect + "\n";
+        str += "\n";
+        
+		str += "OLD ONES\n\n";
+		str += "duplicate fourier values | d | mode 0 | " + App.duplicateFFT + "\n";
+		str += "linesVisibility | v | mode 0 | " + linesVisibility + "\n";
+		
+		return str;
+		
+	}
+	public static void keyPressed(char key){
+		
+		if (key == 'b') {
+			multipleBuffers = !multipleBuffers;
+			if(multipleBuffers==false){
+				//make possible the reconstruction of the basicSoundImage when multipleBuffers became true 
+				App.resetBasicSoundImage();
+			}
+		} else if (key == 'd') { //TODO old variable use it to create mirror effect
+			App.duplicateFFT = !App.duplicateFFT;
+		} else if (key == 'f') {
+			useFFT = !useFFT;
+		} else if (key == 'g') {
+			mode--;
+			if(mode<0)mode=6;
+			if(mode>1)App.recreateShapeGrid = true;
+		} else if (key == 'h') {
+			mode++;
+			if(mode>7)mode=0;
+			if(mode>1)App.recreateShapeGrid = true;	
+		} else if (key == 'k') { //draw rect or circle when using points shader
+			drawRoundRect = !drawRoundRect;
+		} else if (key == 'o') { //change how texFftEnd is used in the shaders
+			texCutStraight = !texCutStraight;
+		} else if (key == 't') { //TODO not used change the size of the points with z 
+			sameSize = !sameSize;
+		} else if (key == 'v') {
+			linesVisibility = !linesVisibility;
+		} else if (key == '0'){
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+								   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45, -90, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+		
+		} else if (key == '1'){
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, -100, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '2'){
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250, -150, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = true;
+			useFFT = false;
+			
+		} else if (key == '3'){
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 20, -50, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '4') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, -50, 20, 16, 70, 0, 90, 70, 60, 60, 45, -55, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '5') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, -50, 20, 16, 70, 0, 90, 115, 10, 60, 45, -55, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '6') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, -50, 50, 50, 260, 0, 90, 450, 10, -72, 20, 75, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '7') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 20, -50, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = true;
+			useFFT = false;
+			
+		} else if (key == '8') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, -100, -50, 4, 60, 180, 0, 100, 10, -200, 40, 100, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = false;
+			useFFT = false;
+			
+		} else if (key == '9') {
+			
+			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
+		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
+			int[] values = {0, 0, 50, 4, 0, 180, 0, 500, 10, -200, 250, 100, 10};
+			App.editParams(0, parameters, values);
+			
+			multipleBuffers = true;
+			useFFT = false;
+			
+		}
 	}
 }

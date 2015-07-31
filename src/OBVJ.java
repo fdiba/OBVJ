@@ -415,8 +415,8 @@ public class OBVJ extends PApplet {
 		shapeScene.update(context);
 		
 		pushMatrix();
-		  
-		translateAndRotate();
+		
+		translateAndRotateV2();
 		  
 		shapeScene.display();
 		  
@@ -608,14 +608,34 @@ public class OBVJ extends PApplet {
 	//--------------- keys ---------------------//
 	public void keyPressed() {
 				
-	
-		if (key == 's'){
-			//TO DO move it
-		    savePicture();			
-		} 
+		if (key=='l') {
+			App.toggleValue();
+		} else if (keyCode==UP) {
+			App.setSelectedValue(+50);
+		} else if (keyCode==DOWN) {
+			App.setSelectedValue(-50);
+		} else if(key=='n'){
+			App.nextScene();
+		} else if(key =='p'){
+			App.prevScene();
+		} else if (key=='c') {
+			App.toogleColors();
+		} else if (key=='r') {
+			App.editUVPos();
+		} else if (key == 's'){ //------- save things -------//
+		    saveScreenPicture();			
+		} else if(App.getSceneId() == 0){ //------- scenes -------//
+			DrawLineScene.keyPressed(key);
+		} else if(App.getSceneId() == 1){
+			DrawPointScene.keyPressed(key);
+		} else if(App.getSceneId() == 3){
+			ShapeScene.keyPressed(key);
+		} else if(App.getSceneId() == 4){
+			ChunkyScene.keyPressed(key);
+		}
 	}
 	
-	public void savePicture() {
+	public void saveScreenPicture() {
 		Date date = new Date();
 		//String name = "data/images/objv-"+date.getTime()+".png";
 		String name = "data/images/objv-"+date.getTime()+".jpg";

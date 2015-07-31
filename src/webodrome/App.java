@@ -509,4 +509,51 @@ private static PShape createTriangleShapeGrid(PImage image){
 		App.actualScene = actualScene;
 		App.actualMenu = actualScene.menu;
 	}
+	public static void editParams(int key, String[] parameters, int[] values){
+		
+		switch (key) {
+			case 0:
+				for (int i=0; i<parameters.length; i++){
+					getActualScene().params.put(parameters[i], values[i]);
+				}
+				getActualScene().menu.reinitSlidersValueAndPos();
+				break;
+			default:
+				break;
+		}
+		
+	}
+	//-------- key strokes --------//
+	public static void toggleValue() {
+		  switchValue = !switchValue;
+	}
+	public static void setSelectedValue(int value) {    
+
+		if (switchValue) {
+			lowestValue += value;
+			lowestValue = Math.max(50, Math.min(highestValue-10, lowestValue));
+		} else {
+			highestValue += value;
+			highestValue = Math.max(lowestValue+10, Math.min(15000, highestValue));
+		}
+	}
+	public static void nextScene(){	
+		int id = getSceneId();
+		id++;
+		if(id>5)id=0;
+		setSceneId(id);
+	}
+	public static void prevScene(){
+		int id = getSceneId();
+		id--;
+		if(id<0)id=4;
+		setSceneId(id);
+	}
+	public static void toogleColors(){
+		useColors = !useColors;
+	}
+	public static void editUVPos(){
+		lowResGrid = !lowResGrid;
+		recreateShapeGrid = true;
+	}
 }

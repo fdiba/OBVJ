@@ -471,4 +471,17 @@ public class ChunkyScene extends Scene {
 		}
 		
 	}
+	public static void keyPressed(char key){
+		if (key == 'o'){ //displayPoints on mode 1		 
+			displayPoints = !displayPoints;
+		} else if (key == 'k'){		
+			isDrawingSkeleton = !isDrawingSkeleton;	
+		} else if (key == 'x'){		
+			displayCross = !displayCross;	
+		} else if (key == '1'){		
+			displayMode = 1;	
+		} else if (key == '2'){		
+			displayMode = 2;	
+		}
+	}
 }

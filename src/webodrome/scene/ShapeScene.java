@@ -457,4 +457,11 @@ public class ShapeScene extends Scene {
 			}
 		}
 	}
+	public static void keyPressed(char key){
+		if (key == 'f'){		
+			useStroke = !useStroke;
+		} else if (key == 'x'){		
+			displayCross = !displayCross;	
+		}
+	}
 }
