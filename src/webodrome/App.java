@@ -14,7 +14,11 @@ import themidibus.MidiBus;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.Menu;
 import webodrome.ctrl.SecondApplet;
+import webodrome.scene.ChunkyScene;
+import webodrome.scene.DrawLineScene;
+import webodrome.scene.DrawPointScene;
 import webodrome.scene.Scene;
+import webodrome.scene.ShapeScene;
 
 public class App {
 	
@@ -524,6 +528,36 @@ private static PShape createTriangleShapeGrid(PImage image){
 		
 	}
 	//-------- key strokes --------//
+	public static void keyPressed(char key) {
+		
+		if (key=='l') {
+			toggleValue();
+		} else if(key=='m'){ //TODO update it not used in objv class keypressed function
+			
+			if(useLiveMusic){
+				if(in.isMonitoring())in.disableMonitoring();
+			    else in.enableMonitoring();
+			}
+			
+		} else if(key=='n'){
+			App.nextScene();
+		} else if(key =='p'){
+			App.prevScene();
+		} else if (key=='c') {
+			App.toogleColors();
+		} else if (key=='r') {
+			App.editUVPos();
+		} else if(App.getSceneId() == 0){ //------- scenes -------//
+			DrawLineScene.keyPressed(key);
+		} else if(App.getSceneId() == 1){
+			DrawPointScene.keyPressed(key);
+		} else if(App.getSceneId() == 3){
+			ShapeScene.keyPressed(key);
+		} else if(App.getSceneId() == 4){
+			ChunkyScene.keyPressed(key);
+		}
+		
+	}
 	public static void toggleValue() {
 		  switchValue = !switchValue;
 	}

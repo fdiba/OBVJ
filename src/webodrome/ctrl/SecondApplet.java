@@ -82,38 +82,15 @@ public class SecondApplet extends PApplet {
 	}
 	//--------------- keys ---------------------//
 	public void keyPressed() {
+				
+		App.keyPressed(key);
 		
-		if (key=='l') {
-			App.toggleValue();
-		} else if (keyCode==UP) {
+		if (keyCode==UP) {
 			App.setSelectedValue(+50);
 		} else if (keyCode==DOWN) {
 			App.setSelectedValue(-50);
-		} else if(key=='m'){ //TODO update it not used in objv class keypressed function
-			
-			if(App.useLiveMusic){
-				if(App.in.isMonitoring())App.in.disableMonitoring();
-			    else App.in.enableMonitoring();
-			}
-			
-		} else if(key=='n'){
-			App.nextScene();
-		} else if(key =='p'){
-			App.prevScene();
-		} else if (key=='c') {
-			App.toogleColors();
-		} else if (key=='r') {
-			App.editUVPos();
 		} else if(key=='s'){  //------- save things -------//
 			saveMenuPicture();
-		} else if(App.getSceneId() == 0){ //------- scenes -------//
-			DrawLineScene.keyPressed(key);
-		} else if(App.getSceneId() == 1){
-			DrawPointScene.keyPressed(key);
-		} else if(App.getSceneId() == 3){
-			ShapeScene.keyPressed(key);
-		} else if(App.getSceneId() == 4){
-			ChunkyScene.keyPressed(key);
 		}
 	}
 	public void saveMenuPicture() {
