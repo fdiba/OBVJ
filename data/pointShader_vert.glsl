@@ -41,19 +41,19 @@ void main() {
   //set tex2Pos
   if(useFFT){
 	
-	if(texCutStraight){
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
-	} else {
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
-	}
-	
-	tex2Pos[0] += texFftStart;
-	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle	
+  	if(texCutStraight){
+  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+  	} else {
+  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+  	}
+  	
+  	tex2Pos[0] += texFftStart;
+  	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle	
 
-	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
+  	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
 	
   } else {
-	tex2Pos = mpos;
+	 tex2Pos = mpos;
   }
  
   vertColor = texture2D(tex0, mpos);
@@ -88,9 +88,9 @@ void main() {
   
   //DO IT AT THE END
   if(useColors){
-	float xMin = vertColor.r + colorTS;
-	xMin = clamp(xMin, 0.0, 1.0);
-	vertColor = texture2D(tex1, vec2(xMin, 0.0));
+  	float xMin = vertColor.r + colorTS;
+  	xMin = clamp(xMin, 0.0, 1.0);
+  	vertColor = texture2D(tex1, vec2(xMin, 0.0));
   }
   
   //vertColor = color;

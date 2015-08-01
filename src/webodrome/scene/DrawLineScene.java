@@ -76,58 +76,32 @@ public class DrawLineScene extends Scene {
 		
 		
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
-		fshader.set("tex0", images[0]); //depth
-		fshader.set("tex1", images[1]); //color
-		fshader.set("tex2", App.lineSoundImage);	
-		fshader.set("gWidth", (float) App.width);
-		fshader.set("gHeight", (float) App.height);
+		setUniformConstants(fshader);
 		
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
-		basicShader.set("tex0", images[0]);
-		basicShader.set("tex1", images[1]); //color
-		basicShader.set("tex2", App.lineSoundImage);
-		basicShader.set("gWidth", (float) App.width);
-		basicShader.set("gHeight", (float) App.height);
+		setUniformConstants(basicShader);
 		
 		bLineShader = pApplet.loadShader("bLShader_frag.glsl", "bLShader_vert.glsl");
-		bLineShader.set("tex0", images[0]);
-		bLineShader.set("tex1", images[1]); //color
-		bLineShader.set("tex2", App.lineSoundImage);
-		bLineShader.set("gWidth", (float) App.width);
-		bLineShader.set("gHeight", (float) App.height);
+		setUniformConstants(bLineShader);
 		
 		lineShader = pApplet.loadShader("lshader_frag.glsl", "lshader_vert.glsl");
-		lineShader.set("tex0", images[0]); //depth
-		lineShader.set("tex1", images[1]); //color
-		lineShader.set("tex2", App.lineSoundImage);
-		lineShader.set("gWidth", (float) App.width);
-		lineShader.set("gHeight", (float) App.height);
+		setUniformConstants(lineShader);
 		
 		pointShader = pApplet.loadShader("pointShader_frag.glsl", "pointShader_vert.glsl");
-		pointShader.set("tex0", images[0]); //depth
-		pointShader.set("tex1", images[1]); //color
-		pointShader.set("tex2", App.lineSoundImage);
-		pointShader.set("gWidth", (float) App.width);
-		pointShader.set("gHeight", (float) App.height);
-		
+		setUniformConstants(pointShader);
 		
 		//--- triangles -----//
 		
 		trgFillShader = pApplet.loadShader("trgFill_frag.glsl", "trgFill_vert.glsl");
-		trgFillShader.set("tex0", images[0]);
-		trgFillShader.set("tex1", images[1]); //color
-		trgFillShader.set("tex2", App.lineSoundImage);
-		trgFillShader.set("gWidth", (float) App.width);
-		trgFillShader.set("gHeight", (float) App.height);
+		setUniformConstants(trgFillShader);
 		
 		trgStrokeShader = pApplet.loadShader("trgStroke_frag.glsl", "trgStroke_vert.glsl");
-		trgStrokeShader.set("tex0", images[0]);
-		trgStrokeShader.set("tex1", images[1]); //color
-		trgStrokeShader.set("tex2", App.lineSoundImage);
-		trgStrokeShader.set("gWidth", (float) App.width);
-		trgStrokeShader.set("gHeight", (float) App.height);
+		setUniformConstants(trgStrokeShader);
 		
 		testFillShader = pApplet.loadShader("testFill_frag.glsl", "testFill_vert.glsl");
+		testFillShader.set("tex1", images[1]); //color
+		testFillShader.set("gWidth", (float) App.width);
+		testFillShader.set("gHeight", (float) App.height);
 		
 		//----------- shaders -----------//
 		
@@ -137,6 +111,13 @@ public class DrawLineScene extends Scene {
 		
 		setBuffers(params.get("ySpace"));		
 						
+	}
+	private void setUniformConstants(PShader shader){
+		shader.set("tex0", images[0]); //depth
+		shader.set("tex1", images[1]); //color
+		shader.set("tex2", App.lineSoundImage);	
+		shader.set("gWidth", (float) App.width);
+		shader.set("gHeight", (float) App.height);
 	}
 	private void setUniformVariables(PShader shader){
 		
@@ -253,6 +234,8 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid(1);			
 				App.recreateShapeGrid = false;
 			}
+			
+			testFillShader.set("useColors", App.useColors);
 			
 			updateShape(App.partSysGrid);
 			
