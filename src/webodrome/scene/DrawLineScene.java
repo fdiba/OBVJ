@@ -6,6 +6,7 @@ import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
+import processing.core.PShape;
 import processing.core.PVector;
 import processing.data.FloatList;
 import processing.opengl.PShader;
@@ -185,8 +186,8 @@ public class DrawLineScene extends Scene {
 			//------------- remove black zones --------------//
 			if(value==0){
 				
-				int pv = 0;
-				int nv = 0;
+				int pv, nv;
+				pv = nv = 0;
 				
 				if(i>0){	
 					int j = i-1;
@@ -207,8 +208,7 @@ public class DrawLineScene extends Scene {
 				}
 				
 				value = Math.max(pv, nv);
-				
-				
+
 			}
 			//------------ end remove black zones --------------//
 			
@@ -232,18 +232,29 @@ public class DrawLineScene extends Scene {
 		return depthImage;
 		
 	}
+	private void updateShape(PShape shape){
+		
+		for(int i=0; i<shape.getVertexCount(); i++){
+			
+			PVector v = shape.getVertex(i);
+			v.z += -1 + Math.random()*2;
+			shape.setVertex(i, v);
+			
+		}
+		
+	}
 	public void update(SimpleOpenNI context){
 		
 		super.update(context);
 		
-		//PApplet.println(params.get("damper"));
-
 		if(psRunning){
 			
 			if(App.recreateShapeGrid){
-				App.recreateShapeGrid(5);			
+				App.recreateShapeGrid(1);			
 				App.recreateShapeGrid = false;
 			}
+			
+			updateShape(App.partSysGrid);
 			
 		} else if(mode==2){ // shape composed of multiples quads + only fill
 			
@@ -610,12 +621,13 @@ public class DrawLineScene extends Scene {
 				pApplet.shader(trgFillShader);
 				pApplet.shader(trgStrokeShader);
 			}
+			
+			pApplet.shape(App.mainGrid);
 		
 		} else {
 			pApplet.shader(testFillShader);
+			pApplet.shape(App.partSysGrid);
 		}
-		
-		pApplet.shape(App.mainGrid);
 		
 	}
 	private void displayLines(PVector[] pvectors){

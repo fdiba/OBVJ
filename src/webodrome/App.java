@@ -68,6 +68,7 @@ public class App {
 	//TODO UPDATE/ERASE IT
 	public static PVector[] pvectors;
 	public static PShape mainGrid;
+	public static PShape partSysGrid;
 	
 	public static boolean useColors;
 	
@@ -107,7 +108,10 @@ public class App {
 	}
 	public static void recreateShapeGrid(int mode){
 		switch(mode){
-			case 2:
+			case 1: //ps system
+				partSysGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
+				break;
+			case 2: //main grid
 				mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 				break;
 			case 3:
@@ -295,7 +299,7 @@ public class App {
 		return shape;
 		
 	}
-private static PShape createTriangleShapeGrid(PImage image){
+	private static PShape createTriangleShapeGrid(PImage image){
 		
 		int kwidth = App.KWIDTH;
 		int kheight = App.KHEIGHT;
