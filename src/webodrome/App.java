@@ -1,5 +1,7 @@
 package webodrome;
 
+import java.util.Vector;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -94,6 +96,12 @@ public class App {
 	private static int sceneId = 0;
 	public static int oldSceneId = 999;
 	
+	//----------- PS ----------//
+	static int npartTotal = 10000;
+	static PVector positions[];
+	static PVector velocities[];
+	static int n;
+	
 	public App() {
 		// TODO Auto-generated constructor stub
 	}
@@ -108,7 +116,7 @@ public class App {
 	}
 	public static void recreateShapeGrid(int mode){
 		switch(mode){
-			case 1: //ps system
+			case 1: //ps system not used
 				partSysGrid = createPointShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 				break;
 			case 2: //main grid
@@ -133,6 +141,69 @@ public class App {
 				mainGrid = createShapeGrid(objv.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB));
 				break;
 		}	
+	}
+	public static void recreatePS(){
+		createPS();
+	}
+	public static void createPS(){
+		
+		positions = new PVector[npartTotal];
+
+		int xSpace = getActualScene().params.get("xSpace");
+		int ySpace = getActualScene().params.get("ySpace");
+		
+		n=0;
+		
+		//System.out.println("max particles: "+ npartTotal);
+		
+		outerloop:
+		for (int y=0; y<height-ySpace; y+=ySpace) {
+		    for (int x=0; x<width-xSpace; x+=xSpace) {
+		    	positions[n] = new PVector(x, y);
+		    	n++;
+		    	
+		    	if(n>=npartTotal){
+		    		System.out.println("too much particles: "+ n);
+		    		break outerloop;
+		    	}
+		    }
+		}
+	}
+	public static void updatePS(){
+		
+		
+		
+	}
+	public static void displayPS(){
+		
+		/*int kwidth = App.KWIDTH;
+		int kheight = App.KHEIGHT;
+		
+		float xRatio = (float) width/kwidth;
+		float yRatio = (float) height/kheight;*/
+		
+		for (int i=0; i<n; i++) {
+			
+			PVector p = positions[i];
+			
+			objv.beginShape(PConstants.POINTS);
+			objv.textureMode(PConstants.NORMAL);
+			objv.stroke(255);
+			objv.strokeWeight(getActualScene().params.get("strokeWeight"));
+			objv.strokeCap(PConstants.SQUARE);
+			//noStroke();
+			//tint(255, opacity * 255);
+			//texture(sprite);
+			//objv.normal(0, 0, 1);
+			objv.vertex(p.x, p.y, p.z); //UV set in shader
+			/*vertex(center.x - partSize/2, center.y - partSize/2, 0, 0);
+			vertex(center.x + partSize/2, center.y - partSize/2, sprite.width, 0);
+			vertex(center.x + partSize/2, center.y + partSize/2, sprite.width, sprite.height);
+			vertex(center.x - partSize/2, center.y + partSize/2, 0, sprite.height);*/                
+			objv.endShape(); 
+			
+		}
+		
 	}
 	private static PShape createQuadGroupShapeGrid(PImage image){ //show DynamicParticlesRetained
 		
@@ -248,9 +319,7 @@ public class App {
 			
 		    for (int x=0; x<width-xSpace; x+=xSpace) {
 		    	
-		    	PVector tl;
-		    	tl = new PVector(x, y);
-	    			
+		    	PVector tl = new PVector(x, y);
 		    	shape.vertex(tl.x, tl.y, tl.z, tl.x/kwidth/xRatio, tl.y/kheight/yRatio);
 		    	
 		    }

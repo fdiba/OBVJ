@@ -29,7 +29,8 @@ void main() {
   vec4 col = vec4(1.0, 1.0, 1.0, 1.0);
 
   if(useColors){
-  	vec2 tex2Pos = vec2(vertex.x/gWidth, vertex.y/gHeight);
+  	vec2 tex2Pos = vec2(vertex.x/gWidth+.5, vertex.y/gHeight+.5);
+	//vec2 tex2Pos = vec2(vertex.x/gWidth, vertex.y/gHeight);
   	col = texture2D(tex1, tex2Pos);
   }
 

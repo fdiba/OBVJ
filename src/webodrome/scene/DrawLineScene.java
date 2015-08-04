@@ -231,13 +231,14 @@ public class DrawLineScene extends Scene {
 		if(psRunning){
 			
 			if(App.recreateShapeGrid){
-				App.recreateShapeGrid(1);			
+				App.recreatePS();			
 				App.recreateShapeGrid = false;
 			}
 			
 			testFillShader.set("useColors", App.useColors);
 			
-			updateShape(App.partSysGrid);
+			//updateShape(App.partSysGrid);
+			App.updatePS();
 			
 		} else if(mode==2){ // shape composed of multiples quads + only fill
 			
@@ -609,7 +610,8 @@ public class DrawLineScene extends Scene {
 		
 		} else {
 			pApplet.shader(testFillShader);
-			pApplet.shape(App.partSysGrid);
+			//pApplet.shape(App.partSysGrid);
+			App.displayPS();
 		}
 		
 	}
@@ -712,8 +714,18 @@ public class DrawLineScene extends Scene {
 		}
 	}
 	private void translateAndDisplayShape(){
+		
 		if(App.usePeasyCam){
-			displayShape();
+		
+			if(psRunning){
+				pApplet.pushMatrix();
+				pApplet.translate(-w/2, -h/2, 0);
+				displayShape();
+				pApplet.popMatrix();
+			} else {
+				displayShape();
+			}
+			
 		} else {
 			pApplet.pushMatrix();
 			pApplet.translate(w/2, h/2, -200);
