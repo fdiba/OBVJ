@@ -91,59 +91,68 @@ public class OBVJ extends PApplet {
 			cam.setMinimumDistance(50);
 			cam.setMaximumDistance(1500);
 		}
-		
-		context = new SimpleOpenNI(this);
-		
-		if (context.isInit() == false) {
-			println("Can't init SimpleOpenNI, maybe the camera is not connected!"); 
-		    exit();
-		    return;
+				
+		if (App.useKinect) {
+			
+			context = new SimpleOpenNI(this);
+			System.out.println("kinect mode");
+			
+			if (context.isInit() == false){
+				System.out.println("Can't init SimpleOpenNI, maybe the camera is not connected!");
+				exit();
+			    return;
+			} else {
+				//TODO DO NOT WORK
+				//context.setMirror(true);
+							
+				context.enableDepth();
+				context.enableUser();
+			}
+			
 		} else {
 
-			//TODO DO NOT WORK
-			//context.setMirror(true);
+			System.out.println("no kinect mode");
+			App.psRunning = true;
 			
-			context.enableDepth();
-			context.enableUser();
 			
-			App.objv = this;
-			
-			App.minim = new Minim(this);
-						
-			if(!App.useLiveMusic){
-				App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
-				App.player.play();	
-				//App.player.loop();			
-				App.player.mute();
-				App.fft = new FFT(App.player.bufferSize(), App.player.sampleRate());
-				App.imgSoundWidth = App.player.bufferSize();
-			} else {			
-				App.in = App.minim.getLineIn(Minim.MONO);
-				App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
-				App.imgSoundWidth = App.in.bufferSize();
-				//println("App.imgSoundWidth: " + App.imgSoundWidth);
-			}
-			
-			//TODO ERASE IT WHEN SOFT UPDATED
-			setVectorsGrid();
-			App.recreateShapeGrid = true;
-			
-			App.defaultShader = loadShader("defaultShader_frag.glsl", "defaultShader_vert.glsl");
-			
-			//----------- behringer -----------//		  
-			if(App.BCF2000){
-				MidiBus.list();
-				App.midiBus = new MidiBus(this, "BCF2000", "BCF2000");
-				App.behringer = new BehringerBCF(App.midiBus);
-			}
-			
-			App.transValues = new int[8];
-		    for(int i=0; i<App.transValues.length; i++) {
-		    	App.transValues[i]=0;
-		    }
-			//-------------------------//
-		
 		}
+		
+		App.objv = this;
+		
+		App.minim = new Minim(this);
+					
+		if(!App.useLiveMusic){
+			App.player = App.minim.loadFile("DwaMillioneMSTRDrev11644.wav");
+			App.player.play();	
+			//App.player.loop();			
+			App.player.mute();
+			App.fft = new FFT(App.player.bufferSize(), App.player.sampleRate());
+			App.imgSoundWidth = App.player.bufferSize();
+		} else {			
+			App.in = App.minim.getLineIn(Minim.MONO);
+			App.fft = new FFT(App.in.bufferSize(), App.in.sampleRate());
+			App.imgSoundWidth = App.in.bufferSize();
+			//println("App.imgSoundWidth: " + App.imgSoundWidth);
+		}
+		
+		//TODO ERASE IT WHEN SOFT UPDATED
+		setVectorsGrid();
+		App.recreateShapeGrid = true;
+		
+		App.defaultShader = loadShader("defaultShader_frag.glsl", "defaultShader_vert.glsl");
+		
+		//----------- behringer -----------//		  
+		if(App.BCF2000){
+			MidiBus.list();
+			App.midiBus = new MidiBus(this, "BCF2000", "BCF2000");
+			App.behringer = new BehringerBCF(App.midiBus);
+		}
+		
+		App.transValues = new int[8];
+	    for(int i=0; i<App.transValues.length; i++) {
+	    	App.transValues[i]=0;
+	    }
+		//-------------------------//
 		  
 		//hint(DISABLE_DEPTH_MASK);
 
@@ -152,7 +161,7 @@ public class OBVJ extends PApplet {
 		
 		App.secondApplet.redraw();
 				
-		context.update();
+		if(App.useKinect)context.update();
 		
 		int sceneId = App.getSceneId();
 		
@@ -224,6 +233,7 @@ public class OBVJ extends PApplet {
 		
 		//background(0xFFFFFF);
 		background(0x000000);
+		//background(0xFF0000);
 		
 		//-------------- init ------------------//
 		
@@ -270,7 +280,8 @@ public class OBVJ extends PApplet {
 		//-------------- draw ------------------//
 		
 		drawLineScene.update(context);
-		
+		//else drawLineScene.update();
+			
 		pushMatrix();
 		  
 		translateAndRotateV2();

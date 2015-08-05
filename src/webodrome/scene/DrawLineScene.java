@@ -23,7 +23,6 @@ public class DrawLineScene extends Scene {
 	private static boolean texCutStraight = true;
 	private static boolean sameSize = false; //TODO not used points with different sizes
 	private static boolean drawRoundRect = true;
-	private static boolean psRunning = false;
 	
 	//TODO PARAM 1 = no jump 
 	private static int bufferJump = 2;
@@ -226,19 +225,20 @@ public class DrawLineScene extends Scene {
 	}
 	public void update(SimpleOpenNI context){
 		
-		super.update(context);
+		if(App.useKinect)super.update(context);
+		else super.update();
 		
-		if(psRunning){
+		if(App.psRunning){
 			
 			if(App.recreateShapeGrid){
-				App.recreatePS();			
+				App.recreatePS();		
 				App.recreateShapeGrid = false;
 			}
 			
 			testFillShader.set("useColors", App.useColors);
 			
 			//updateShape(App.partSysGrid);
-			App.updatePS();
+			if(!App.pausedPS)App.updatePS();
 			
 		} else if(mode==2){ // shape composed of multiples quads + only fill
 			
@@ -588,7 +588,7 @@ public class DrawLineScene extends Scene {
 		
 		pApplet.shapeMode(PConstants.CENTER);
 		
-		if(!psRunning){
+		if(!App.psRunning){
 		
 			if(mode==2){
 				pApplet.shader(fshader);
@@ -717,7 +717,7 @@ public class DrawLineScene extends Scene {
 		
 		if(App.usePeasyCam){
 		
-			if(psRunning){
+			if(App.psRunning){
 				pApplet.pushMatrix();
 				pApplet.translate(-w/2, -h/2, 0);
 				displayShape();
@@ -817,7 +817,7 @@ public class DrawLineScene extends Scene {
 			linesVisibility = !linesVisibility;
 		} else if (key == 'x') {
 			App.recreateShapeGrid = true;
-			psRunning = !psRunning;
+			App.psRunning = !App.psRunning;
 		} else if (key == '0'){
 			
 			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",

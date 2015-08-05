@@ -1,7 +1,5 @@
 package webodrome;
 
-import java.util.Vector;
-
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -39,6 +37,7 @@ public class App {
 	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
+	public static boolean useKinect = false;
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
@@ -97,10 +96,19 @@ public class App {
 	public static int oldSceneId = 999;
 	
 	//----------- PS ----------//
-	static int npartTotal = 10000;
-	static PVector positions[];
-	static PVector velocities[];
-	static int n;
+	public static boolean psRunning = false;
+	
+	private static int npartTotal = 10000;
+	private static PVector positions[] = new PVector[npartTotal];
+	private static PVector velocities[] = new PVector[npartTotal];
+	private static PVector localOffsets[] = new PVector[npartTotal];
+	private static int n;
+	private static float neighborhood = 700f;
+	private static float independence = .15f;
+	private static float turbulence = 1.3f;
+	public static boolean pausedPS = false;
+	private static PVector globalOffset = new PVector(0f, 1/3f, 2/3f);
+	//----------- end PS ----------//
 	
 	public App() {
 		// TODO Auto-generated constructor stub
@@ -142,12 +150,13 @@ public class App {
 				break;
 		}	
 	}
+	//------------- ps functions ------------------//
 	public static void recreatePS(){
 		createPS();
 	}
 	public static void createPS(){
 		
-		positions = new PVector[npartTotal];
+		//positions = new PVector[npartTotal];
 
 		int xSpace = getActualScene().params.get("xSpace");
 		int ySpace = getActualScene().params.get("ySpace");
@@ -159,7 +168,11 @@ public class App {
 		outerloop:
 		for (int y=0; y<height-ySpace; y+=ySpace) {
 		    for (int x=0; x<width-xSpace; x+=xSpace) {
+		    	
 		    	positions[n] = new PVector(x, y);
+		    	velocities[n] = new PVector();
+		    	localOffsets[n] = PVector.random3D();
+		    	
 		    	n++;
 		    	
 		    	if(n>=npartTotal){
@@ -169,10 +182,37 @@ public class App {
 		    }
 		}
 	}
+	public static PVector applyFlockingForce(PVector pos, PVector lOffset){
+		
+		PVector p = PVector.div(pos, neighborhood);
+		
+		PVector f = new PVector();
+		f.add(objv.noise(p.x + globalOffset.x + lOffset.x, p.y, p.z)-.5f,
+				objv.noise(p.x, p.y + globalOffset.y + lOffset.y, p.z)-.5f,
+				objv.noise(p.x, p.y, p.z + globalOffset.z + lOffset.z)-.5f);
+		
+		return f;
+		
+	}
 	public static void updatePS(){
 		
+		for (int i=0; i<n; i++) {
+			
+			PVector pos = positions[i];
+			PVector velocity = velocities[i];
+			PVector localOffset = PVector.mult(localOffsets[i], independence); 
+					
+			PVector force = applyFlockingForce(pos, localOffset);
+			
+			velocity.add(force);
+			pos.add(velocity);
+			
+			
+		}
 		
-		
+		float value = turbulence/neighborhood;
+		globalOffset.add(value, value, value);
+
 	}
 	public static void displayPS(){
 		
@@ -205,6 +245,7 @@ public class App {
 		}
 		
 	}
+	//------------- end ps functions ------------------//
 	private static PShape createQuadGroupShapeGrid(PImage image){ //show DynamicParticlesRetained
 		
 		int kwidth = App.KWIDTH;
@@ -610,7 +651,9 @@ public class App {
 	//-------- key strokes --------//
 	public static void keyPressed(char key) {
 		
-		if (key=='l') {
+		if(key=='a'){
+			pausedPS = !pausedPS;
+		} else if (key=='l') {
 			toggleValue();
 		} else if(key=='m'){ //TODO update it
 			
