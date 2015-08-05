@@ -1,5 +1,6 @@
 package webodrome;
 
+import peasy.PeasyCam;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -25,7 +26,13 @@ public class App {
 	public static int width = 1024;
 	public static int height = 768;
 	
+	//--------- cam ----------------//
+	public static PeasyCam cam;
 	public static boolean usePeasyCam = true;
+	
+	private static float cameraRate = .1f;
+	public static PVector cameraCenter = new PVector();
+	
 	
 	public static PApplet objv;
 	public static SecondApplet secondApplet;
@@ -69,7 +76,7 @@ public class App {
 	//TODO UPDATE/ERASE IT
 	public static PVector[] pvectors;
 	public static PShape mainGrid;
-	public static PShape partSysGrid;
+	public static PShape partSysGrid; //not used
 	
 	public static boolean useColors;
 	
@@ -95,9 +102,14 @@ public class App {
 	private static int sceneId = 0;
 	public static int oldSceneId = 999;
 	
-	//----------- PS ----------//
-	public static boolean psRunning = false;
+	public static int sl_frameRate;
 	
+	//----------- PS ----------//
+	public static boolean psRunning = false; //true auto when nokinect mode is activated
+	public static boolean pausedPS = true;
+	
+	private static PVector globalOffset = new PVector(0f, 1/3f, 2/3f);
+	private static PVector avgPos = new PVector();
 	private static int npartTotal = 10000;
 	private static PVector positions[] = new PVector[npartTotal];
 	private static PVector velocities[] = new PVector[npartTotal];
@@ -106,8 +118,9 @@ public class App {
 	private static float neighborhood = 700f;
 	private static float independence = .15f;
 	private static float turbulence = 1.3f;
-	public static boolean pausedPS = false;
-	private static PVector globalOffset = new PVector(0f, 1/3f, 2/3f);
+	private static float viscosity = .1f;
+	private static float spread = 100f;
+	private static float speed = 24f;
 	//----------- end PS ----------//
 	
 	public App() {
@@ -182,30 +195,62 @@ public class App {
 		    }
 		}
 	}
-	public static PVector applyFlockingForce(PVector pos, PVector lOffset){
-		
+	public static void resetPS(){
+		cam.setDistance(1600);
+		cameraCenter = new PVector();
+		//globalOffset = new PVector(0f, 1/3f, 2/3f);
+	}
+	private static PVector applyFlockingForce(PVector pos, PVector lOffset){
 		PVector p = PVector.div(pos, neighborhood);
-		
 		PVector f = new PVector();
 		f.add(objv.noise(p.x + globalOffset.x + lOffset.x, p.y, p.z)-.5f,
 				objv.noise(p.x, p.y + globalOffset.y + lOffset.y, p.z)-.5f,
 				objv.noise(p.x, p.y, p.z + globalOffset.z + lOffset.z)-.5f);
-		
 		return f;
+	}
+	private static PVector applyCenteringForce(PVector pos, PVector avg){
 		
+		PVector cForce = PVector.sub(pos, avg);
+		//cForce.set(pos);
+		//cForce.sub(avg);
+		//PVector cForce = PVector.sub(avg, pos);
+		
+		float distToCenter = cForce.mag(); 
+		
+		cForce.normalize();
+		
+		cForce.mult(-distToCenter/(spread*spread));
+		//cForce.mult(distToCenter/(spread*spread));
+		
+		return cForce;
 	}
 	public static void updatePS(){
+		
+		avgPos.mult(0);
+		for (int i=0; i<n; i++) avgPos.add(positions[i]);
+		avgPos.div(n);
+		
+		cameraCenter.mult(1f-cameraRate);
+		cameraCenter.add(PVector.mult(avgPos, cameraRate));
+		
+		
 		
 		for (int i=0; i<n; i++) {
 			
 			PVector pos = positions[i];
-			PVector velocity = velocities[i];
 			PVector localOffset = PVector.mult(localOffsets[i], independence); 
 					
 			PVector force = applyFlockingForce(pos, localOffset);
 			
-			velocity.add(force);
-			pos.add(velocity);
+			//apply viscosity force
+			PVector vel = velocities[i];
+			force.add(PVector.mult(vel, -viscosity));
+			
+			//TODO NEXT
+			force.add(applyCenteringForce(pos, avgPos));
+			
+			vel.add(force);
+			pos.add(PVector.mult(vel, speed));
 			
 			
 		}
@@ -221,6 +266,8 @@ public class App {
 		
 		float xRatio = (float) width/kwidth;
 		float yRatio = (float) height/kheight;*/
+		
+		objv.translate(-cameraCenter.x, -cameraCenter.y, -cameraCenter.z);
 		
 		for (int i=0; i<n; i++) {
 			
@@ -243,6 +290,8 @@ public class App {
 			objv.endShape(); 
 			
 		}
+		
+		if(objv.frameCount%sl_frameRate==0)System.out.println(objv.frameRate);
 		
 	}
 	//------------- end ps functions ------------------//

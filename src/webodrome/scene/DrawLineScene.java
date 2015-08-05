@@ -817,7 +817,16 @@ public class DrawLineScene extends Scene {
 			linesVisibility = !linesVisibility;
 		} else if (key == 'x') {
 			App.recreateShapeGrid = true;
-			App.psRunning = !App.psRunning;
+			
+			
+			
+			if(!App.useKinect)App.psRunning = true;
+			else App.psRunning = !App.psRunning;
+
+			
+			if(App.psRunning)App.resetPS();
+			else App.cam.setDistance(500);
+			
 		} else if (key == '0'){
 			
 			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",

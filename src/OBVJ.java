@@ -28,12 +28,9 @@ public class OBVJ extends PApplet {
 	
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
-	private PeasyCam cam;
 
 	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
-	
-	private int sl_frameRate = 24;
 		
 	//-------- scenes -----------//
 	
@@ -79,7 +76,6 @@ public class OBVJ extends PApplet {
 		
 		size(App.width, App.height, OPENGL);
 		smooth(8);
-		frameRate(24); //TODO PARAM
 		
 		//noCursor();
 		
@@ -87,13 +83,15 @@ public class OBVJ extends PApplet {
 		pFrame.setTitle("ctrl board");
 		
 		if(App.usePeasyCam){
-			cam = new PeasyCam(this, 500);
-			cam.setMinimumDistance(50);
-			cam.setMaximumDistance(1500);
+			//App.cam = new PeasyCam(this, 1600);
+			App.cam = new PeasyCam(this, 500);
+			//App.cam.setMinimumDistance(50);
+			//App.cam.setMaximumDistance(1500);
 		}
 				
 		if (App.useKinect) {
 			
+			App.sl_frameRate=24;
 			context = new SimpleOpenNI(this);
 			System.out.println("kinect mode");
 			
@@ -110,7 +108,8 @@ public class OBVJ extends PApplet {
 			}
 			
 		} else {
-
+			
+			App.sl_frameRate=60; //TODO fps should be changed with psRunning
 			System.out.println("no kinect mode");
 			App.psRunning = true;
 			
@@ -240,7 +239,7 @@ public class OBVJ extends PApplet {
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			
-			frameRate(sl_frameRate);
+			frameRate(App.sl_frameRate);
 			App.oldSceneId = sceneId;
 					
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
@@ -300,7 +299,7 @@ public class OBVJ extends PApplet {
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			
-			frameRate(sl_frameRate);
+			frameRate(App.sl_frameRate);
 			App.oldSceneId = sceneId;
 			
 			shader(App.defaultShader);
@@ -353,7 +352,7 @@ public class OBVJ extends PApplet {
 		int sceneId = App.getSceneId();
 		if (sceneId != App.oldSceneId) {
 			
-			frameRate(sl_frameRate);
+			frameRate(App.sl_frameRate);
 			App.oldSceneId = sceneId;
 			
 			shader(App.defaultShader);
@@ -408,7 +407,7 @@ public class OBVJ extends PApplet {
 	                {"rotateX", -360, 360, 0, App.colors[0]},
 	                {"rotateY", -360, 360, 0, App.colors[1]},
 	                {"rotateZ", -360, 360, 0, App.colors[2]},
-	                {"frameRate", 1, 30, sl_frameRate, App.colors[6]},
+	                {"frameRate", 1, 30, App.sl_frameRate, App.colors[6]},
 	                
 	                {"iterations", 1, 20, 10, App.colors[4]},
 	                {"blurRadius", 1, 30, 2, App.colors[5]},
