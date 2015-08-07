@@ -29,7 +29,6 @@ public class OBVJ extends PApplet {
 	private static Rectangle monitor;
 	private SimpleOpenNI context;
 
-	@SuppressWarnings("unused")
 	private int timeToTakeASnapShot;
 		
 	//-------- scenes -----------//
@@ -668,21 +667,18 @@ public class OBVJ extends PApplet {
 	// -----------------------------------------------------------------
 	// SimpleOpenNI events
 
-	public void onNewUser(SimpleOpenNI curContext, int userId)
-	{
+	public void onNewUser(SimpleOpenNI curContext, int userId) {
 	  println("onNewUser - userId: " + userId);
 	  println("\tstart tracking skeleton");
 	  
 	  curContext.startTrackingSkeleton(userId);
 	}
 
-	public void onLostUser(SimpleOpenNI curContext, int userId)
-	{
+	public void onLostUser(SimpleOpenNI curContext, int userId) {
 	  println("onLostUser - userId: " + userId);
 	}
 
-	public void onVisibleUser(SimpleOpenNI curContext, int userId)
-	{
+	public void onVisibleUser(SimpleOpenNI curContext, int userId) {
 	  //println("onVisibleUser - userId: " + userId);
 	}
 }

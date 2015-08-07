@@ -110,7 +110,9 @@ public class DrawLineScene extends Scene {
 		
 		buffers = new ArrayList<FloatList>();
 		
-		setBuffers(params.get("ySpace"));		
+		setBuffers(params.get("ySpace"));
+		
+		updateVarInfos();
 						
 	}
 	private void setUniformConstants(PShader shader){
@@ -743,22 +745,19 @@ public class DrawLineScene extends Scene {
 		}
 		
 	}
-	public static StringBuilder getVarStatus(){
+	public static void updateVarInfos(){
 		
-		varStatus.delete(0, varStatus.length());
-		varStatus.append("toggle and edit depth limits: press l AND UP OR DOWN\n");
+		varStatus.replace(0, varStatus.length(), "toggle and edit depth limits: press l AND UP OR DOWN\n");
 		
 		if(App.switchValue){
-			varStatus.append("App.lowestValue | " + App.lowestValue + "SL\n"
+			varStatus.append("App.lowestValue | " + App.lowestValue + " SL\n"
 							+ "App.highestValue | " + App.highestValue + "\n");
 		} else {
 			varStatus.append("App.lowestValue | " + App.lowestValue + "\n"
-							+ "App.highestValue | " + App.highestValue + "SL\n");
+							+ "App.highestValue | " + App.highestValue + " SL\n");
 		}
 		
-		varStatus.append("App.lowestValue | " + App.lowestValue + "\n"
-				   + "App.highestValue | " + App.highestValue + "\n"
-				   + "\n"
+		varStatus.append("\n"
 				   + "change scene | n & p | " + App.getSceneId() + "\n"
 				   + "\n"
 				   + "change mode | g & h | " + mode + "\n"
@@ -782,8 +781,9 @@ public class DrawLineScene extends Scene {
 				   + "duplicate fourier values | d | mode 0 | " + App.duplicateFFT + "\n"
 				   + "linesVisibility | v | mode 0 | " + linesVisibility + "\n");
 		
+	}
+	public static StringBuilder getVarStatus(){
 		return varStatus;
-		
 	}
 	public static void keyPressed(char key){
 		

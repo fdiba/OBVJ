@@ -22,9 +22,12 @@ public class Slider {
     private boolean dragging;
     private Scene scene;
     private float value;
+    private StringBuilder info;
 
 	public Slider(Scene _scene, PVector _loc, String _param, float _lowValue, float _maxValue, int _color) {
-
+		
+		info = new StringBuilder();
+		
 		scene = _scene;
 		
 		location = _loc;
@@ -44,6 +47,7 @@ public class Slider {
 	public void initValueAndPos(float _value){
 		value = _value;
 		initPos();
+		editInfo();
 	}
 	public void reinitValueAndPos(){
 		value = App.getActualScene().params.get(param);
@@ -85,24 +89,26 @@ public class Slider {
 			dragging = true;
 	  
 	    } 
+
+	}
+	private void editInfo(){
+		info.replace(0, info.length(), param+" | "+(int)lowValue+ " | "+(int)maxValue+ " | "+(int)value);
 	}
 	protected void reset(){
 		dragging = false;
 	}
 	protected void followMouse(PApplet p){
 		
-	    if(dragging) {	//add mouse Y      
+	    if(dragging) {	//TODO add mouse Y      
 	    	
 	    	sliderCtrl.location.x = p.mouseX;
 	    	
-	    	if(sliderCtrl.location.x <= lowXPos) {
-	    		sliderCtrl.location.x = lowXPos;
-	    	} else if (sliderCtrl.location.x >= maxYPos) {	        
-	    		sliderCtrl.location.x = maxYPos;
-	    	}
+	    	if(sliderCtrl.location.x <= lowXPos) sliderCtrl.location.x = lowXPos;
+	    	else if (sliderCtrl.location.x >= maxYPos) sliderCtrl.location.x = maxYPos;
 	      
 	    	editValue();
-
+	    	editInfo();
+	    	
 	    }
 	  
 	}
@@ -112,11 +118,15 @@ public class Slider {
 	    
 	    if(App.getActualScene().params.get(param) != (int) value){
 	    	
-	    	if(param.equals("xSpace") || param.equals("ySpace") ||
-	    	   param.equals("borderYSize") || param.equals("borderXSize")
-	    	   || param.equals("strokeWeight")
-	    	   ){
-	    		App.recreateShapeGrid = true;
+	    	if(!App.psRunning){
+	    		
+	    		if(param.equals("xSpace") || param.equals("ySpace") ||
+	    		   param.equals("borderYSize") || param.equals("borderXSize")
+	    		   || param.equals("strokeWeight")){
+	    		
+	    			App.recreateShapeGrid = true;
+	    		}
+	    		
 	    	}
 	    	
 	    	scene.params.put(param, (int) value);
@@ -159,8 +169,7 @@ public class Slider {
 		p.fill(color);
 		p.rect(location.x, location.y, WIDTH, 10);
 	    sliderCtrl.display(p);
-	    String str = param+" | "+(int)lowValue+ " | "+(int)maxValue+ " | "+(int)value;
-	    p.text(str, location.x + WIDTH + 15, location.y + 10);
+	    p.text(info.toString(), location.x + WIDTH + 15, location.y + 10);
 		
 	}
 }

@@ -46,7 +46,7 @@ public class App {
 	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
-	public static boolean useKinect = true; //-------------------------- WARNING -----------------------------//
+	public static boolean useKinect = false; //-------------------------- WARNING -----------------------------//
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
@@ -703,6 +703,9 @@ public class App {
 		
 	}
 	//-------- key strokes --------//
+	private static void updateVarInfos(){
+		if(App.getSceneId() == 0) DrawLineScene.updateVarInfos();
+	}
 	public static void keyPressed(char key) {
 		
 		switch (key) {
@@ -731,17 +734,14 @@ public class App {
 			editUVPos();
 			break;
 		default: //------- scenes -------// 
-			if(App.getSceneId() == 0){	
-				 DrawLineScene.keyPressed(key);
-			} else if(App.getSceneId() == 1){
-				DrawPointScene.keyPressed(key);
-			} else if(App.getSceneId() == 3){
-				ShapeScene.keyPressed(key);
-			} else if(App.getSceneId() == 4){
-				ChunkyScene.keyPressed(key);
-			}
-			return;
+			if(App.getSceneId() == 0) DrawLineScene.keyPressed(key);
+			else if(App.getSceneId() == 1) DrawPointScene.keyPressed(key);
+			else if(App.getSceneId() == 3) ShapeScene.keyPressed(key);
+			else if(App.getSceneId() == 4) ChunkyScene.keyPressed(key);
+			break;
 		}
+		
+		updateVarInfos();
 		
 	}
 	private static void toggleValue() {
