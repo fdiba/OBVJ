@@ -7,7 +7,6 @@ import processing.core.PVector;
 import webodrome.App;
 import webodrome.scene.ChunkyScene;
 import webodrome.scene.DrawLineScene;
-import webodrome.scene.DrawPointScene;
 import webodrome.scene.ShapeScene;
 
 @SuppressWarnings("serial")
@@ -31,8 +30,7 @@ public class SecondApplet extends PApplet {
 		noLoop();
 	}
 	private void drawVariablesStatus(){
-		String str = DrawLineScene.variablesStatus();		
-		text(str, 360, 100);
+		text(DrawLineScene.getVarStatus().toString(), 360, 100);
 	}
 	public void draw(){
 		

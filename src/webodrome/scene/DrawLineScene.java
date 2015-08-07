@@ -2,7 +2,6 @@ package webodrome.scene;
 
 import java.util.ArrayList;
 
-import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -12,6 +11,7 @@ import processing.data.FloatList;
 import processing.opengl.PShader;
 import webodrome.App;
 import webodrome.Ramp;
+import SimpleOpenNI.SimpleOpenNI;
 
 public class DrawLineScene extends Scene {
 		
@@ -47,7 +47,9 @@ public class DrawLineScene extends Scene {
 	private int xSpace;
 	private int ySpace;
 	
-	private float zMin, zMax;	
+	private float zMin, zMax;
+	
+	private static StringBuilder varStatus = new StringBuilder();
 	
 	public DrawLineScene(PApplet _pApplet, Object[][] objects, int _width, int _height) {
 		
@@ -225,7 +227,7 @@ public class DrawLineScene extends Scene {
 	}
 	public void update(SimpleOpenNI context){
 		
-		if(App.useKinect)super.update(context);
+		if(!App.psRunning)super.update(context);
 		else super.update();
 		
 		if(App.psRunning){
@@ -717,14 +719,7 @@ public class DrawLineScene extends Scene {
 		
 		if(App.usePeasyCam){
 		
-			if(App.psRunning){
-				pApplet.pushMatrix();
-				pApplet.translate(-w/2, -h/2, 0);
-				displayShape();
-				pApplet.popMatrix();
-			} else {
-				displayShape();
-			}
+			displayShape();
 			
 		} else {
 			pApplet.pushMatrix();
@@ -735,7 +730,9 @@ public class DrawLineScene extends Scene {
 	}
 	public void display(){
 		
-		if(mode==0){
+		if(App.psRunning){ //use always pcam
+			displayShape();
+		} else if(mode==0){
 			pApplet.shader(App.defaultShader);
 			displayLines(App.pvectors);
 		} else if (mode==1){
@@ -746,45 +743,46 @@ public class DrawLineScene extends Scene {
 		}
 		
 	}
-	public static String variablesStatus(){
+	public static StringBuilder getVarStatus(){
 		
-		String str = "toggle and edit depth limits: press l AND UP OR DOWN\n";
-		str += "App.lowestValue | " + App.lowestValue + "\n";
-		str += "App.highestValue | " + App.highestValue + "\n";
-		str += "\n";
+		varStatus.delete(0, varStatus.length());
+		varStatus.append("toggle and edit depth limits: press l AND UP OR DOWN\n");
 		
-		str += "change scene | n & p | " + App.getSceneId() + "\n";
-		str += "\n";
+		if(App.switchValue){
+			varStatus.append("App.lowestValue | " + App.lowestValue + "SL\n"
+							+ "App.highestValue | " + App.highestValue + "\n");
+		} else {
+			varStatus.append("App.lowestValue | " + App.lowestValue + "\n"
+							+ "App.highestValue | " + App.highestValue + "SL\n");
+		}
 		
-		str += "change mode | g & h | " + mode + "\n";
-		str += "\n";
+		varStatus.append("App.lowestValue | " + App.lowestValue + "\n"
+				   + "App.highestValue | " + App.highestValue + "\n"
+				   + "\n"
+				   + "change scene | n & p | " + App.getSceneId() + "\n"
+				   + "\n"
+				   + "change mode | g & h | " + mode + "\n"
+				   + "\n"
+				   + "App.useColors | c | " + App.useColors + "\n"
+				   + "\n"
+				   + "App.lowResGrid  | r | " + App.lowResGrid + "\n"
+				   + "\n"
+				   + "multipleBuffers | b | " + multipleBuffers + "\n"
+				   + "\n"
+				   + "useFFT | f | " + useFFT + "\n"
+				   + "\n"
+				   + "texCutStraight | o | " + texCutStraight + "\n"
+				   + "\n"
+				   + "sameSize | o | mode 5 | not used | " + sameSize + "\n"
+				   + "\n"
+				   + "drawRoundRect | k | mode 5 | " + drawRoundRect + "\n"
+				   + "\n"
+				   
+				   + "OLD ONES\n\n"
+				   + "duplicate fourier values | d | mode 0 | " + App.duplicateFFT + "\n"
+				   + "linesVisibility | v | mode 0 | " + linesVisibility + "\n");
 		
-		str += "App.useColors | c | " + App.useColors + "\n";
-		str += "\n";
-		
-		str += "App.lowResGrid  | r | " + App.lowResGrid + "\n";
-		str += "\n";
-		
-		str += "multipleBuffers | b | " + multipleBuffers + "\n";
-		str += "\n";
-		
-		str += "useFFT | f | " + useFFT + "\n";
-        str += "\n";
-        
-        str += "texCutStraight | o | " + texCutStraight + "\n";
-        str += "\n";
-        
-        str += "sameSize | o | mode 5 | not used | " + sameSize + "\n";
-        str += "\n";
-                
-        str += "drawRoundRect | k | mode 5 | " + drawRoundRect + "\n";
-        str += "\n";
-        
-		str += "OLD ONES\n\n";
-		str += "duplicate fourier values | d | mode 0 | " + App.duplicateFFT + "\n";
-		str += "linesVisibility | v | mode 0 | " + linesVisibility + "\n";
-		
-		return str;
+		return varStatus;
 		
 	}
 	public static void keyPressed(char key){
@@ -824,8 +822,11 @@ public class DrawLineScene extends Scene {
 			else App.psRunning = !App.psRunning;
 
 			
-			if(App.psRunning)App.resetPS();
-			else App.cam.setDistance(500);
+			if(App.psRunning){
+				App.resetPS();
+			} else {
+				App.cam.setDistance(App.camDist1);
+			}
 			
 		} else if (key == '0'){
 			

@@ -29,9 +29,11 @@ public class App {
 	//--------- cam ----------------//
 	public static PeasyCam cam;
 	public static boolean usePeasyCam = true;
+	public static float camDist1 = 500;
+	public static float camDist2 = 1600; //use with ps
 	
 	private static float cameraRate = .1f;
-	public static PVector cameraCenter = new PVector();
+	public static PVector cameraCenter = new PVector(width/2, height/2);
 	
 	
 	public static PApplet objv;
@@ -44,7 +46,7 @@ public class App {
 	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
-	public static boolean useKinect = false;
+	public static boolean useKinect = true; //-------------------------- WARNING -----------------------------//
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
@@ -194,10 +196,12 @@ public class App {
 		    	}
 		    }
 		}
+		
 	}
 	public static void resetPS(){
-		cam.setDistance(1600);
-		cameraCenter = new PVector();
+		cam.setDistance(App.camDist2);
+		//cameraCenter = new PVector();
+		//getAVGposAndCamCenter();
 		//globalOffset = new PVector(0f, 1/3f, 2/3f);
 	}
 	private static PVector applyFlockingForce(PVector pos, PVector lOffset){
@@ -224,16 +228,17 @@ public class App {
 		
 		return cForce;
 	}
-	public static void updatePS(){
-		
+	private static void getAVGposAndCamCenter(){
 		avgPos.mult(0);
 		for (int i=0; i<n; i++) avgPos.add(positions[i]);
 		avgPos.div(n);
 		
 		cameraCenter.mult(1f-cameraRate);
 		cameraCenter.add(PVector.mult(avgPos, cameraRate));
+	}
+	public static void updatePS(){
 		
-		
+		getAVGposAndCamCenter();
 		
 		for (int i=0; i<n; i++) {
 			
@@ -700,33 +705,42 @@ public class App {
 	//-------- key strokes --------//
 	public static void keyPressed(char key) {
 		
-		if(key=='a'){
+		switch (key) {
+		case 'a':
 			pausedPS = !pausedPS;
-		} else if (key=='l') {
+			break;
+		case 'l':
 			toggleValue();
-		} else if(key=='m'){ //TODO update it
-			
+			break;
+		case 'm'://TODO update it
 			if(useLiveMusic){
 				if(in.isMonitoring())in.disableMonitoring();
 			    else in.enableMonitoring();
 			}
-			
-		} else if(key=='n'){
+			break;
+		case 'n':
 			nextScene();
-		} else if(key =='p'){
+			break;
+		case 'p':
 			prevScene();
-		} else if (key=='c') {
+			break;
+		case 'c':
 			toogleColors();
-		} else if (key=='r') {
+			break;
+		case 'r':
 			editUVPos();
-		} else if(App.getSceneId() == 0){ //------- scenes -------//
-			DrawLineScene.keyPressed(key);
-		} else if(App.getSceneId() == 1){
-			DrawPointScene.keyPressed(key);
-		} else if(App.getSceneId() == 3){
-			ShapeScene.keyPressed(key);
-		} else if(App.getSceneId() == 4){
-			ChunkyScene.keyPressed(key);
+			break;
+		default: //------- scenes -------// 
+			if(App.getSceneId() == 0){	
+				 DrawLineScene.keyPressed(key);
+			} else if(App.getSceneId() == 1){
+				DrawPointScene.keyPressed(key);
+			} else if(App.getSceneId() == 3){
+				ShapeScene.keyPressed(key);
+			} else if(App.getSceneId() == 4){
+				ChunkyScene.keyPressed(key);
+			}
+			return;
 		}
 		
 	}
@@ -734,7 +748,6 @@ public class App {
 		  switchValue = !switchValue;
 	}
 	public static void setSelectedValue(int value) {    
-
 		if (switchValue) {
 			lowestValue += value;
 			lowestValue = Math.max(50, Math.min(highestValue-10, lowestValue));

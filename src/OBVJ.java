@@ -84,7 +84,7 @@ public class OBVJ extends PApplet {
 		
 		if(App.usePeasyCam){
 			//App.cam = new PeasyCam(this, 1600);
-			App.cam = new PeasyCam(this, 500);
+			App.cam = new PeasyCam(this, App.camDist1);
 			//App.cam.setMinimumDistance(50);
 			//App.cam.setMaximumDistance(1500);
 		}
@@ -112,7 +112,7 @@ public class OBVJ extends PApplet {
 			App.sl_frameRate=60; //TODO fps should be changed with psRunning
 			System.out.println("no kinect mode");
 			App.psRunning = true;
-			
+			App.cam.setDistance(App.camDist2);
 			
 		}
 		
@@ -276,6 +276,14 @@ public class OBVJ extends PApplet {
 					
 		}
 		
+		if(App.psRunning && App.sl_frameRate < 60) {
+			App.sl_frameRate = 60;
+			frameRate(App.sl_frameRate);
+		} else if(!App.psRunning && App.sl_frameRate > 24){
+			App.sl_frameRate = 24;
+			frameRate(App.sl_frameRate);
+		}
+		
 		//-------------- draw ------------------//
 		
 		drawLineScene.update(context);
@@ -283,7 +291,8 @@ public class OBVJ extends PApplet {
 			
 		pushMatrix();
 		  
-		translateAndRotateV2();
+		
+		if(!App.psRunning)translateAndRotateV2();
 		  
 		drawLineScene.display();
 		  
