@@ -240,6 +240,16 @@ public class DrawLineScene extends Scene {
 			}
 			
 			testFillShader.set("useColors", App.useColors);
+			float[] focalPlane = {App.focalPlane.x, App.focalPlane.y, App.focalPlane.z};
+			testFillShader.set("focalPlane", focalPlane);
+			testFillShader.set("normal", App.normal);
+			
+			testFillShader.set("drawRoundRect", drawRoundRect);
+			testFillShader.set("weight", (float) params.get("strokeWeight"));
+			
+			float strokeAlpha = params.get("strokeAlpha");
+			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
+			testFillShader.set("strokeAlpha", strokeAlpha);
 			
 			//updateShape(App.partSysGrid);
 			if(!App.pausedPS)App.updatePS();
@@ -613,8 +623,14 @@ public class DrawLineScene extends Scene {
 			pApplet.shape(App.mainGrid);
 		
 		} else {
+			
+			//TODO SHADER DO NOT WORK PROPERLY
 			pApplet.shader(testFillShader);
+			//pApplet.resetShader(PConstants.POINT);
+			
 			//pApplet.shape(App.partSysGrid);
+			
+			
 			App.displayPS();
 		}
 		

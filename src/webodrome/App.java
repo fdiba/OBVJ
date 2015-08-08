@@ -30,7 +30,7 @@ public class App {
 	public static PeasyCam cam;
 	public static boolean usePeasyCam = true;
 	public static float camDist1 = 500;
-	public static float camDist2 = 1600; //use with ps
+	public static float camDist2 = 1600; //used with ps
 	
 	private static float cameraRate = .1f;
 	public static PVector cameraCenter = new PVector(width/2, height/2);
@@ -46,7 +46,7 @@ public class App {
 	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
-	public static boolean useKinect = false; //-------------------------- WARNING -----------------------------//
+	public static boolean useKinect = true; //-------------------------- WARNING -----------------------------//
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
@@ -123,6 +123,10 @@ public class App {
 	private static float viscosity = .1f;
 	private static float spread = 100f;
 	private static float speed = 24f;
+	
+	public static PVector focalPlane = new PVector();
+	public static float[] normal = new float[3];
+	//private static float dofRatio = 50f;
 	//----------- end PS ----------//
 	
 	public App() {
@@ -196,13 +200,10 @@ public class App {
 		    	}
 		    }
 		}
-		
 	}
 	public static void resetPS(){
 		cam.setDistance(App.camDist2);
-		//cameraCenter = new PVector();
-		//getAVGposAndCamCenter();
-		//globalOffset = new PVector(0f, 1/3f, 2/3f);
+		cameraCenter.set(width/2, height/2);
 	}
 	private static PVector applyFlockingForce(PVector pos, PVector lOffset){
 		PVector p = PVector.div(pos, neighborhood);
@@ -228,17 +229,25 @@ public class App {
 		
 		return cForce;
 	}
-	private static void getAVGposAndCamCenter(){
+	private static void updateAVGposAndCamera(){
+		
 		avgPos.mult(0);
 		for (int i=0; i<n; i++) avgPos.add(positions[i]);
 		avgPos.div(n);
 		
 		cameraCenter.mult(1f-cameraRate);
 		cameraCenter.add(PVector.mult(avgPos, cameraRate));
+		
+		focalPlane = avgPos.get();
+		normal = cam.getPosition();
+		//normal[0] = width/2;
+		//normal[1] = height/2;
+		
+		
 	}
 	public static void updatePS(){
 		
-		getAVGposAndCamCenter();
+		updateAVGposAndCamera();
 		
 		for (int i=0; i<n; i++) {
 			
@@ -264,6 +273,19 @@ public class App {
 		globalOffset.add(value, value, value);
 
 	}
+	private static float getDistToPoint(PVector origin, PVector normal, PVector pos){
+		
+		PVector hypotenuse = PVector.sub(pos, origin);
+		float c = hypotenuse.mag();
+		hypotenuse.normalize();
+		
+		//float alpha = PVector.angleBetween(normal, hypotenuse);
+		normal.normalize();
+		float cos = PVector.dot(normal, hypotenuse);
+		
+		//return PApplet.cos(alpha)*c;
+		return cos*c;
+	}
 	public static void displayPS(){
 		
 		/*int kwidth = App.KWIDTH;
@@ -272,22 +294,34 @@ public class App {
 		float xRatio = (float) width/kwidth;
 		float yRatio = (float) height/kheight;*/
 		
+		objv.stroke(255, 0, 255);
+		objv.strokeWeight(getActualScene().params.get("strokeWeight"));
+		objv.strokeCap(PConstants.SQUARE);
+		//objv.strokeCap(PConstants.ROUND);
+		
 		objv.translate(-cameraCenter.x, -cameraCenter.y, -cameraCenter.z);
 		
 		for (int i=0; i<n; i++) {
 			
-			PVector p = positions[i];
+			PVector pos = positions[i];
+			
+			/*float distanceToFocalPlane = getDistToPoint(focalPlane, new PVector(normal[0], normal[1], normal[2]), pos);
+			float dofRatio = getActualScene().params.get("dofRatio");
+			distanceToFocalPlane *= 1/dofRatio;
+			
+			float alpha = PApplet.constrain(255/(distanceToFocalPlane*distanceToFocalPlane), 1, 255);
+			objv.stroke(255, alpha);
+			//objv.strokeWeight(distanceToFocalPlane+getActualScene().params.get("strokeWeight"));
+			objv.strokeWeight(distanceToFocalPlane);*/
+			
 			
 			objv.beginShape(PConstants.POINTS);
 			objv.textureMode(PConstants.NORMAL);
-			objv.stroke(255);
-			objv.strokeWeight(getActualScene().params.get("strokeWeight"));
-			objv.strokeCap(PConstants.SQUARE);
-			//noStroke();
+						
 			//tint(255, opacity * 255);
 			//texture(sprite);
 			//objv.normal(0, 0, 1);
-			objv.vertex(p.x, p.y, p.z); //UV set in shader
+			objv.vertex(pos.x, pos.y, pos.z); //UV set in shader
 			/*vertex(center.x - partSize/2, center.y - partSize/2, 0, 0);
 			vertex(center.x + partSize/2, center.y - partSize/2, sprite.width, 0);
 			vertex(center.x + partSize/2, center.y + partSize/2, sprite.width, sprite.height);

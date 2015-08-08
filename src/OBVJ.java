@@ -159,7 +159,7 @@ public class OBVJ extends PApplet {
 		
 		App.secondApplet.redraw();
 				
-		if(App.useKinect)context.update();
+		if(!App.psRunning)context.update();
 		
 		int sceneId = App.getSceneId();
 		
@@ -268,7 +268,8 @@ public class OBVJ extends PApplet {
 	                {"colorTS", 0, 254, 0, App.colors[3]}, //offset colors of tex1
 	                //TODO make it FLOAT beetween 0 and 1 
 	                {"fillAlpha", 0, 255, 25, App.colors[6]}, //only used with textures
-					{"strokeAlpha", 0, 255, 45, App.colors[7]}}; //only used with textures
+					{"strokeAlpha", 0, 255, 45, App.colors[7]},
+					{"dofRatio", 10, 200, 90, App.colors[4]}};
 			
 			drawLineScene = new DrawLineScene(this, objects, App.width, App.height);
 			App.setActualScene(drawLineScene);
