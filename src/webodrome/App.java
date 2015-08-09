@@ -1,5 +1,7 @@
 package webodrome;
 
+import java.awt.event.KeyEvent;
+
 import peasy.PeasyCam;
 import processing.core.PApplet;
 import processing.core.PConstants;

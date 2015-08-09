@@ -1,3 +1,6 @@
+
+
+
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -242,7 +245,7 @@ public class OBVJ extends PApplet {
 			App.oldSceneId = sceneId;
 					
 			Object[][] objects = { {"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -100},
+	                {"yTrans", -2500, 2500, -50},
 	                {"zTrans", -2500, 2500, -200},                
 	                {"strokeWeight", 1, 100, 3, App.colors[6]}, //4 before
 	                {"rotateX", -360, 360, 45, App.colors[0]},
@@ -253,7 +256,7 @@ public class OBVJ extends PApplet {
 	                {"fttAmpli", 1, 150, 100, App.colors[4]},
 	                {"texFftStart", 0, 10, 0, App.colors[6]}, // 0 100 8
 	                {"texFftEnd", 0, 10, 0, App.colors[0]}, // 1 5 3
-	                {"depthTS", -200, 200, -74, App.colors[6]},
+	                {"depthTS", 0, 255, 0, App.colors[6]},
 	                {"xSpace", 4, 100, 10, App.colors[4]}, //4 --> 150
 	                {"ySpace", 4, 100, 10, App.colors[5]}, //4 --> 150
 	                {"depth", -1000, 1000, 100, App.colors[6]}, //create space between points z axis 100=10

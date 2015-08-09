@@ -28,6 +28,8 @@ public class DrawLineScene extends Scene {
 	private static int bufferJump = 2;
 	private static int lineBufferJump = 2;
 	
+	private static final int MAXMODE = 7;
+	
 	//-------- shaders ----------//
 	private static PShader fshader;
 	private static PShader basicShader;
@@ -57,7 +59,7 @@ public class DrawLineScene extends Scene {
 		
 		depthImage = pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.RGB);
 		
-		//----------- shaders -----------//
+		//---------------------- shaders ----------------------//
 		
 		//create lineSoundImage
 		App.lineSoundImage = pApplet.createImage(App.imgSoundWidth/lineBufferJump, 1, PConstants.ARGB);
@@ -75,36 +77,37 @@ public class DrawLineScene extends Scene {
 		images[0] = pApplet.createImage(App.KWIDTH, App.KHEIGHT, PConstants.ARGB); //depth
 		images[1] = pApplet.loadImage("colors.jpg");
 		
-		
+		//----- mode 2 ---//
 		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
 		setUniformConstants(fshader);
 		
+		//----- mode 3 ---//
 		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
 		setUniformConstants(basicShader);
-		
 		bLineShader = pApplet.loadShader("bLShader_frag.glsl", "bLShader_vert.glsl");
 		setUniformConstants(bLineShader);
 		
+		//----- mode 4 ---//
 		lineShader = pApplet.loadShader("lshader_frag.glsl", "lshader_vert.glsl");
 		setUniformConstants(lineShader);
 		
+		//----- mode 5 ---//
 		pointShader = pApplet.loadShader("pointShader_frag.glsl", "pointShader_vert.glsl");
 		setUniformConstants(pointShader);
 		
-		//--- triangles -----//
-		
+		//--- mode 6 -----//
 		trgFillShader = pApplet.loadShader("trgFill_frag.glsl", "trgFill_vert.glsl");
 		setUniformConstants(trgFillShader);
-		
 		trgStrokeShader = pApplet.loadShader("trgStroke_frag.glsl", "trgStroke_vert.glsl");
 		setUniformConstants(trgStrokeShader);
 		
+		//--- particles system -----//
 		testFillShader = pApplet.loadShader("testFill_frag.glsl", "testFill_vert.glsl");
 		testFillShader.set("tex1", images[1]); //color
 		testFillShader.set("gWidth", (float) App.width);
 		testFillShader.set("gHeight", (float) App.height);
 		
-		//----------- shaders -----------//
+		//---------------------- shaders ----------------------//
 		
 		ramp = new Ramp(1, true);
 		
@@ -141,8 +144,6 @@ public class DrawLineScene extends Scene {
 		depth = PApplet.map(depth, -1000, 1000, -10, 10);
 		shader.set("depth", depth);
 		
-		//------------ new ones ------------//
-		
 		shader.set("useFFT", useFFT);
 		shader.set("texCutStraight", texCutStraight);
 		
@@ -153,6 +154,10 @@ public class DrawLineScene extends Scene {
 		float texFftEnd = params.get("texFftEnd");
 		texFftEnd = PApplet.map(texFftEnd, 0f, 10f, 0f, 1f);
 		shader.set("texFftEnd", texFftEnd);
+		
+		float depthTS = params.get("depthTS");
+		depthTS = PApplet.map(depthTS, 0, 255, 0, 1);
+		shader.set("depthTS", depthTS);
 
 	}
 	private PImage createDepthTexture(SimpleOpenNI context){
@@ -202,7 +207,6 @@ public class DrawLineScene extends Scene {
 						
 			oldDepthValues[i] = (int) value;
 			
-			//TODO ADD PARAM ?
 			value = PApplet.map(value, App.lowestValue, App.highestValue, 255, 0);
 			value = Math.max(0, Math.min(255, value));//clamp 0 255
 			
@@ -274,7 +278,7 @@ public class DrawLineScene extends Scene {
 			float fillAlpha = params.get("fillAlpha");
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
 			fshader.set("alpha", fillAlpha);
-			
+
 		} else if(mode==3){ // shape composed of multiples quads + stroke and fill
 			
 			updateSoundV2();
@@ -815,11 +819,11 @@ public class DrawLineScene extends Scene {
 			useFFT = !useFFT;
 		} else if (key == 'g') {
 			mode--;
-			if(mode<0)mode=6;
+			if(mode<0)mode=MAXMODE;
 			if(mode>1)App.recreateShapeGrid = true;
 		} else if (key == 'h') {
 			mode++;
-			if(mode>7)mode=0;
+			if(mode>MAXMODE)mode=0;
 			if(mode>1)App.recreateShapeGrid = true;	
 		} else if (key == 'k') { //draw rect or circle when using points shader
 			drawRoundRect = !drawRoundRect;

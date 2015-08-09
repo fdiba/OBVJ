@@ -10,6 +10,8 @@ uniform sampler2D tex2; //sound image
 uniform float gWidth;
 uniform float gHeight;
 
+uniform float depthTS;
+
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
 uniform float texFftStart; //0 1
@@ -33,6 +35,9 @@ void main() {
 
   vertTexCoord = texMatrix * vec4(texCoord, 1.0, 1.0);
   vec2 tex2Pos; //sound
+
+  //-- threshold --//
+  bool underTS;
   
   //------ fft ------/
   if(useFFT){
@@ -40,22 +45,29 @@ void main() {
 	//TODO create variable
 
 	if(texCutStraight){
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+    //x >> 1 0 1 and y >> 0 1
+		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); 
 	} else {
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+    //x >> 1 0 1 and y >> 0 1
+		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); 
 	}
 	
 	tex2Pos[0] += texFftStart;
-	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle
+  //second way to use texFftEnd >> create flat middle
+	if(texCutStraight)tex2Pos[0] -= texFftEnd;
 
 	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
 	
   } else {
-	//tex2Pos = pos;
-	tex2Pos = vertTexCoord.xy;
+	 //tex2Pos = pos;
+	 tex2Pos = vertTexCoord.xy;
   }
   
+  //--------- depthmap ----------//
   vertColor = texture2D(tex0, vertTexCoord.st);
+
+  if(vertColor.r<depthTS)underTS= true;
+
   
   vec4 myVertex = vertex;
   myVertex.z = vertColor.r * 255.0 * depth;
@@ -74,13 +86,14 @@ void main() {
 
   //DO IT AT THE END
   if(useColors){
-	float xMin = vertColor.r + colorTS;
-	xMin = clamp(xMin, 0.0, 1.0);
-	vertColor = texture2D(tex1, vec2(xMin, 0.0));
+	 float xMin = vertColor.r + colorTS;
+	 xMin = clamp(xMin, 0.0, 1.0);
+	 vertColor = texture2D(tex1, vec2(xMin, 0.0));
   }
-    
-  gl_Position = transform * myVertex;
   
-  if( mod(myVertex.y, 5.0) > 0.5 ) vertColor.a = alpha;
+  if(underTS) vertColor.a = .0;
+  else if( mod(myVertex.y, 5.0) > 0.5 ) vertColor.a = alpha;
+
+  gl_Position = transform * myVertex;
   
 }

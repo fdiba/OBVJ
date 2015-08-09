@@ -10,6 +10,8 @@ uniform sampler2D tex2; //sound image
 uniform float gWidth;
 uniform float gHeight;
 
+uniform float depthTS;
+
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
 uniform float texFftStart; //0 1
@@ -32,23 +34,31 @@ varying vec2 pos;
 
 void main() {
 
-  vec2 mOffset = offset; //to edit strokeWeight
+  //to edit strokeWeight
+  vec2 mOffset = offset;
 
-  vec2 mpos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
+  //xy >> 0 1
+  vec2 mpos = vec2(vertex.x/gWidth, vertex.y/gHeight);
   vec2 tex2Pos; //sound
+
+  //-- threshold --//
+  bool underTS;
   
   //------ fft ------/
   //set tex2Pos
   if(useFFT){
 	
   	if(texCutStraight){
-  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+      //x >> 1 0 1 and y >> 0 1
+  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight);
   	} else {
-  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
+      //x >> 1 0 1 and y >> 0 1
+  		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight);
   	}
   	
   	tex2Pos[0] += texFftStart;
-  	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle	
+    //second way to use texFftEnd >> create flat middle
+  	if(texCutStraight)tex2Pos[0] -= texFftEnd;	
 
   	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
 	
@@ -56,8 +66,11 @@ void main() {
 	 tex2Pos = mpos;
   }
  
+  //--------- depthmap ----------//
   vertColor = texture2D(tex0, mpos);
   
+  if(vertColor.r<depthTS)underTS= true;
+
   //if(!sameSize)mOffset *= 1+5*vertColor.r;
   
   //depthmap
@@ -80,10 +93,6 @@ void main() {
   //vec4 pos = modelview * myVertex;
   //vec4 clip = projection * pos;
   
-  gl_Position = clip + projection * vec4(mOffset, 0, 0);
-  center = clip.xy;
-  pos = mOffset;
-   
   //----------- COLOR -----------//  
   
   //DO IT AT THE END
@@ -92,7 +101,13 @@ void main() {
   	xMin = clamp(xMin, 0.0, 1.0);
   	vertColor = texture2D(tex1, vec2(xMin, 0.0));
   }
+
+  if(underTS) vertColor.a = .0;
   
   //vertColor = color;
+
+  gl_Position = clip + projection * vec4(mOffset, 0, 0);
+  center = clip.xy;
+  pos = mOffset;
 
 }

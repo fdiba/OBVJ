@@ -11,6 +11,8 @@ uniform sampler2D tex2; //sound image
 uniform float gWidth;
 uniform float gHeight;
 
+uniform float depthTS;
+
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
 uniform float texFftStart; //0 1
@@ -41,27 +43,36 @@ void main() {
   vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
   vec2 tex2Pos; //sound
 
+  //-- threshold --//
+  bool underTS;
+
   //------ fft ------/
   if(useFFT){
 	
 	//TODO create variable
 
-	if(texCutStraight){
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
-	} else {
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); //x >> 1 0 1 and y >> 0 1
-	}
+	 if(texCutStraight){
+    //x >> 1 0 1 and y >> 0 1
+    tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight);
+	 } else {
+    //x >> 1 0 1 and y >> 0 1
+    tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight);
+	 }
 	
-	tex2Pos[0] += texFftStart;
-	if(texCutStraight)tex2Pos[0] -= texFftEnd; //second way to use texFftEnd >> create flat middle	
+	 tex2Pos[0] += texFftStart;
+   //second way to use texFftEnd >>  create flat middle
+	 if(texCutStraight)tex2Pos[0] -= texFftEnd;	
 
-	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
+	 tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
 	
   } else {
-	tex2Pos = pos;
+	 tex2Pos = pos;
   }
   
+  //--------- depthmap ----------//
   vertColor = texture2D(tex0, pos);
+
+  if(vertColor.r<depthTS)underTS= true;
   
   vec4 myVertex = vertex;
   myVertex.z = vertColor.r * 255.0 * depth;
@@ -76,9 +87,9 @@ void main() {
   
   //DO IT AT THE END
   if(useColors){
-	float xMin = vertColor.r + colorTS;
-	xMin = clamp(xMin, 0.0, 1.0);
-	vertColor = texture2D(tex1, vec2(xMin, 0.0));
+	 float xMin = vertColor.r + colorTS;
+	 xMin = clamp(xMin, 0.0, 1.0);
+	 vertColor = texture2D(tex1, vec2(xMin, 0.0));
   }
 
   vec4 clip0 = transform * myVertex;
@@ -94,11 +105,13 @@ void main() {
     
   vec2 normal = normalize(vec2(-tangent.y, tangent.x));
   vec2 offset = normal * thickness;
-    
+
+  //vertColor = vec4(0.0,1.0,0.5,1.0);
+  
+  if(underTS) vertColor.a = .0;
+  else vertColor.a = alpha;
+
   gl_Position.xy = clip0.xy + offset.xy;
   gl_Position.zw = clip0.zw;
-  
-  vertColor.a = alpha;
-  //vertColor = vec4(0.0,1.0,0.5,1.0);
   
 }
