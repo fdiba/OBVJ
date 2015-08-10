@@ -1,5 +1,7 @@
 package webodrome.ctrl;
 
+import java.awt.Color;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;
@@ -25,19 +27,15 @@ public class Menu {
 		
 		int numSliders = BehringerBCF.numSliders;
 		
-		int color;
+		Color color;
 				
 		for(int i=0; i<objects.length; i++){
 
 			String param = (String) objects[i][0];
 			float lowValue = (int) objects[i][1];
 			float maxValue = (int) objects[i][2];
-			
-			if(objects[i].length > 4){
-				color = (int) objects[i][4];
-			} else {
-				color = (int) App.colors[i];
-			}
+
+			color = App.colors[i%App.colors.length];
 			
 			int row = i/numSliders;
 			int sliderId = i%numSliders;

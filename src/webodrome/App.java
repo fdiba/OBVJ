@@ -1,5 +1,7 @@
 package webodrome;
 
+import java.awt.Color;
+
 import peasy.PeasyCam;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -54,15 +56,9 @@ public class App {
 	public static int lowestValue = 550;
 	public static int highestValue = 5100;
 	public static boolean switchValue;
-	
-	//colors : red, green, blue green, orange, dark blue
-	public final static int[] colorsPanel = {255 << 24 | 240 << 16 | 65 << 8 | 50,
-											 255 << 24 | 135 << 16 | 205 << 8 | 137,
-											 255 << 24 | 40 << 16 | 135 << 8 | 145,
-											 255 << 24 | 252 << 16 | 177 << 8 | 135,
-											 255 << 24 | 15 << 16 | 65 << 8 | 85};
-	
-	public final static int[] colors = {-8410437,-9998215,-1849945,-5517090,-4250587,-14178341,-5804972,-3498634};
+		
+	public final static Color[] colors = {new Color(56,132,188), new Color(113,177,213), new Color(163,204,225), new Color(201,220,239),
+										  new Color(226,78,19), new Color(248,139,66), new Color(249,174,112), new Color(251,208,166)};
 		
 	private static Scene actualScene;
 	public static Menu actualMenu;

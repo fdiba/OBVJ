@@ -1,5 +1,7 @@
 package webodrome.ctrl;
 
+import java.awt.Color;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 import webodrome.App;
@@ -24,24 +26,24 @@ public class Slider {
     private float value;
     private StringBuilder info;
 
-	public Slider(Scene _scene, PVector _loc, String _param, float _lowValue, float _maxValue, int _color) {
+	public Slider(Scene scene, PVector location, String param, float lowVal, float maxVal, Color color) {
 		
 		info = new StringBuilder();
 		
-		scene = _scene;
+		this.scene = scene;
 		
-		location = _loc;
-		param = _param;
+		this.location = location;
+		this.param = param;
 		
 		sliderCtrl = new SliderController(new PVector(location.x + WIDTH/2, location.y));
 		
-		lowValue = _lowValue;
-	    maxValue = _maxValue;
+		this.lowValue = lowVal;
+	    this.maxValue = maxVal;
 	    
 	    lowXPos = location.x;
 	    maxYPos = location.x + WIDTH;
 	    
-	    color = _color;
+	    this.color = color.getRGB();
 		
 	}
 	public void initValueAndPos(float _value){
