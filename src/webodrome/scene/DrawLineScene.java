@@ -31,14 +31,14 @@ public class DrawLineScene extends Scene {
 	private static final int MAXMODE = 7;
 	
 	//-------- shaders ----------//
-	private static PShader fshader;
-	private static PShader basicShader;
-	private static PShader bLineShader;
+	private static PShader firstFillShader;
+	private static PShader basicFillShader;
+	private static PShader basicStrShader;
 	private static PShader lineShader;
 	private static PShader pointShader;
 	private static PShader trgFillShader;
 	private static PShader trgStrokeShader;
-	private static PShader testFillShader;
+	private static PShader psFillShader;
 	
 	private PImage depthImage;
 	
@@ -78,34 +78,34 @@ public class DrawLineScene extends Scene {
 		images[1] = pApplet.loadImage("colors.jpg");
 		
 		//----- mode 2 ---//
-		fshader = pApplet.loadShader("fshader_frag.glsl", "fshader_vert.glsl");
-		setUniformConstants(fshader);
+		firstFillShader = pApplet.loadShader("fillFrag02.glsl", "fillVert02.glsl");
+		setUniformConstants(firstFillShader);
 		
 		//----- mode 3 ---//
-		basicShader = pApplet.loadShader("bshader_frag.glsl", "bshader_vert.glsl");
-		setUniformConstants(basicShader);
-		bLineShader = pApplet.loadShader("bLShader_frag.glsl", "bLShader_vert.glsl");
-		setUniformConstants(bLineShader);
+		basicFillShader = pApplet.loadShader("baseFillFrag03.glsl", "baseFillVert03.glsl");
+		setUniformConstants(basicFillShader);
+		basicStrShader = pApplet.loadShader("baseStrFragt03.glsl", "baseStrVert03.glsl");
+		setUniformConstants(basicStrShader);
 		
 		//----- mode 4 ---//
-		lineShader = pApplet.loadShader("lshader_frag.glsl", "lshader_vert.glsl");
+		lineShader = pApplet.loadShader("lineFrag04.glsl", "lineVert04.glsl");
 		setUniformConstants(lineShader);
 		
 		//----- mode 5 ---//
-		pointShader = pApplet.loadShader("pointShader_frag.glsl", "pointShader_vert.glsl");
+		pointShader = pApplet.loadShader("pointFrag05.glsl", "pointVert05.glsl");
 		setUniformConstants(pointShader);
 		
 		//--- mode 6 -----//
-		trgFillShader = pApplet.loadShader("trgFill_frag.glsl", "trgFill_vert.glsl");
+		trgFillShader = pApplet.loadShader("trgFillFrag06.glsl", "trgFillVert06.glsl");
 		setUniformConstants(trgFillShader);
-		trgStrokeShader = pApplet.loadShader("trgStroke_frag.glsl", "trgStroke_vert.glsl");
+		trgStrokeShader = pApplet.loadShader("trgStrokeFrag06.glsl", "trgStrokeVert06.glsl");
 		setUniformConstants(trgStrokeShader);
 		
 		//--- particles system -----//
-		testFillShader = pApplet.loadShader("testFill_frag.glsl", "testFill_vert.glsl");
-		testFillShader.set("tex1", images[1]); //color
-		testFillShader.set("gWidth", (float) App.width);
-		testFillShader.set("gHeight", (float) App.height);
+		psFillShader = pApplet.loadShader("psFillFrag.glsl", "psFillVert.glsl");
+		psFillShader.set("tex1", images[1]); //color
+		psFillShader.set("gWidth", (float) App.width);
+		psFillShader.set("gHeight", (float) App.height);
 		
 		//---------------------- shaders ----------------------//
 		
@@ -158,6 +158,9 @@ public class DrawLineScene extends Scene {
 		float depthTS = params.get("depthTS");
 		depthTS = PApplet.map(depthTS, 0, 255, 0, 1);
 		shader.set("depthTS", depthTS);
+		
+		float finalTS = params.get("finalTS");
+		shader.set("finalTS", finalTS);
 
 	}
 	private PImage createDepthTexture(SimpleOpenNI context){
@@ -243,17 +246,17 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 			
-			testFillShader.set("useColors", App.useColors);
+			psFillShader.set("useColors", App.useColors);
 			float[] focalPlane = {App.focalPlane.x, App.focalPlane.y, App.focalPlane.z};
-			testFillShader.set("focalPlane", focalPlane);
-			testFillShader.set("normal", App.normal);
+			psFillShader.set("focalPlane", focalPlane);
+			psFillShader.set("normal", App.normal);
 			
-			testFillShader.set("drawRoundRect", drawRoundRect);
-			testFillShader.set("weight", (float) params.get("strokeWeight"));
+			psFillShader.set("drawRoundRect", drawRoundRect);
+			psFillShader.set("weight", (float) params.get("strokeWeight"));
 			
 			float strokeAlpha = params.get("strokeAlpha");
 			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
-			testFillShader.set("strokeAlpha", strokeAlpha);
+			psFillShader.set("strokeAlpha", strokeAlpha);
 			
 			//updateShape(App.partSysGrid);
 			if(!App.pausedPS)App.updatePS();
@@ -268,17 +271,17 @@ public class DrawLineScene extends Scene {
 			}
 						
 			depthImage = createDepthTexture(context);
-			fshader.set("tex0", depthImage);
+			firstFillShader.set("tex0", depthImage);
 			
-			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
-			else fshader.set("tex2", App.lineSoundImage);
+			if(multipleBuffers) firstFillShader.set("tex2", App.basicSoundImage);
+			else firstFillShader.set("tex2", App.lineSoundImage);
 			
-			setUniformVariables(fshader);
+			setUniformVariables(firstFillShader);
 			
 			float fillAlpha = params.get("fillAlpha");
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
-			fshader.set("alpha", fillAlpha);
-
+			firstFillShader.set("alpha", fillAlpha);
+			
 		} else if(mode==3){ // shape composed of multiples quads + stroke and fill
 			
 			updateSoundV2();
@@ -290,27 +293,27 @@ public class DrawLineScene extends Scene {
 			
 			//USE OF TWO SHADERS
 			depthImage = createDepthTexture(context);
-			basicShader.set("tex0", depthImage);
-			bLineShader.set("tex0", depthImage);
+			basicFillShader.set("tex0", depthImage);
+			basicStrShader.set("tex0", depthImage);
 			
 			if(multipleBuffers) {
-				basicShader.set("tex2", App.basicSoundImage);
-				bLineShader.set("tex2", App.basicSoundImage);
+				basicFillShader.set("tex2", App.basicSoundImage);
+				basicStrShader.set("tex2", App.basicSoundImage);
 			} else {
-				basicShader.set("tex2", App.lineSoundImage);
-				bLineShader.set("tex2", App.lineSoundImage);
+				basicFillShader.set("tex2", App.lineSoundImage);
+				basicStrShader.set("tex2", App.lineSoundImage);
 			}
 			
-			setUniformVariables(basicShader);
-			setUniformVariables(bLineShader);
+			setUniformVariables(basicFillShader);
+			setUniformVariables(basicStrShader);
 			
 			float fillAlpha = params.get("fillAlpha");
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
-			basicShader.set("alpha", fillAlpha);
+			basicFillShader.set("alpha", fillAlpha);
 			
 			float strokeAlpha = params.get("strokeAlpha");
 			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
-			bLineShader.set("alpha", strokeAlpha);
+			basicStrShader.set("alpha", strokeAlpha);
 						
 		} else if(mode==4){ //shape created with lines (two vertices)
 			
@@ -360,16 +363,16 @@ public class DrawLineScene extends Scene {
 			}
 						
 			depthImage = createDepthTexture(context);
-			fshader.set("tex0", depthImage);
+			firstFillShader.set("tex0", depthImage);
 			
-			if(multipleBuffers) fshader.set("tex2", App.basicSoundImage);
-			else fshader.set("tex2", App.lineSoundImage);
+			if(multipleBuffers) firstFillShader.set("tex2", App.basicSoundImage);
+			else firstFillShader.set("tex2", App.lineSoundImage);
 			
-			setUniformVariables(fshader);
+			setUniformVariables(firstFillShader);
 			
 			float fillAlpha = params.get("fillAlpha");
 			fillAlpha = PApplet.map(fillAlpha, 0, 255, 0, 1);
-			fshader.set("alpha", fillAlpha);
+			firstFillShader.set("alpha", fillAlpha);
 		
 		} else if(mode==7){ // shape composed of multiples quads + stroke and fill
 			
@@ -609,16 +612,16 @@ public class DrawLineScene extends Scene {
 		if(!App.psRunning){
 		
 			if(mode==2){
-				pApplet.shader(fshader);
+				pApplet.shader(firstFillShader);
 			} else if(mode==3){
-				pApplet.shader(basicShader);
-				pApplet.shader(bLineShader);
+				pApplet.shader(basicFillShader);
+				pApplet.shader(basicStrShader);
 			} else if(mode==4){
 				pApplet.shader(lineShader);
 			} else if(mode==5){
 				pApplet.shader(pointShader);
 			} else if(mode==6){
-				pApplet.shader(fshader);
+				pApplet.shader(firstFillShader);
 			} else if(mode==7){
 				pApplet.shader(trgFillShader);
 				pApplet.shader(trgStrokeShader);
@@ -629,7 +632,7 @@ public class DrawLineScene extends Scene {
 		} else {
 			
 			//TODO SHADER DO NOT WORK PROPERLY
-			pApplet.shader(testFillShader);
+			pApplet.shader(psFillShader);
 			//pApplet.resetShader(PConstants.POINT);
 			
 			//pApplet.shape(App.partSysGrid);

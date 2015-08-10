@@ -12,6 +12,7 @@ uniform float gWidth;
 uniform float gHeight;
 
 uniform float depthTS;
+uniform float finalTS;
 
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
@@ -40,8 +41,7 @@ vec3 clipToWindow(vec4 clip, vec4 viewport) {
 void main() {
 
   //pos = vertTexCoord
-  //xy >> 0 1
-  vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight);
+  vec2 pos = vec2(vertex.x/gWidth, vertex.y/gHeight); //xy >> 0 1
   vec2 tex2Pos; //sound
 
   //-- threshold --//
@@ -52,20 +52,19 @@ void main() {
 	
 	//TODO create variable
 
-	if(texCutStraight){
+	 if(texCutStraight){
     //x >> 1 0 1 and y >> 0 1
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight);
-	} else {
+    tex2Pos = vec2(abs(vertex.x/gWidth*2-1), vertex.y/gHeight);
+	 } else {
     //x >> 1 0 1 and y >> 0 1
-		tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight); 
-	}
+    tex2Pos = vec2(abs(vertex.x/gWidth*2-1)*(1-texFftEnd), vertex.y/gHeight);
+	 }
 	
-	tex2Pos[0] += texFftStart;
+	 tex2Pos[0] += texFftStart;
+   //second way to use texFftEnd >>  create flat middle
+	 if(texCutStraight)tex2Pos[0] -= texFftEnd;	
 
-  //second way to use texFftEnd >> create flat middle 
-	if(texCutStraight)tex2Pos[0] -= texFftEnd; 
-
-	tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
+	 tex2Pos[0] = clamp(tex2Pos[0], 0 , 1);
 	
   } else {
 	 tex2Pos = pos;
@@ -76,7 +75,6 @@ void main() {
 
   if(vertColor.r<depthTS)underTS= true;
   
-
   vec4 myVertex = vertex;
   myVertex.z = vertColor.r * 255.0 * depth;
   
@@ -108,12 +106,14 @@ void main() {
     
   vec2 normal = normalize(vec2(-tangent.y, tangent.x));
   vec2 offset = normal * thickness;
+
+  //vertColor = vec4(0.0,1.0,0.5,1.0);
   
   if(underTS) vertColor.a = .0;
   else vertColor.a = alpha;
-  
-  //vertColor = vec4(0.0,1.0,0.5,1.0);
-  
+
+  if(myVertex.z < finalTS) vertColor.a = .0;
+
   gl_Position.xy = clip0.xy + offset.xy;
   gl_Position.zw = clip0.zw;
   

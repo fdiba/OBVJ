@@ -12,6 +12,7 @@ uniform float gWidth;
 uniform float gHeight;
 
 uniform float depthTS;
+uniform float finalTS;
 
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
@@ -106,6 +107,8 @@ void main() {
   vec2 offset = normal * thickness;
 
   if(underTS) vertColor.a = .0;
+
+  if(myVertex.z < finalTS) vertColor.a = .0;
     
   gl_Position.xy = clip0.xy + offset.xy;
   gl_Position.zw = clip0.zw;

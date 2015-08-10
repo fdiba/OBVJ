@@ -214,7 +214,6 @@ public class OBVJ extends PApplet {
 		} 
 	}
 	//-------------------- GRIDS --------------------//
-	@SuppressWarnings("unused")
 	private void drawCuePoints(){
 		
 		int time = millis();
@@ -244,7 +243,7 @@ public class OBVJ extends PApplet {
 			frameRate(App.sl_frameRate);
 			App.oldSceneId = sceneId;
 					
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -50},
 	                {"zTrans", -2500, 2500, -200},                
 	                {"strokeWeight", 1, 100, 3}, //4 before
@@ -272,6 +271,8 @@ public class OBVJ extends PApplet {
 	                //TODO make it FLOAT beetween 0 and 1 
 	                {"fillAlpha", 0, 255, 25}, //only used with textures
 					{"strokeAlpha", 0, 255, 45},
+					{"finalTS", -1000, 2000, -1000},
+					
 					{"dofRatio", 10, 200, 90}};
 			
 			drawLineScene = new DrawLineScene(this, objects, App.width, App.height);
@@ -316,7 +317,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, -100},
 	                {"zTrans", -2500, 2500, -200},                
 	                {"strokeWeight", 1, 100, 4},
@@ -369,7 +370,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},                
 	                {"rotateX", -360, 360, 0},
@@ -412,7 +413,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},
 	                {"alpha", 0, 255, 0},
@@ -426,7 +427,7 @@ public class OBVJ extends PApplet {
 	                {"distMin", 10, 200, 10},
 	                {"edgeMinNumber", 3, 400, 100},
 	                {"amplitude", 1, 1000, 10},
-	                {"strokeWeight", 1, 100, 1} };
+	                {"strokeWeight", 1, 100, 1}};
 			
 			shapeScene = new ShapeScene(this, objects, App.width, App.height);
 			App.setActualScene(shapeScene);
@@ -459,7 +460,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},
 	                {"alpha", 0, 200, 0},
@@ -469,7 +470,7 @@ public class OBVJ extends PApplet {
 	                {"iterations", 1, 20, 10},
 	                
 	                {"amplitude", 1, 1000, 300},
-	                {"strokeWeight", 1, 100, 3} };
+	                {"strokeWeight", 1, 100, 3}};
 			
 			chunkyScene = new ChunkyScene(this, objects, App.width, App.height);
 			App.setActualScene(chunkyScene);
@@ -501,12 +502,12 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = { {"xTrans", -2500, 2500, 0},
+			Object[][] objects = {{"xTrans", -2500, 2500, 0},
 	                {"yTrans", -2500, 2500, 0},
 	                {"zTrans", -2500, 2500, 0},
 	                {"rotateX", -360, 360, 0},
 	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0} };
+	                {"rotateZ", -360, 360, 0}};
 			
 			monitorScene = new MonitorScene(this, objects, App.width, App.height);
 			App.setActualScene(monitorScene);

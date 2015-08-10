@@ -11,6 +11,7 @@ uniform float gWidth;
 uniform float gHeight;
 
 uniform float depthTS;
+uniform float finalTS;
 
 uniform bool useFFT; //use fft
 uniform bool texCutStraight; //change how texFftEnd is used
@@ -103,6 +104,8 @@ void main() {
   }
 
   if(underTS) vertColor.a = .0;
+
+  if(myVertex.z < finalTS) vertColor.a = .0;
   
   //vertColor = color;
 
