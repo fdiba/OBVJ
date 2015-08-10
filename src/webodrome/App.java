@@ -1,7 +1,5 @@
 package webodrome;
 
-import java.awt.event.KeyEvent;
-
 import peasy.PeasyCam;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -9,10 +7,6 @@ import processing.core.PImage;
 import processing.core.PShape;
 import processing.core.PVector;
 import processing.opengl.PShader;
-import ddf.minim.AudioInput;
-import ddf.minim.AudioPlayer;
-import ddf.minim.Minim;
-import ddf.minim.analysis.FFT;
 import themidibus.MidiBus;
 import webodrome.ctrl.BehringerBCF;
 import webodrome.ctrl.Menu;
@@ -22,6 +16,10 @@ import webodrome.scene.DrawLineScene;
 import webodrome.scene.DrawPointScene;
 import webodrome.scene.Scene;
 import webodrome.scene.ShapeScene;
+import ddf.minim.AudioInput;
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
+import ddf.minim.analysis.FFT;
 
 public class App {
 	
@@ -724,12 +722,12 @@ public class App {
 		App.actualScene = actualScene;
 		App.actualMenu = actualScene.menu;
 	}
-	public static void editParams(int key, String[] parameters, int[] values){
+	public static void editParameters(int key, Object[][] parameters){
 		
 		switch (key) {
 			case 0:
 				for (int i=0; i<parameters.length; i++){
-					getActualScene().params.put(parameters[i], values[i]);
+					getActualScene().params.put((String)parameters[i][0], (Integer)parameters[i][1]);
 				}
 				getActualScene().menu.reinitSlidersValueAndPos();
 				break;

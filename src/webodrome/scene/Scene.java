@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import SimpleOpenNI.SimpleOpenNI;
 import processing.core.PApplet;
-import processing.core.PImage;
 import processing.core.PVector;
 import processing.data.FloatList;
 import webodrome.App;
 import webodrome.ctrl.Menu;
+import SimpleOpenNI.SimpleOpenNI;
 
 public class Scene {
 	
@@ -19,7 +18,7 @@ public class Scene {
 	
 	public Map<String, Integer> params;
 	public Menu menu;
-	
+		
 	protected int w, h;
 	
 	protected int[] depthValues;

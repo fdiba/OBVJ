@@ -850,100 +850,100 @@ public class DrawLineScene extends Scene {
 			
 		} else if (key == '0'){
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-								   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, -100, -200, 6, 45, 0, 0, 50, 10, 112, 45, -90, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", -200}, {"strokeWeight", 6}, {"rotateX", 45}, {"rotateY", 0}, {"rotateZ", 0},
+				{"amplitude", 50}, {"ySpace", 10}, {"depth", 112}, {"maxDist", 45}, {"depthTS", -90}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 		
 		} else if (key == '1'){
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, 0, 20, 4, 0, 0, 0, 50, 12, 120, 45, -100, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 4}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
+					{"amplitude", 50}, {"ySpace", 12}, {"depth", 120}, {"maxDist", 45}, {"depthTS", -100}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '2'){
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, 0, 20, 14, 0, 0, 0, 150, 17, 172, 250, -150, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 14}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
+					{"amplitude", 150}, {"ySpace", 17}, {"depth", 172}, {"maxDist", 250}, {"depthTS", -150}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = true;
 			useFFT = false;
 			
 		} else if (key == '3'){
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-					   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, 0, 20, 10, 0, 0, 0, 350, 4, 60, 20, -50, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 10}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
+					{"amplitude", 350}, {"ySpace", 4}, {"depth", 60}, {"maxDist", 20}, {"depthTS", -50}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '4') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, -50, 20, 16, 70, 0, 90, 70, 60, 60, 45, -55, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 20}, {"strokeWeight", 16}, {"rotateX", 70}, {"rotateY", 0}, {"rotateZ", 90},
+					{"amplitude", 70}, {"ySpace", 60}, {"depth", 60}, {"maxDist", 45}, {"depthTS", -55}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '5') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, -50, 20, 16, 70, 0, 90, 115, 10, 60, 45, -55, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 20}, {"strokeWeight", 16}, {"rotateX", 70}, {"rotateY", 0}, {"rotateZ", 90},
+					{"amplitude", 115}, {"ySpace", 10}, {"depth", 60}, {"maxDist", 45}, {"depthTS", -55}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '6') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, -50, 50, 50, 260, 0, 90, 450, 10, -72, 20, 75, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 50}, {"strokeWeight", 50}, {"rotateX", 260}, {"rotateY", 0}, {"rotateZ", 90},
+					{"amplitude", 450}, {"ySpace", 10}, {"depth", -72}, {"maxDist", 20}, {"depthTS", 75}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '7') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, 0, 374, 100, 0, 0, 315, 220, 44, 48, 20, -50, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 374}, {"strokeWeight", 100}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 315},
+					{"amplitude", 220}, {"ySpace", 44}, {"depth", 48}, {"maxDist", 20}, {"depthTS", -50}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = true;
 			useFFT = false;
 			
 		} else if (key == '8') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, -100, -50, 4, 60, 180, 0, 100, 10, -200, 40, 100, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -100}, {"zTrans", -50}, {"strokeWeight", 4}, {"rotateX", 60}, {"rotateY", 180}, {"rotateZ", 0},
+					{"amplitude", 100}, {"ySpace", 10}, {"depth", -200}, {"maxDist", 40}, {"depthTS", 100}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '9') {
 			
-			String[] parameters = {"xTrans", "yTrans", "zTrans", "strokeWeight", "rotateX", "rotateY", "rotateZ",
-		   			   "amplitude", "ySpace", "depth", "maxDist", "depthTS", "xSpace"};
-			int[] values = {0, 0, 50, 4, 0, 180, 0, 500, 10, -200, 250, 100, 10};
-			App.editParams(0, parameters, values);
+			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 50}, {"strokeWeight", 4}, {"rotateX", 0}, {"rotateY", 180}, {"rotateZ", 0},
+					{"amplitude", 500}, {"ySpace", 10}, {"depth", -200}, {"maxDist", 250}, {"depthTS", 100}, {"xSpace", 10}};
+
+			App.editParameters(0, parameters);
 			
 			multipleBuffers = true;
 			useFFT = false;
