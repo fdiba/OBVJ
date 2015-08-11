@@ -242,38 +242,8 @@ public class OBVJ extends PApplet {
 			
 			frameRate(App.sl_frameRate);
 			App.oldSceneId = sceneId;
-					
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -50},
-	                {"zTrans", -2500, 2500, -200},                
-	                {"strokeWeight", 1, 100, 3}, //4 before
-	                {"rotateX", -360, 360, 45},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0},
-	                {"rawData", 0, 10, 2}, //when zero freeze depthvalues
-	                
-	                {"fttAmpli", 1, 150, 100},
-	                {"texFftStart", 0, 10, 0}, // 0 100 8
-	                {"texFftEnd", 0, 10, 0}, // 1 5 3
-	                {"depthTS", 0, 255, 0},
-	                {"xSpace", 4, 100, 10}, //4 --> 150
-	                {"ySpace", 4, 100, 10}, //4 --> 150
-	                {"depth", -1000, 1000, 100}, //create space between points z axis 100=10
-	                {"amplitude", 1, 3000, 300}, //before 390 max 500
-	                
-	                {"damper", 0, 10, 9},
-	                {"maxDist", 1, 1500, 500},
-	                {"borderXSize", 0, 200, 0}, //in relation with xSpace
-	                //TODO place below ySpace
-	                {"borderYSize", 0, 200, 15}, //borderYSize = ySpace*2 
-	                //TODO make it FLOAT beetween 0 and 1 
-	                {"colorTS", 0, 254, 0}, //offset colors of tex1
-	                //TODO make it FLOAT beetween 0 and 1 
-	                {"fillAlpha", 0, 255, 25}, //only used with textures
-					{"strokeAlpha", 0, 255, 45},
-					{"finalTS", -1000, 2000, -1000},
-					
-					{"dofRatio", 10, 200, 90}};
+			
+			Object[][] objects = (Object[][]) App.loadParameters("scene0.txt");	
 			
 			drawLineScene = new DrawLineScene(this, objects, App.width, App.height);
 			App.setActualScene(drawLineScene);
@@ -317,26 +287,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, -100},
-	                {"zTrans", -2500, 2500, -200},                
-	                {"strokeWeight", 1, 100, 4},
-	                {"rotateX", -360, 360, 45},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0},
-	                {"rawData", 1, 10, 5},
-	                
-	                {"fttAmpli", 1, 150, 50},
-	                {"texFftStart", 0, 100, 0},
-	                {"texFftEnd", 1, 5, 2},
-	                {"depthTS", -200, 200, -74},
-	                {"xSpace", 4, 150, 4},
-	                {"ySpace", 4, 150, 4},
-	                {"depth", -1000, 1000, 110},
-	                {"amplitude", 1, 500, 390},
-	                
-	                {"maxDist", 1, 250, 250},
-	                {"colorTS", 0, 254, 38}};
+			Object[][] objects = (Object[][]) App.loadParameters("scene1.txt");
 			
 			drawPointScene = new DrawPointScene(this, objects, App.width, App.height);
 			App.setActualScene(drawPointScene);
@@ -370,17 +321,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, 0},
-	                {"zTrans", -2500, 2500, 0},                
-	                {"rotateX", -360, 360, 0},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0},
-	                {"xSpace", 4, 150, 4},
-	                {"ySpace", 4, 150, 4},
-	                
-	                {"area", 1, 1000, 260},
-	                {"speed", 0, 1000, 50}};
+			Object[][] objects = (Object[][]) App.loadParameters("scene2.txt");
 			
 			radarScene = new RadarScene(this, objects, App.width, App.height);
 			App.setActualScene(radarScene);
@@ -413,21 +354,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, 0},
-	                {"zTrans", -2500, 2500, 0},
-	                {"alpha", 0, 255, 0},
-	                {"rotateX", -360, 360, 0},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0},
-	                {"frameRate", 1, 30, App.sl_frameRate},
-	                
-	                {"iterations", 1, 20, 10},
-	                {"blurRadius", 1, 30, 2},
-	                {"distMin", 10, 200, 10},
-	                {"edgeMinNumber", 3, 400, 100},
-	                {"amplitude", 1, 1000, 10},
-	                {"strokeWeight", 1, 100, 1}};
+			Object[][] objects = (Object[][]) App.loadParameters("scene3.txt");
 			
 			shapeScene = new ShapeScene(this, objects, App.width, App.height);
 			App.setActualScene(shapeScene);
@@ -460,17 +387,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, 0},
-	                {"zTrans", -2500, 2500, 0},
-	                {"alpha", 0, 200, 0},
-	                {"rotateX", -360, 360, 0},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0},
-	                {"iterations", 1, 20, 10},
-	                
-	                {"amplitude", 1, 1000, 300},
-	                {"strokeWeight", 1, 100, 3}};
+			Object[][] objects = (Object[][]) App.loadParameters("scene4.txt");
 			
 			chunkyScene = new ChunkyScene(this, objects, App.width, App.height);
 			App.setActualScene(chunkyScene);
@@ -502,12 +419,7 @@ public class OBVJ extends PApplet {
 			
 			shader(App.defaultShader);
 			
-			Object[][] objects = {{"xTrans", -2500, 2500, 0},
-	                {"yTrans", -2500, 2500, 0},
-	                {"zTrans", -2500, 2500, 0},
-	                {"rotateX", -360, 360, 0},
-	                {"rotateY", -360, 360, 0},
-	                {"rotateZ", -360, 360, 0}};
+			Object[][] objects = (Object[][]) App.loadParameters("scene5.txt");
 			
 			monitorScene = new MonitorScene(this, objects, App.width, App.height);
 			App.setActualScene(monitorScene);

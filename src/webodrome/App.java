@@ -732,6 +732,27 @@ public class App {
 		}
 		
 	}
+	//-------- parameters ----------//
+	public static Object loadParameters(String path){
+		
+		String[] lines = objv.loadStrings("param/"+path);
+		Object[][] objects = new Object[lines.length][4];
+		
+		for (int i = 0 ; i < lines.length; i++) {
+						
+			Object[] obj = lines[i].split(",");
+			
+			objects[i][0] = obj[0];
+			objects[i][1] = Integer.parseInt(((String) obj[1]).replaceAll("\\s+",""));
+			objects[i][2] = Integer.parseInt(((String) obj[2]).replaceAll("\\s+",""));
+			objects[i][3] = Integer.parseInt(((String) obj[3]).replaceAll("\\s+",""));
+			
+			//System.out.println(objects[i][0]);
+		}
+		
+		return objects;
+		
+	}
 	//-------- key strokes --------//
 	private static void updateVarInfos(){
 		if(App.getSceneId() == 0) DrawLineScene.updateVarInfos();

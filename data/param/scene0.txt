@@ -1,0 +1,25 @@
+xTrans, -2500, 2500, 0
+yTrans, -2500, 2500, -50
+zTrans, -2500, 2500, -200
+strokeWeight, 1, 100, 3, 4 before
+rotateX, -360, 360, 45
+rotateY, -360, 360, 0
+rotateZ, -360, 360, 0
+rawData, 0, 10, 2, when zero freeze depthvalues
+fttAmpli, 1, 150, 100
+texFftStart, 0, 10, 0, 0 100 8
+texFftEnd, 0, 10, 0, 1 5 3
+depthTS, 0, 255, 0
+xSpace, 4, 100, 10, 4 --> 150
+ySpace, 4, 100, 10, 4 --> 150
+borderXSize, 0, 200, 0, in relation with xSpace
+borderYSize, 0, 200, 15, borderYSize = ySpace*2 
+depth, -1000, 1000, 100, create space between points z axis 100=10
+amplitude, 1, 3000, 300, before 390 max 500
+damper, 0, 10, 9
+maxDist, 1, 1500, 500
+colorTS, 0, 254, 0, offset colors of tex1, TODO make it FLOAT beetween 0 and 1
+fillAlpha, 0, 255, 25, only used with textures,TODO make it FLOAT beetween 0 and 1 
+strokeAlpha, 0, 255, 45
+finalTS, -1000, 2000, -1000
+dofRatio, 10, 200, 90
