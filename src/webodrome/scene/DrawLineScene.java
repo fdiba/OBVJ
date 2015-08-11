@@ -38,7 +38,7 @@ public class DrawLineScene extends Scene {
 	private static PShader pointShader;
 	private static PShader trgFillShader;
 	private static PShader trgStrokeShader;
-	private static PShader psFillShader;
+	private static PShader psPointShader;
 	
 	private PImage depthImage;
 	
@@ -102,10 +102,10 @@ public class DrawLineScene extends Scene {
 		setUniformConstants(trgStrokeShader);
 		
 		//--- particles system -----//
-		psFillShader = pApplet.loadShader("psFillFrag.glsl", "psFillVert.glsl");
-		psFillShader.set("tex1", images[1]); //color
-		psFillShader.set("gWidth", (float) App.width);
-		psFillShader.set("gHeight", (float) App.height);
+		psPointShader = pApplet.loadShader("psFillFrag.glsl", "psFillVert.glsl");
+		psPointShader.set("tex1", images[1]); //color
+		psPointShader.set("gWidth", (float) App.width);
+		psPointShader.set("gHeight", (float) App.height);
 		
 		//---------------------- shaders ----------------------//
 		
@@ -246,17 +246,20 @@ public class DrawLineScene extends Scene {
 				App.recreateShapeGrid = false;
 			}
 			
-			psFillShader.set("useColors", App.useColors);
+			psPointShader.set("useColors", App.useColors);
 			float[] focalPlane = {App.focalPlane.x, App.focalPlane.y, App.focalPlane.z};
-			psFillShader.set("focalPlane", focalPlane);
-			psFillShader.set("normal", App.normal);
+			psPointShader.set("focalPlane", focalPlane);
+			psPointShader.set("normalFPlane", App.normalFPlane);
 			
-			psFillShader.set("drawRoundRect", drawRoundRect);
-			psFillShader.set("weight", (float) params.get("strokeWeight"));
+			psPointShader.set("strokeWeight", (float) params.get("strokeWeight"));
 			
 			float strokeAlpha = params.get("strokeAlpha");
 			strokeAlpha = PApplet.map(strokeAlpha, 0, 255, 0, 1);
-			psFillShader.set("strokeAlpha", strokeAlpha);
+			
+			float dofRatio = params.get("dofRatio");
+			psPointShader.set("dofRatio", dofRatio);
+			
+			psPointShader.set("drawRoundRect", drawRoundRect);
 			
 			//updateShape(App.partSysGrid);
 			if(!App.pausedPS)App.updatePS();
@@ -632,7 +635,7 @@ public class DrawLineScene extends Scene {
 		} else {
 			
 			//TODO SHADER DO NOT WORK PROPERLY
-			pApplet.shader(psFillShader);
+			pApplet.shader(psPointShader);
 			//pApplet.resetShader(PConstants.POINT);
 			
 			//pApplet.shape(App.partSysGrid);

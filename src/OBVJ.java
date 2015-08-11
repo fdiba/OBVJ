@@ -264,7 +264,6 @@ public class OBVJ extends PApplet {
 		//else drawLineScene.update();
 			
 		pushMatrix();
-		  
 		
 		if(!App.psRunning)translateAndRotateV2();
 		  

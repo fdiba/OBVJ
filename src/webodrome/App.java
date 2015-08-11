@@ -48,7 +48,7 @@ public class App {
 	public static PShader defaultShader;
 	
 	//-------- KINECT CONST ----------//
-	public static boolean useKinect = true; //-------------------------- WARNING -----------------------------//
+	public static boolean useKinect = false; //-------------------------- WARNING -----------------------------//
 	public static int KWIDTH = 640;
 	public static int KHEIGHT = 480;
 	
@@ -121,7 +121,7 @@ public class App {
 	private static float speed = 24f;
 	
 	public static PVector focalPlane = new PVector();
-	public static float[] normal = new float[3];
+	public static float[] normalFPlane = new float[3];
 	//private static float dofRatio = 50f;
 	//----------- end PS ----------//
 	
@@ -235,11 +235,8 @@ public class App {
 		cameraCenter.add(PVector.mult(avgPos, cameraRate));
 		
 		focalPlane = avgPos.get();
-		normal = cam.getPosition();
-		//normal[0] = width/2;
-		//normal[1] = height/2;
-		
-		
+		normalFPlane = cam.getPosition();
+
 	}
 	public static void updatePS(){
 		
@@ -291,7 +288,7 @@ public class App {
 		float yRatio = (float) height/kheight;*/
 		
 		objv.stroke(255, 0, 255);
-		objv.strokeWeight(getActualScene().params.get("strokeWeight"));
+		//objv.strokeWeight(getActualScene().params.get("strokeWeight"));
 		objv.strokeCap(PConstants.SQUARE);
 		//objv.strokeCap(PConstants.ROUND);
 		
@@ -304,10 +301,9 @@ public class App {
 			/*float distanceToFocalPlane = getDistToPoint(focalPlane, new PVector(normal[0], normal[1], normal[2]), pos);
 			float dofRatio = getActualScene().params.get("dofRatio");
 			distanceToFocalPlane *= 1/dofRatio;
-			
+			distanceToFocalPlane = constrain(distanceToFocalPlane, 1, 15);
 			float alpha = PApplet.constrain(255/(distanceToFocalPlane*distanceToFocalPlane), 1, 255);
 			objv.stroke(255, alpha);
-			//objv.strokeWeight(distanceToFocalPlane+getActualScene().params.get("strokeWeight"));
 			objv.strokeWeight(distanceToFocalPlane);*/
 			
 			

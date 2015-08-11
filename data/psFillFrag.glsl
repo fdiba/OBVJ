@@ -5,7 +5,7 @@ precision mediump int;
 
 uniform sampler2D sprite;
 
-uniform float weight;
+uniform float strokeWeight;
 uniform bool drawRoundRect;
 
 varying vec4 vertColor;
@@ -20,7 +20,7 @@ void main() {
 
 	if(drawRoundRect){
 
-		float len = weight/2.0 - length(pos);
+		float len = strokeWeight/2.0 - length(pos);
 	    gl_FragColor.a = min(len, vertColor.a);
 	
   	}
