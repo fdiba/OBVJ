@@ -718,21 +718,20 @@ public class App {
 		App.actualScene = actualScene;
 		App.actualMenu = actualScene.menu;
 	}
-	public static void editParameters(int key, Object[][] parameters){
+	
+	//---------------- parameters ------------------//
+	public static void editParameters(String path){
 		
-		switch (key) {
-			case 0:
-				for (int i=0; i<parameters.length; i++){
-					getActualScene().params.put((String)parameters[i][0], (Integer)parameters[i][1]);
-				}
-				getActualScene().menu.reinitSlidersValueAndPos();
-				break;
-			default:
-				break;
+		String[] lines = objv.loadStrings("param/keypad/"+path);
+		
+		for (int i=0; i<lines.length; i++){
+			Object[] obj = lines[i].split(",");
+			getActualScene().params.put(((String) obj[0]).replaceAll("\\s+",""), Integer.parseInt(((String) obj[1]).replaceAll("\\s+","")));
 		}
 		
+		getActualScene().menu.reinitSlidersValueAndPos();
+		
 	}
-	//-------- parameters ----------//
 	public static Object loadParameters(String path){
 		
 		String[] lines = objv.loadStrings("param/"+path);

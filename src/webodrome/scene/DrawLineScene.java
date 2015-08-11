@@ -837,117 +837,72 @@ public class DrawLineScene extends Scene {
 		} else if (key == 'v') {
 			linesVisibility = !linesVisibility;
 		} else if (key == 'x') {
+			
 			App.recreateShapeGrid = true;
-			
-			
-			
+						
 			if(!App.useKinect)App.psRunning = true;
 			else App.psRunning = !App.psRunning;
 
-			
-			if(App.psRunning){
-				App.resetPS();
-			} else {
-				App.cam.setDistance(App.camDist1);
-			}
+			if(App.psRunning)App.resetPS();
+			else App.cam.setDistance(App.camDist1);
 			
 		} else if (key == '0'){
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", -200}, {"strokeWeight", 6}, {"rotateX", 45}, {"rotateY", 0}, {"rotateZ", 0},
-				{"amplitude", 50}, {"ySpace", 10}, {"depth", 112}, {"maxDist", 45}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k0.txt");
 			multipleBuffers = false;
 			useFFT = false;
 		
 		} else if (key == '1'){
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 4}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
-					{"amplitude", 50}, {"ySpace", 12}, {"depth", 120}, {"maxDist", 45}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k1.txt");
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '2'){
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 14}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
-					{"amplitude", 150}, {"ySpace", 17}, {"depth", 172}, {"maxDist", 250}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k2.txt");
 			multipleBuffers = true;
 			useFFT = false;
 			
 		} else if (key == '3'){
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 20}, {"strokeWeight", 10}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 0},
-					{"amplitude", 350}, {"ySpace", 4}, {"depth", 60}, {"maxDist", 20}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k3.txt");
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '4') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 20}, {"strokeWeight", 16}, {"rotateX", 70}, {"rotateY", 0}, {"rotateZ", 90},
-					{"amplitude", 70}, {"ySpace", 60}, {"depth", 60}, {"maxDist", 45}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k4.txt");			
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '5') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 20}, {"strokeWeight", 16}, {"rotateX", 70}, {"rotateY", 0}, {"rotateZ", 90},
-					{"amplitude", 115}, {"ySpace", 10}, {"depth", 60}, {"maxDist", 45}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k5.txt");
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '6') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -50}, {"zTrans", 50}, {"strokeWeight", 50}, {"rotateX", 260}, {"rotateY", 0}, {"rotateZ", 90},
-					{"amplitude", 450}, {"ySpace", 10}, {"depth", -72}, {"maxDist", 20}, {"depthTS", 75}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k6.txt");
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '7') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 374}, {"strokeWeight", 100}, {"rotateX", 0}, {"rotateY", 0}, {"rotateZ", 315},
-					{"amplitude", 220}, {"ySpace", 44}, {"depth", 48}, {"maxDist", 20}, {"depthTS", 0}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k7.txt");
 			multipleBuffers = true;
 			useFFT = false;
 			
 		} else if (key == '8') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", -100}, {"zTrans", -50}, {"strokeWeight", 4}, {"rotateX", 60}, {"rotateY", 180}, {"rotateZ", 0},
-					{"amplitude", 100}, {"ySpace", 10}, {"depth", -200}, {"maxDist", 40}, {"depthTS", 100}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k8.txt");
 			multipleBuffers = false;
 			useFFT = false;
 			
 		} else if (key == '9') {
 			
-			Object[][] parameters = {{"xTrans", 0}, {"yTrans", 0}, {"zTrans", 50}, {"strokeWeight", 4}, {"rotateX", 0}, {"rotateY", 180}, {"rotateZ", 0},
-					{"amplitude", 500}, {"ySpace", 10}, {"depth", -200}, {"maxDist", 250}, {"depthTS", 100}, {"xSpace", 10}};
-
-			App.editParameters(0, parameters);
-			
+			App.editParameters("s0k9.txt");
 			multipleBuffers = true;
 			useFFT = false;
 			

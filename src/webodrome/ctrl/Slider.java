@@ -58,6 +58,7 @@ public class Slider {
 		//updateTransValues(param, (int) value);
 		
 		initPos();
+		editInfo();
 	}
 	private void initPos(){
 		

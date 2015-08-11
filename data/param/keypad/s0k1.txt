@@ -1,0 +1,13 @@
+xTrans, 0
+yTrans, 0
+zTrans, 20
+strokeWeight, 4
+rotateX, 0
+rotateY, 0
+rotateZ, 0
+amplitude, 50
+ySpace, 12
+depth, 120
+maxDist, 45
+depthTS, 0
+xSpace, 10
